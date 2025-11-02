@@ -7,7 +7,7 @@ export default function Layout() {
   return (
     <div className="relative bg-accent text-text-primary flex flex-col">
       <Navbar />
-      <main className="flex-1 relative mx-auto w-full">
+      <main className="flex-1 relative min-h-screen mx-auto w-full">
         <Outlet />
       </main>
       <Footer />
