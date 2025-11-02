@@ -1,0 +1,340 @@
+{
+  "nav": {
+    "home": "Home",
+    "programs": "Programs",
+    "courses": "Courses",
+    "contact": "Contact",
+    "menu": {
+      "profile": "Profile",
+      "my_courses": "My Courses",
+      "logout": "Logout"
+    }
+  },
+  "auth": {
+    "sign_up": "Sign Up",
+    "sign_in": "Sign In",
+    "create_account": "Create Account",
+    "welcome_back": "Welcome Back",
+    "back": "Back",
+    "full_name": "Full Name",
+    "email_address": "Email Address",
+    "phone_number": "Phone Number",
+    "password": "Password",
+    "confirm_password": "Confirm Password",
+    "forgot_password": "Forgot Password?",
+    "loading": "Loading...",
+    "reset_password": "Reset Password",
+    "verify_otp": "Verify OTP",
+    "send_otp": "Send OTP",
+    "verify": "Verify",
+    "reset_password_btn": "Reset Password",
+    "enter_email_to_reset": "Enter your email to receive an OTP code",
+    "enter_otp_code": "Enter the 6-digit OTP code sent to your email",
+    "enter_new_password": "Enter your new password",
+    "placeholder_name": "Enter your full name",
+    "placeholder_email": "Enter your email",
+    "placeholder_phone": "Enter your phone number",
+    "placeholder_password": "Enter your password",
+    "placeholder_confirm_password": "Confirm your password"
+  },
+  "language": {
+    "toggle": "Toggle Language",
+    "switch_to": "العربية"
+  },
+  "hero": {
+    "title": "Helal Al Jabri – Trainer & Investment Expert",
+    "subtitle": "Experience that empowers your financial and professional growth",
+    "description": "Helal Al Jabri is a certified trainer and investment expert empowering thousands to achieve financial growth through innovative training and strategic insight",
+    "get_started": "Get Started",
+    "learn_more": "Download certificates"
+  },
+  "about": {
+    "title": "About Hilal Al Jaberi",
+    "description": "He is an entrepreneur and internationally certified financial analyst from the British Academy and locally accredited by the Emirates Training Institute. SMT is internationally accredited (USA, UK) in the field of training. Since 2017, he has specialized in investment and stock trading, and in startup and medium-sized enterprises. He has extensive experience in providing training and developing individuals. He has experience in successful businesses, including providing consulting to support projects and finding income-generating opportunities. Thanks to his success stories, he helps individuals and organizations build investment strategies and achieve financial sustainability.",
+    "why_title": "Why Hilal Al Jabri?",
+    "goals_title": "His Goals",
+    "goals_description": "Hilal seeks to provide effective training programs that aim to enable trainees to acquire the skills and knowledge necessary to achieve success in their fields, with a focus on innovation and continuous development.",
+    "message_title": "His Message to the World",
+    "message_description": "\"Knowledge is power, and participating in the development of others is my message. I believe that investing in people is the greatest investment, and I always strive to help others discover their latent potential and achieve their goals.\"",
+    "passion_title": "Passion for Developing People",
+    "passion_description": "Hilal is committed to developing individuals and communities through his expertise in training and development. He believes in empowering individuals with practical skills and knowledge that help them improve their lives and achieve their dreams."
+  },
+  "story": {
+    "title": "Success Stories",
+    "mobile": "Hilal Al-Jabri began his career as a police officer, gaining strong experience in investigations and field work. After years of excellence, he pursued training to share his expertise.",
+    "desktop": "Hilal Al-Jabri began his career as a police officer, where he gained solid experience in criminal investigations and field work. After years of excellence in this field, Hilal felt a passion to develop his skills and share his expertise with others. He decided to pursue a career in training. Through his dedication to continuous learning and the acquisition of numerous locally and internationally accredited certifications, Hilal has become a recognized trainer, specializing in trading, crisis management, and self-development. Hilal has established a strong reputation for delivering outstanding training courses, helping numerous individuals achieve their goals and develop their capabilities."
+  },
+  "adaptation": {
+    "quote": "Success is not just a goal, but a journey filled with challenges and learning. I always strive to help others discover and develop their potential to achieve lasting success.",
+    "author": "— Hilal Al-Jabri"
+  },
+  "certificates": {
+    "title": "Certificates & Achievements",
+    "description": "A selection of certifications and recognitions that highlight the journey, expertise, and dedication to continuous growth."
+  },
+  "contact": {
+    "title": "Contact Us",
+    "description": "We'd love to hear from you. Send a message and we'll reply as soon as possible.",
+    "email": "Email",
+    "phone": "Phone",
+    "location": "Location",
+    "form": {
+      "full_name": "Full Name",
+      "email": "Email",
+      "subject": "Subject",
+      "message": "Message",
+      "name_placeholder": "Your name",
+      "email_placeholder": "you@example.com",
+      "subject_placeholder": "How can we help?",
+      "message_placeholder": "Write your message...",
+      "send_button": "Send Message"
+    }
+  },
+  "contact_page": {
+    "title": "Get In Touch",
+    "description": "Ready to start your trading journey? Contact us today and let's discuss how we can help you achieve your financial goals.",
+    "info_title": "Contact Information",
+    "info_description": "We're here to help you succeed. Reach out to us through any of the channels below.",
+    "email": "Email Address",
+    "phone": "Phone Number",
+    "location": "Office Location",
+    "form": {
+      "title": "Send us a Message",
+      "full_name": "Full Name",
+      "email": "Email Address",
+      "subject": "Subject",
+      "message": "Your Message",
+      "name_placeholder": "Enter your full name",
+      "email_placeholder": "Enter your email address",
+      "subject_placeholder": "What can we help you with?",
+      "message_placeholder": "Tell us about your goals and how we can help...",
+      "send_button": "Send Message"
+    }
+  },
+  "programs": {
+    "title": "Programs",
+    "description": "Browse my professional training workshops and courses designed to enhance your skills, mindset, and career growth.",
+    "enroll_button": "Enroll Now",
+    "programs": [
+      {
+        "title": "Turning Personal Identities into Additional Income",
+        "subtitle": "Transform your passions into profit",
+        "description": "Learn how to identify your unique skills and turn them into additional income sources that align with your personal brand."
+      },
+      {
+        "title": "Key Principles of Investment",
+        "subtitle": "Master the foundations of smart investing",
+        "description": "Understand how to build long-term wealth through intelligent investment strategies and market insights."
+      },
+      {
+        "title": "Developing Start-up Projects",
+        "subtitle": "From idea to sustainable business",
+        "description": "Explore how to launch, develop, and scale start-ups with practical strategies and proven business models."
+      },
+      {
+        "title": "Public Speaking with Confidence",
+        "subtitle": "Speak, inspire, and lead",
+        "description": "Build confidence, enhance your speaking presence, and engage your audience with powerful communication techniques."
+      },
+      {
+        "title": "Building Reputation and Branding",
+        "subtitle": "Create a brand that speaks for you",
+        "description": "Learn how to build a strong reputation and personal brand that attracts opportunities and builds trust."
+      },
+      {
+        "title": "Getting Out of Debt and Investing from Salary",
+        "subtitle": "Smart money management for real freedom",
+        "description": "Discover step-by-step methods to manage debt, save effectively, and start investing wisely from your monthly income."
+      },
+      {
+        "title": "Finding Additional Income Sources",
+        "subtitle": "Expand your earning potential",
+        "description": "Explore creative and sustainable ways to generate multiple income streams that support your financial goals."
+      }
+    ]
+  },
+  "calculator": {
+    "title": "Position Size Calculator",
+    "description": "Calculate the optimal position size for each trade based on your account balance, risk percentage, and stop loss. Manage your capital professionally.",
+    "account_currency": "Account Currency",
+    "account_balance": "Account Balance",
+    "currency_pair": "Currency Pair",
+    "risk_percentage": "Risk Percentage",
+    "stop_loss": "Stop Loss",
+    "contract_size": "Contract Size",
+    "results": "Results",
+    "risk_amount": "Risk Amount",
+    "position_size": "Position Size",
+    "contract_units": "Contract Units",
+    "standard_contract_size": "Standard contract size",
+    "auto_filled": "Auto-filled based on selected pair",
+    "reset": "Reset",
+    "note": "Note",
+    "auto_update": "Calculations update automatically as you enter values.",
+    "note_text": "This calculation assumes a standard pip value of 10 units per lot. Adjust your contract size accordingly.",
+    "fill_fields": "Fill in the required fields to see results",
+    "pips": "Pips",
+    "lots": "Lots",
+    "units": "units",
+    "placeholder_balance": "Enter account balance",
+    "placeholder_risk": "e.g., 2",
+    "placeholder_stop_loss": "e.g., 50",
+    "placeholder_contract": "Default"
+  },
+  "news": {
+    "title": "Latest News & Updates",
+    "description": "Stay updated with our latest training programs, success stories, and trading insights.",
+    "read_more": "Read More",
+    "loading": "Loading news...",
+    "no_news": "No news available at the moment.",
+    "of": "of"
+  },
+  "courses": {
+    "title": "Training Courses",
+    "description": "Discover a wide range of specialized training courses designed to develop your skills and build your professional future.",
+    "enroll_button": "Enroll Now",
+    "category": "Course",
+    "reviews": "reviews",
+    "loading": "Loading courses...",
+    "no_courses": "No courses available at the moment.",
+    "free": "Free",
+    "currency": {
+      "aed": "AED",
+      "usd": "USD"
+    },
+    "courses": [
+      {
+        "title": "Trading and Risk Management",
+        "price": "5,000 AED",
+        "description": "Learn the fundamentals of successful trading and professional risk management. A comprehensive course covering technical and fundamental analysis and capital management strategies."
+      },
+      {
+        "title": "Entrepreneurship and Investment",
+        "price": "4,500 AED",
+        "description": "Discover how to create and manage successful investment businesses. Learn the fundamentals of entrepreneurship from planning to execution."
+      },
+      {
+        "title": "Leadership and Communication",
+        "price": "3,500 AED",
+        "description": "Develop your leadership and effective communication skills. Learn how to influence and inspire and achieve results through authentic leadership."
+      },
+      {
+        "title": "Digital Marketing and Brand Building",
+        "price": "4,000 AED",
+        "description": "Master the art of digital marketing and building a strong brand. Learn content strategies and engagement on digital platforms."
+      },
+      {
+        "title": "Project Management and Strategic Planning",
+        "price": "4,200 AED",
+        "description": "Develop your project management skills and successful strategy planning. Learn how to achieve your goals in an organized and effective way."
+      },
+      {
+        "title": "Personal Finance and Savings",
+        "price": "3,200 AED",
+        "description": "Learn how to manage your personal finances wisely. Discover smart savings and investment strategies to build sustainable wealth."
+      },
+      {
+        "title": "Sales and Direct Marketing",
+        "price": "3,800 AED",
+        "description": "Master the art of sales and influencing customers. Learn advanced persuasion techniques and successfully close deals."
+      },
+      {
+        "title": "Professional and Personal Development",
+        "price": "3,000 AED",
+        "description": "Invest in yourself and develop your personal and professional skills. A comprehensive course covering all aspects of personal and self-growth."
+      }
+    ],
+    "success": {
+      "title": "Congratulations!",
+      "subtitle": "You've Successfully Enrolled in the Course",
+      "message": "Your enrollment has been confirmed successfully. You now have full access to the course materials and can start learning right away. Check your email for course details and instructions.",
+      "back_courses": "View All Courses",
+      "back_home": "Back to Home"
+    },
+    "my_courses": {
+      "title": "My Enrolled Courses",
+      "description": "Browse your enrolled courses and start learning now",
+      "enrolled_at": "Enrolled",
+      "badge": "Enrolled",
+      "no_courses_title": "No Enrolled Courses",
+      "no_courses_description": "Start your learning journey by enrolling in our courses"
+    }
+  },
+  "videos": {
+    "title": "Videos",
+    "loading": "Loading videos...",
+    "no_videos": "No videos available at the moment.",
+    "of": "of"
+  },
+  "consultation": {
+    "title": "Private Consultation",
+    "subtitle": "Get personalized expert guidance for your financial journey",
+    "description": "Book a one-on-one consultation with our expert trainer to discuss your investment goals, explore opportunities, and receive tailored advice for your unique situation.",
+    "form": {
+      "title": "Book Your Consultation",
+      "full_name": "Full Name",
+      "email": "Email Address",
+      "phone": "Phone Number",
+      "name_placeholder": "Enter your full name",
+      "email_placeholder": "Enter your email address",
+      "phone_placeholder": "Enter your phone number",
+      "submit_button": "Proceed to Payment",
+      "loading": "Processing...",
+      "success": "Consultation booked successfully!",
+      "error": "Failed to book consultation. Please try again."
+    },
+    "why_title": "Why Choose Private Consultation?",
+    "benefits": [
+      {
+        "title": "Personalized Strategy",
+        "description": "Get advice tailored specifically to your financial situation and goals."
+      },
+      {
+        "title": "Expert Guidance",
+        "description": "Learn from an experienced trainer with proven success in investment and trading."
+      },
+      {
+        "title": "Flexible Schedule",
+        "description": "Choose a time that works best for you and your busy schedule."
+      },
+      {
+        "title": "Focused Attention",
+        "description": "Receive undivided attention to address your specific questions and concerns."
+      }
+    ],
+    "success": {
+      "title": "Thank You!",
+      "subtitle": "Your consultation request has been received",
+      "message": "Your consultation request has successfully arrived to Helal. He will contact you as soon as possible to schedule your private consultation.",
+      "back_home": "Back to Home"
+    }
+  },
+  "profile": {
+    "title": "Profile Settings",
+    "description": "Manage your account information and preferences",
+    "loading": "Loading profile...",
+    "active_member": "Active Member",
+    "my_courses": "My Courses",
+    "personal_information": "Personal Information",
+    "email_address": "Email Address",
+    "phone_number": "Phone Number",
+    "not_provided": "Not provided",
+    "change_password": "Change Password",
+    "current_password_label": "Current password",
+    "current_password_placeholder": "Enter your current password",
+    "current_password_required": "Please enter your current password",
+    "new_password_label": "New password",
+    "new_password_placeholder": "Enter your new password",
+    "new_password_required": "Please enter a new password",
+    "confirm_password_label": "Confirm new password",
+    "confirm_password_placeholder": "Confirm your new password",
+    "confirm_password_required": "Please confirm the new password",
+    "passwords_not_match": "Passwords do not match",
+    "password_updated_success": "Password updated successfully.",
+    "password_update_failed": "Failed to update password.",
+    "updating": "Updating...",
+    "update_password": "Update Password",
+    "image_updated": "Profile image updated",
+    "image_upload_failed": "Failed to upload image"
+  }
+}

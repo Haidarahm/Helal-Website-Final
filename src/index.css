@@ -1,0 +1,610 @@
+@import "tailwindcss";
+
+/* Zain font family - all weights and styles */
+@font-face {
+    font-family: "Zain";
+    src: url("./assets/fonts/Zain-ExtraLight.ttf") format("truetype");
+    font-weight: 200;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Zain";
+    src: url("./assets/fonts/Zain-Light.ttf") format("truetype");
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Zain";
+    src: url("./assets/fonts/Zain-LightItalic.ttf") format("truetype");
+    font-weight: 300;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Zain";
+    src: url("./assets/fonts/Zain-Regular.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Zain";
+    src: url("./assets/fonts/Zain-Italic.ttf") format("truetype");
+    font-weight: 400;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Zain";
+    src: url("./assets/fonts/Zain-Bold.ttf") format("truetype");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Zain";
+    src: url("./assets/fonts/Zain-ExtraBold.ttf") format("truetype");
+    font-weight: 800;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Zain";
+    src: url("./assets/fonts/Zain-Black.ttf") format("truetype");
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Cairo font - variable weight */
+@font-face {
+    font-family: "Cairo";
+    src: url("./assets/fonts/Cairo-VariableFont_slnt,wght.ttf") format("truetype");
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@theme {
+    --color-primary: #f9943c;       /* Gold */
+    --color-primary-dark: #ae4607;  /* Deep Gold */
+    --color-primary-light: #EED9A3; /* Light Gold */
+  
+    --color-secondary: #1A1A1A;     /* Dark background */
+    --color-secondary-light: #2C2C2C;
+  
+    --color-accent: #FFFFFF;        /* White */
+    --color-accent-muted: #F7F7F7;  /* Light gray */
+  
+    --color-text-primary: #111111;  
+    --color-text-secondary: #555555;
+    --color-text-light: #9CA3AF;
+
+  
+    --font-family-cairo: "Cairo", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  }
+
+/* Utility classes to force font families when toggled by LanguageContext */
+.font-cairo {
+  font-family: var(--font-family-cairo);
+}
+  .swiper-pagination-bullet{
+    background: #ae4607 !important;
+  }
+
+  /* Pricing Modal Styles */
+  .pricing-modal .ant-modal-content {
+    background-color: var(--color-secondary) !important;
+    border-radius: 16px !important;
+  }
+
+  .pricing-modal .ant-modal-header {
+    background-color: var(--color-secondary) !important;
+    border-bottom: 1px solid var(--color-secondary-light) !important;
+    border-radius: 16px 16px 0 0 !important;
+  }
+
+  .pricing-modal .ant-modal-title {
+    color: var(--color-accent) !important;
+  }
+
+  .pricing-modal .ant-modal-close {
+    color: var(--color-accent) !important;
+  }
+
+  .pricing-modal .ant-modal-close:hover {
+    color: var(--color-primary) !important;
+  }
+
+  .pricing-modal .ant-modal-body {
+    background-color: var(--color-secondary) !important;
+    color: var(--color-accent) !important;
+  }
+
+  /* Enhanced Pricing Card Styles */
+  .pricing-card {
+    position: relative;
+    background: linear-gradient(135deg, var(--color-secondary-light) 0%, var(--color-secondary) 100%);
+    border: 1px solid var(--color-secondary-light);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .pricing-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(249, 148, 60, 0.15);
+    border-color: var(--color-primary);
+  }
+
+  .pricing-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--color-primary), var(--color-primary-dark));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .pricing-card:hover::before {
+    opacity: 1;
+  }
+
+  .pricing-button {
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .pricing-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+  }
+
+  .pricing-button:hover::before {
+    left: 100%;
+  }
+
+  .category-badge {
+    background: linear-gradient(135deg, var(--color-primary)/10 0%, var(--color-primary)/5 100%);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--color-primary)/20;
+  }
+
+  /* Modal Animation */
+  .pricing-modal .ant-modal-content {
+    animation: modalSlideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  @keyframes modalSlideIn {
+    from {
+      opacity: 0;
+      transform: scale(0.9) translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  }
+
+  /* Card Stagger Animation */
+  .pricing-card {
+    animation: cardFadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  .pricing-card:nth-child(1) { animation-delay: 0.1s; }
+  .pricing-card:nth-child(2) { animation-delay: 0.2s; }
+  .pricing-card:nth-child(3) { animation-delay: 0.3s; }
+  .pricing-card:nth-child(4) { animation-delay: 0.4s; }
+  .pricing-card:nth-child(5) { animation-delay: 0.5s; }
+  .pricing-card:nth-child(6) { animation-delay: 0.6s; }
+  .pricing-card:nth-child(7) { animation-delay: 0.7s; }
+  .pricing-card:nth-child(8) { animation-delay: 0.8s; }
+
+  @keyframes cardFadeIn {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Pricing Section Specific Styles */
+  .pricing-section .pricing-card {
+    animation: cardFadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  .pricing-section .pricing-card:nth-child(1) { animation-delay: 0.2s; }
+  .pricing-section .pricing-card:nth-child(2) { animation-delay: 0.3s; }
+  .pricing-section .pricing-card:nth-child(3) { animation-delay: 0.4s; }
+  .pricing-section .pricing-card:nth-child(4) { animation-delay: 0.5s; }
+  .pricing-section .pricing-card:nth-child(5) { animation-delay: 0.6s; }
+  .pricing-section .pricing-card:nth-child(6) { animation-delay: 0.7s; }
+  .pricing-section .pricing-card:nth-child(7) { animation-delay: 0.8s; }
+  .pricing-section .pricing-card:nth-child(8) { animation-delay: 0.9s; }
+
+  /* Pricing Section Header Animation */
+  .pricing-section .text-center {
+    animation: headerFadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  @keyframes headerFadeIn {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Pricing Section Background Enhancement */
+  .pricing-section {
+    position: relative;
+  }
+
+  .pricing-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 20% 80%, var(--color-primary)/5 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, var(--color-primary)/3 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .pricing-section > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Section Divider Styles */
+  .pricing-section section {
+    position: relative;
+  }
+
+  .pricing-section section:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--color-primary)/30, transparent);
+  }
+
+  /* Enhanced Category Badge */
+  .category-badge {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .category-badge::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(249, 148, 60, 0.1), transparent);
+    transition: left 0.6s;
+  }
+
+  .category-badge:hover::before {
+    left: 100%;
+  }
+
+  /* Section Header Animation */
+  .pricing-section section {
+    animation: sectionFadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  .pricing-section section:nth-child(1) { animation-delay: 0.1s; }
+  .pricing-section section:nth-child(2) { animation-delay: 0.3s; }
+  .pricing-section section:nth-child(3) { animation-delay: 0.5s; }
+  .pricing-section section:nth-child(4) { animation-delay: 0.7s; }
+
+  @keyframes sectionFadeIn {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Improved Card Spacing */
+  .pricing-section .grid {
+    gap: 2rem;
+  }
+
+  @media (min-width: 640px) {
+    .pricing-section .grid {
+      gap: 1.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .pricing-section .grid {
+      gap: 2rem;
+    }
+  }
+
+  /* Contact Section Styles */
+  .contact-card {
+    position: relative;
+    background: white;
+    border: 1px solid #f3f4f6;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .contact-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(249, 148, 60, 0.15);
+    border-color: var(--color-primary);
+  }
+
+  .contact-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--color-primary), var(--color-primary-dark));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .contact-card:hover::before {
+    opacity: 1;
+  }
+
+  /* Contact Section Animation */
+  .contact-card {
+    animation: contactCardFadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  .contact-card:nth-child(1) { animation-delay: 0.1s; }
+  .contact-card:nth-child(2) { animation-delay: 0.3s; }
+  .contact-card:nth-child(3) { animation-delay: 0.5s; }
+
+  @keyframes contactCardFadeIn {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Contact Page Styles */
+  .contact-info-card,
+  .contact-form-card {
+    position: relative;
+    background: white;
+    border: 1px solid #f3f4f6;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .contact-info-card:hover,
+  .contact-form-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(249, 148, 60, 0.15);
+    border-color: var(--color-primary);
+  }
+
+  .contact-info-card::before,
+  .contact-form-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--color-primary), var(--color-primary-dark));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .contact-info-card:hover::before,
+  .contact-form-card:hover::before {
+    opacity: 1;
+  }
+
+  /* Contact Page Animation */
+  .contact-info-card,
+  .contact-form-card {
+    animation: contactPageCardFadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  .contact-info-card { animation-delay: 0.2s; }
+  .contact-form-card { animation-delay: 0.4s; }
+
+  @keyframes contactPageCardFadeIn {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+
+
+  /* Floating Buttons Styles */
+  .ant-float-btn {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  }
+
+  .ant-float-btn:hover {
+    transform: scale(1.05) !important;
+  }
+
+  .ant-float-btn-group .ant-float-btn {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+  }
+
+  .ant-float-btn-group .ant-float-btn:hover {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25) !important;
+  }
+
+  /* Mobile responsive floating buttons */
+  @media (max-width: 768px) {
+    .ant-float-btn-group {
+      right: 16px !important;
+      bottom: 16px !important;
+    }
+  }
+  
+  /* Custom primary color for floating button group */
+  .custom-float-btn-group .ant-float-btn-primary {
+    background: var(--color-primary) !important;
+    border-color: var(--color-primary) !important;
+    color: white !important;
+  }
+
+  .custom-float-btn-group .ant-float-btn-primary:hover {
+    background: var(--color-primary-dark) !important;
+    border-color: var(--color-primary-dark) !important;
+    box-shadow: 0 4px 15px rgba(249, 148, 60, 0.4) !important;
+  }
+
+  /* Toggle button icon - always white */
+  .custom-float-btn-group .ant-float-btn-primary svg {
+    color: white !important;
+    transition: all 0.3s ease !important;
+  }
+
+  .custom-float-btn-group .ant-float-btn-primary:hover svg {
+    color: white !important;
+  }
+
+  /* WhatsApp button specific styles */
+  .ant-float-btn[data-whatsapp="true"] {
+    background: #25D366 !important;
+    border-color: #25D366 !important;
+  }
+
+  .ant-float-btn[data-whatsapp="true"]:hover {
+    background: #20BA5A !important;
+    border-color: #20BA5A !important;
+    box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4) !important;
+  }
+
+  .ant-float-btn[data-whatsapp="true"] svg {
+    color: #000000 !important;
+    transition: color 0.3s ease !important;
+  }
+
+  .ant-float-btn[data-whatsapp="true"]:hover svg {
+    color: white !important;
+  }
+
+  /* Private Consultation button specific styles */
+  .ant-float-btn[data-consultation="true"] {
+    background: var(--color-primary) !important;
+    border-color: var(--color-primary) !important;
+  }
+
+  .ant-float-btn[data-consultation="true"]:hover {
+    background: var(--color-primary-dark) !important;
+    border-color: var(--color-primary-dark) !important;
+    box-shadow: 0 4px 15px rgba(249, 148, 60, 0.4) !important;
+  }
+
+  .ant-float-btn[data-consultation="true"] svg {
+    color: #000000 !important;
+    transition: color 0.3s ease !important;
+  }
+
+  .ant-float-btn[data-consultation="true"]:hover svg {
+    color: white !important;
+  }
+
+  /* Calculator button specific styles */
+  .ant-float-btn[data-calculator="true"] {
+    background: var(--color-primary-dark) !important;
+    border-color: var(--color-primary-dark) !important;
+  }
+
+  .ant-float-btn[data-calculator="true"]:hover {
+    background: #8b3905 !important;
+    border-color: #8b3905 !important;
+    box-shadow: 0 4px 15px rgba(174, 70, 7, 0.4) !important;
+  }
+
+  .ant-float-btn[data-calculator="true"] svg {
+    color: #000000 !important;
+    transition: color 0.3s ease !important;
+  }
+
+  .ant-float-btn[data-calculator="true"]:hover svg {
+    color: white !important;
+  }
+
+  /* Calculator Input Styles */
+  .calculator-input .ant-input-number,
+  .calculator-input .ant-input-number-input {
+    transition: all 0.3s ease !important;
+  }
+
+  .calculator-input .ant-input-number:focus-within {
+    border-color: var(--color-primary) !important;
+    box-shadow: 0 0 0 2px rgba(249, 148, 60, 0.2) !important;
+  }
+
+  .calculator-select .ant-select-selector {
+    transition: all 0.3s ease !important;
+    border-radius: 8px !important;
+  }
+
+  .calculator-select .ant-select-selector:hover {
+    border-color: var(--color-primary) !important;
+  }
+
+  .calculator-select.ant-select-focused .ant-select-selector {
+    border-color: var(--color-primary) !important;
+    box-shadow: 0 0 0 2px rgba(249, 148, 60, 0.2) !important;
+  }
+
+
+  /* Hide Scrollbar */
+  .hide-scrollbar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;  /* Chrome, Safari and Opera */
+  }
+
+  /* Line clamp utility for description */
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }

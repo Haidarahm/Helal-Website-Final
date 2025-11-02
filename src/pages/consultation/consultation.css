@@ -1,0 +1,102 @@
+  /* Consultation Modal Styles */
+  .consultation-modal .ant-modal-header {
+    background: white !important;
+    border-bottom: 2px solid var(--color-primary)/20 !important;
+  }
+
+  .consultation-modal .ant-modal-title {
+    color: var(--color-primary) !important;
+  }
+
+  .consultation-modal .ant-modal-close {
+    color: var(--color-text-primary) !important;
+  }
+
+  .consultation-modal .ant-modal-close:hover {
+    color: var(--color-primary) !important;
+  }
+
+  .consultation-modal .ant-modal-body {
+    background-color: white !important;
+    color: var(--color-text-primary) !important;
+  }
+
+  .consultation-modal .ant-input-affix-wrapper,
+  .consultation-modal .ant-input {
+    border-radius: 8px !important;
+    border-color: #d9d9d9 !important;
+    transition: all 0.3s ease !important;
+  }
+
+  .consultation-modal .ant-input-affix-wrapper:hover,
+  .consultation-modal .ant-input:hover {
+    border-color: var(--color-primary) !important;
+  }
+
+  .consultation-modal .ant-input-affix-wrapper-focused,
+  .consultation-modal .ant-input-focused,
+  .consultation-modal .ant-input-affix-wrapper-focus-within {
+    border-color: var(--color-primary) !important;
+    box-shadow: 0 0 0 2px rgba(249, 148, 60, 0.2) !important;
+  }
+
+  .consultation-modal .ant-btn-primary {
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%) !important;
+    border: none !important;
+    font-weight: 600 !important;
+  }
+
+  .consultation-modal .ant-btn-primary:hover {
+    background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%) !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(249, 148, 60, 0.3) !important;
+  }
+
+  /* Consultation Success Page Styles */
+  @keyframes successIconBounce {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-20px);
+    }
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .consultation-success-icon {
+    animation: successIconBounce 2s ease-in-out infinite;
+  }
+
+  .consultation-success-content {
+    animation: fadeInUp 0.8s ease-out;
+  }
+
+  .consultation-success-content h1 {
+    animation: fadeInUp 0.8s ease-out 0.2s both;
+  }
+
+  .consultation-success-content h2 {
+    animation: fadeInUp 0.8s ease-out 0.4s both;
+  }
+
+  .consultation-success-content .message-box {
+    animation: fadeInUp 0.8s ease-out 0.6s both;
+  }
+
+  .consultation-success-content .contact-info {
+    animation: fadeInUp 0.8s ease-out 0.8s both;
+  }
+
+  .consultation-success-content button {
+    animation: fadeInUp 0.8s ease-out 1s both;
+  }

@@ -1,0 +1,77 @@
+/* Auth Form Input Placeholders */
+.auth-container input::placeholder {
+  color: rgba(156, 163, 175, 0.8); /* gray-400 with 80% opacity */
+  opacity: 1; /* Ensure opacity works in all browsers */
+}
+
+.auth-container input::-webkit-input-placeholder {
+  color: rgba(156, 163, 175, 0.8);
+  opacity: 1;
+}
+
+.auth-container input::-moz-placeholder {
+  color: rgba(156, 163, 175, 0.8);
+  opacity: 1;
+}
+
+.auth-container input:-ms-input-placeholder {
+  color: rgba(156, 163, 175, 0.8);
+  opacity: 1;
+}
+
+.auth-container input::-ms-input-placeholder {
+  color: rgba(156, 163, 175, 0.8);
+  opacity: 1;
+}
+
+/* Focus states for inputs */
+.auth-container input:focus::placeholder {
+  opacity: 0.7;
+}
+
+/* Input styling */
+.auth-container input {
+  transition: all 0.3s ease;
+}
+
+.auth-container input:focus {
+  outline: none;
+}
+
+/* Custom Auth Button Styling - Using Website's Color Scheme */
+.custom-auth-btn {
+  background: #f9943c !important;
+  border: none !important;
+  color: white !important;
+  font-weight: 600 !important;
+}
+
+.custom-auth-btn:hover,
+.custom-auth-btn:focus {
+  background: #ae4607 !important;
+  color: white !important;
+  box-shadow: 0 4px 12px rgba(249, 148, 60, 0.3) !important;
+}
+
+.custom-auth-btn:active {
+  background: #ae4607 !important;
+}
+
+.custom-auth-btn.ant-btn-loading {
+  background: #f9943c !important;
+  opacity: 0.7;
+}
+
+/* Ant Design Input Focus Colors - Simple and Clean */
+.auth-container .ant-input:focus,
+.auth-container .ant-input-focused,
+.auth-container .ant-input-password .ant-input:focus,
+.auth-container .ant-input-password .ant-input-focused {
+  border-color: #f9943c !important;
+}
+
+.auth-container .ant-input:hover,
+.auth-container .ant-input-password .ant-input:hover {
+  border-color: #f9943c !important;
+}
+

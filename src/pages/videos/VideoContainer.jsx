@@ -1,0 +1,130 @@
+import { useRef, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { useLanguage } from "../../context/LanguageContext";
+import { useVideosStore } from "../../store";
+
+export const VideoContainer = () => {
+  const { videoId, id: courseId } = useParams();
+  const { t, i18n } = useTranslation();
+  const { isRTL } = useLanguage();
+  const videoRef = useRef(null);
+  const { currentVideo, isLoading, fetchVideo } = useVideosStore();
+
+  useEffect(() => {
+    if (videoId) {
+      window.scrollTo(0, 0);
+      fetchVideo(videoId, i18n.language);
+    }
+  }, [videoId, i18n.language, fetchVideo]);
+
+  // Prevent right-click and context menu on video
+  useEffect(() => {
+    const handleContextMenu = (e) => {
+      e.preventDefault();
+      return false;
+    };
+
+    const video = videoRef.current;
+    if (video) {
+      video.addEventListener("contextmenu", handleContextMenu);
+      return () => video.removeEventListener("contextmenu", handleContextMenu);
+    }
+  }, [currentVideo]);
+
+  // Determine video source
+  const videoUrl = currentVideo?.youtube_path || currentVideo?.path;
+
+  return (
+    <div
+      className="min-h-screen bg-white pt-20 pb-8 md:pt-24 md:pb-12 lg:py-20 px-4 md:px-8 lg:px-20"
+      dir={isRTL ? "rtl" : "ltr"}
+    >
+      <div className="max-w-7xl mx-auto">
+        {/* Loading State */}
+        {isLoading && (
+          <div className="flex justify-center items-center py-40">
+            <div className="flex flex-col items-center gap-4">
+              <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+              <p className="text-text-secondary">{t("courses.loading")}</p>
+            </div>
+          </div>
+        )}
+
+        {/* Video Container with Sidebar */}
+        {!isLoading && currentVideo && (
+          <div className="flex flex-col lg:flex-row gap-4 md:gap-6">
+            {/* Video Section */}
+            <div className="relative bg-black rounded-lg md:rounded-xl overflow-hidden shadow-xl md:shadow-2xl w-full lg:flex-1 order-2 lg:order-1">
+              {/* YouTube Video */}
+              {currentVideo?.youtube_path ? (
+                <div className="w-full aspect-video">
+                  <iframe
+                    src={currentVideo.youtube_path}
+                    className="w-full h-full"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    title={currentVideo.title}
+                  />
+                </div>
+              ) : (
+                /* Regular Video Player */
+                <video
+                  ref={videoRef}
+                  src={videoUrl}
+                  className="w-full aspect-video object-cover"
+                  controls
+                  controlsList="nodownload"
+                />
+              )}
+
+              {/* Protection Overlay */}
+              <div className="absolute inset-0 pointer-events-none" />
+            </div>
+
+            {/* Sidebar */}
+            <div className="bg-white border border-gray-200 rounded-lg md:rounded-xl shadow-lg w-full lg:w-80 xl:w-96 order-1 lg:order-2">
+              <div className="p-4 md:p-6">
+                {/* Header */}
+                <h3 className="text-base md:text-lg font-bold text-gray-900 mb-3 md:mb-4">
+                  {isRTL ? "تفاصيل الفيديو" : "Video Details"}
+                </h3>
+
+                {/* Title */}
+                <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-2 md:mb-3">
+                  {currentVideo.title}
+                </h2>
+
+                {/* Subtitle */}
+                {currentVideo.subTitle && (
+                  <p className="text-primary font-semibold mb-3 md:mb-4 text-sm md:text-base">
+                    {currentVideo.subTitle}
+                  </p>
+                )}
+
+                {/* Description */}
+                <div className="border-t border-gray-200 pt-3 md:pt-4">
+                  <h4 className="text-xs md:text-sm font-semibold text-gray-700 mb-2">
+                    {isRTL ? "الوصف" : "Description"}
+                  </h4>
+                  <p className="text-gray-600 leading-relaxed text-sm md:text-base">
+                    {currentVideo.description}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Empty State */}
+        {!isLoading && !currentVideo && (
+          <div className="text-center py-40">
+            <p className="text-gray-500 text-lg">Video not found</p>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default VideoContainer;

@@ -1,0 +1,203 @@
+/* Modern Courses Card Styles */
+.courses-card-modern {
+  position: relative;
+  background: white;
+  border: 1px solid #f3f4f6;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+}
+
+.courses-card-modern:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 60px rgba(249, 148, 60, 0.15);
+  border-color: #f9943c;
+}
+
+/* Card Stagger Animation */
+.courses-card-modern {
+  animation: coursesCardFadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.courses-card-modern:nth-child(1) { animation-delay: 0.1s; }
+.courses-card-modern:nth-child(2) { animation-delay: 0.2s; }
+.courses-card-modern:nth-child(3) { animation-delay: 0.3s; }
+.courses-card-modern:nth-child(4) { animation-delay: 0.4s; }
+.courses-card-modern:nth-child(5) { animation-delay: 0.5s; }
+.courses-card-modern:nth-child(6) { animation-delay: 0.6s; }
+.courses-card-modern:nth-child(7) { animation-delay: 0.7s; }
+.courses-card-modern:nth-child(8) { animation-delay: 0.8s; }
+
+@keyframes coursesCardFadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Line clamp utility for description */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Enhanced hover effect for cards */
+.courses-card-modern img {
+  will-change: transform;
+}
+
+/* Price Badge Pulse Animation */
+.courses-card-modern:hover .absolute.top-4.left-4 {
+  animation: pricePulse 0.6s ease-in-out;
+}
+
+@keyframes pricePulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+/* Smooth button icon animation */
+.courses-card-modern button svg {
+  transition: transform 0.3s ease;
+}
+
+.courses-card-modern button:hover svg {
+  transform: translateX(4px);
+}
+
+/* Glow effect on hover */
+.courses-card-modern::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 1rem;
+  padding: 2px;
+  background: linear-gradient(135deg, #f9943c, #ae4607);
+  -webkit-mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.courses-card-modern:hover::before {
+  opacity: 0.5;
+}
+
+/* Course Success Page Styles */
+@keyframes successIconBounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.course-success-icon {
+  animation: successIconBounce 2s ease-in-out infinite;
+}
+
+.course-success-content {
+  animation: fadeInUp 0.8s ease-out;
+}
+
+.course-success-content h1 {
+  animation: fadeInUp 0.8s ease-out 0.2s both;
+}
+
+.course-success-content h2 {
+  animation: fadeInUp 0.8s ease-out 0.4s both;
+}
+
+.course-success-content .message-box {
+  animation: fadeInUp 0.8s ease-out 0.6s both;
+}
+
+.course-success-content .contact-info {
+  animation: fadeInUp 0.8s ease-out 0.8s both;
+}
+
+.course-success-content button {
+  animation: fadeInUp 0.8s ease-out 1s both;
+}
+
+/* My Courses Card Styles */
+.my-courses-card {
+  position: relative;
+  background: white;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+}
+
+.my-courses-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-primary-dark));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 10;
+}
+
+.my-courses-card:hover::before {
+  opacity: 1;
+}
+
+.my-courses-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(249, 148, 60, 0.15);
+}
+
+.my-courses-card .ant-card-body {
+  padding: 0;
+}
+
+/* Card Animation */
+.my-courses-card {
+  animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.my-courses-card:nth-child(1) { animation-delay: 0.1s; }
+.my-courses-card:nth-child(2) { animation-delay: 0.2s; }
+.my-courses-card:nth-child(3) { animation-delay: 0.3s; }
+.my-courses-card:nth-child(4) { animation-delay: 0.4s; }
+.my-courses-card:nth-child(5) { animation-delay: 0.5s; }
+.my-courses-card:nth-child(6) { animation-delay: 0.6s; }
+.my-courses-card:nth-child(7) { animation-delay: 0.7s; }
+.my-courses-card:nth-child(8) { animation-delay: 0.8s; }
+
