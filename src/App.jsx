@@ -43,6 +43,7 @@ const NewsDetails = lazy(() => import("./pages/NewsDetails.jsx"));
 const Profile = lazy(() => import("./pages/home/Profile.jsx"));
 const Videos = lazy(() => import("./pages/videos/Videos.jsx"));
 const VideoContainer = lazy(() => import("./pages/videos/VideoContainer.jsx"));
+const Meet = lazy(() => import("./pages/Meet.jsx"));
 
 // Simple Loader Component
 function Loader() {
@@ -99,8 +100,12 @@ function App() {
           <Route path="/news/:id" element={<NewsDetails />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/my-courses/:id" element={<Videos />} />
-          <Route path="/my-courses/:id/videos/:videoId" element={<VideoContainer />} />
+          <Route
+            path="/my-courses/:id/videos/:videoId"
+            element={<VideoContainer />}
+          />
           <Route path="/consultation" element={<Consultation />} />
+          <Route path="/meet/:url" element={<Meet />} />
         </Route>
         {/* Course Success */}
         <Route path="/course-success" element={<CourseSuccess />} />
