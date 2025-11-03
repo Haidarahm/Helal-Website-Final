@@ -65,10 +65,10 @@ export default function Hero() {
           data-aos-delay="300"
         >
           <button
-            onClick={() => navigate("/programs")}
+            onClick={() => navigate("/consultation")}
             className="group relative px-7 py-3 md:px-8 md:py-4 rounded-xl bg-primary text-secondary font-semibold shadow-md shadow-black/10 transition-all duration-300 hover:bg-primary-dark"
           >
-            <span className="relative z-10">{t("hero.get_started")}</span>
+            <span className="relative z-10">{t("hero.get_consultation")}</span>
             <span className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.25),rgba(255,255,255,0))]"></span>
           </button>
           <a
