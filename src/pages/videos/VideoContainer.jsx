@@ -1,14 +1,59 @@
 import { useRef, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "../../context/LanguageContext";
 import { useVideosStore } from "../../store";
+
+function getYouTubeEmbedUrl(input) {
+  if (!input) return null;
+  try {
+    const url = new URL(input);
+    const host = url.hostname.replace("www.", "");
+
+    // Already an embed URL
+    if (
+      host === "youtube.com" ||
+      host === "m.youtube.com" ||
+      host === "youtube-nocookie.com"
+    ) {
+      if (url.pathname.startsWith("/embed/")) {
+        return `${url.origin}${url.pathname}?rel=0&modestbranding=1&playsinline=1`;
+      }
+      // Watch URL
+      const videoId = url.searchParams.get("v");
+      if (videoId) {
+        return `https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1&playsinline=1`;
+      }
+      // Shorts URL
+      if (url.pathname.startsWith("/shorts/")) {
+        const id = url.pathname.split("/")[2];
+        if (id)
+          return `https://www.youtube.com/embed/${id}?rel=0&modestbranding=1&playsinline=1`;
+      }
+    }
+
+    // youtu.be short link
+    if (host === "youtu.be") {
+      const id = url.pathname.replace("/", "");
+      if (id)
+        return `https://www.youtube.com/embed/${id}?rel=0&modestbranding=1&playsinline=1`;
+    }
+  } catch {
+    // Not a URL; maybe it's a raw ID
+    const maybeId = String(input).trim();
+    if (maybeId) {
+      return `https://www.youtube.com/embed/${maybeId}?rel=0&modestbranding=1&playsinline=1`;
+    }
+  }
+  return null;
+}
 
 export const VideoContainer = () => {
   const { videoId, id: courseId } = useParams();
   const { t, i18n } = useTranslation();
   const { isRTL } = useLanguage();
   const videoRef = useRef(null);
+  const navigate = useNavigate();
   const { currentVideo, isLoading, fetchVideo } = useVideosStore();
 
   useEffect(() => {
@@ -34,6 +79,9 @@ export const VideoContainer = () => {
 
   // Determine video source
   const videoUrl = currentVideo?.youtube_path || currentVideo?.path;
+  const youTubeEmbedUrl = currentVideo?.youtube_path
+    ? getYouTubeEmbedUrl(currentVideo.youtube_path)
+    : null;
 
   return (
     <div
@@ -41,6 +89,17 @@ export const VideoContainer = () => {
       dir={isRTL ? "rtl" : "ltr"}
     >
       <div className="max-w-7xl mx-auto">
+        {/* Back to My Courses */}
+        <div className="mb-4 md:mb-6 flex justify-start">
+          <button
+            type="button"
+            onClick={() => navigate("/my-courses")}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-gray-200 text-gray-700 hover:bg-gray-50 transition"
+            aria-label={t("nav.menu.my_courses")}
+          >
+            {isRTL ? "العودة إلى دوراتي" : "Back to My Courses"}
+          </button>
+        </div>
         {/* Loading State */}
         {isLoading && (
           <div className="flex justify-center items-center py-40">
@@ -57,10 +116,10 @@ export const VideoContainer = () => {
             {/* Video Section */}
             <div className="relative bg-black rounded-lg md:rounded-xl overflow-hidden shadow-xl md:shadow-2xl w-full lg:flex-1 order-2 lg:order-1">
               {/* YouTube Video */}
-              {currentVideo?.youtube_path ? (
+              {youTubeEmbedUrl ? (
                 <div className="w-full aspect-video">
                   <iframe
-                    src={currentVideo.youtube_path}
+                    src={youTubeEmbedUrl}
                     className="w-full h-full"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowFullScreen

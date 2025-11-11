@@ -16,7 +16,7 @@ export default function CourseSuccess() {
   }, []);
 
   const handleBackCourses = () => {
-    navigate("/courses");
+    navigate("/my-courses");
   };
 
   const handleBackHome = () => {
