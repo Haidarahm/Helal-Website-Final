@@ -2,6 +2,7 @@ import { create } from "zustand";
 import {
   fetchOnlineCourses as fetchOnlineCoursesApi,
   fetchMyOnlineCourses as fetchMyOnlineCoursesApi,
+  getMyOnlineCourses as getMyOnlineCoursesApi,
   enrollOnlineCourse as enrollOnlineCourseApi,
 } from "../../apis/courses/onlineCourses.js";
 
@@ -115,6 +116,31 @@ const useOnlineCoursesStore = create((set) => ({
         "Failed to enroll in online course";
       set({ error: errorMessage, isLoading: false });
       throw error;
+    }
+  },
+
+  // Get my online courses (simplified version with only lang param)
+  getMyOnlineCourses: async (lang = "ar") => {
+    try {
+      set({ isMyCoursesLoading: true, error: null });
+      const response = await getMyOnlineCoursesApi(lang);
+
+      if (response?.status && Array.isArray(response?.data)) {
+        set({
+          myOnlineCourses: response.data,
+          myPagination: resolvePagination(response.pagination),
+          isMyCoursesLoading: false,
+        });
+        return response.data;
+      }
+      throw new Error("Invalid response format");
+    } catch (error) {
+      const errorMessage =
+        error?.response?.data?.message ||
+        error?.message ||
+        "Failed to fetch my online courses";
+      set({ error: errorMessage, isMyCoursesLoading: false });
+      return [];
     }
   },
 }));

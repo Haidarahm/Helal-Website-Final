@@ -31,6 +31,20 @@ export const fetchMyOnlineCourses = async (lang = "ar", pagination) => {
   }
 };
 
+// Get my online courses (simplified version with only lang param)
+export const getMyOnlineCourses = async (lang = "ar") => {
+  try {
+    const response = await api.get("/courses-online/get-my-courses", {
+      params: {
+        lang,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 // Enroll in an online course
 export const enrollOnlineCourse = async (
   courseOnlineId,

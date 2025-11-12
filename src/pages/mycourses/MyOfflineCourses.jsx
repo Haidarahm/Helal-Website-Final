@@ -1,37 +1,24 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { useLanguage } from "../context/LanguageContext";
-import { useCoursesStore } from "../store";
+import { useLanguage } from "../../context/LanguageContext";
+import { useCoursesStore } from "../../store";
 import { AiFillStar } from "react-icons/ai";
 import { Card } from "antd";
-
-export default function MyCourses() {
-  const { t, i18n } = useTranslation();
-  const { isRTL } = useLanguage();
-  const navigate = useNavigate();
-  const { enrolledCourses, isLoading, fetchEnrolledCourses } =
-    useCoursesStore();
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-    fetchEnrolledCourses(i18n.language);
-  }, [i18n.language, fetchEnrolledCourses]);
-
+const MyOfflineCourses = () => {
+    const { t, i18n } = useTranslation();
+    const { isRTL } = useLanguage();
+    const navigate = useNavigate();
+    const { enrolledCourses, isLoading, fetchEnrolledCourses } =
+      useCoursesStore();
+  
+    useEffect(() => {
+      window.scrollTo(0, 0);
+      fetchEnrolledCourses(i18n.language);
+    }, [i18n.language, fetchEnrolledCourses]);
   return (
-    <div className="w-full bg-white min-h-screen" dir={isRTL ? "rtl" : "ltr"}>
-      {/* Header Section */}
-      <section className="mt-20 px-6 md:px-20 py-12">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
-            <h1 className="text-4xl xl:text-5xl 2xl:text-6xl font-bold text-primary mb-4">
-              {t("courses.my_courses.title")}
-            </h1>
-            <p className="text-text-secondary text-lg xl:text-xl 2xl:text-2xl">
-              {t("courses.my_courses.description")}
-            </p>
-          </div>
-
+    <>
+     
           {/* Loading State */}
           {isLoading && (
             <div className="flex justify-center items-center py-20">
@@ -147,9 +134,9 @@ export default function MyCourses() {
                 {t("courses.my_courses.no_courses_description")}
               </p>
             </div>
-          )}
-        </div>
-      </section>
-    </div>
-  );
+          )}   
+    </>
+  )
 }
+
+export default MyOfflineCourses

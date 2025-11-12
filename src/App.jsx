@@ -9,7 +9,13 @@ const OnlineCourses = lazy(() => import("./pages/courses/OnlineCourses.jsx"));
 const OfflineCourses = lazy(() => import("./pages/courses/OfflineCourses.jsx"));
 const PrivateCourses = lazy(() => import("./pages/courses/PrivateCourses.jsx"));
 const CourseSuccess = lazy(() => import("./pages/courses/CourseSuccess.jsx"));
-const MyCourses = lazy(() => import("./pages/MyCourses.jsx"));
+const MyCourses = lazy(() => import("./pages/mycourses/MyCourses.jsx"));
+const MyOfflineCourses = lazy(() =>
+  import("./pages/mycourses/MyOfflineCourses.jsx")
+);
+const MyOnlineCourses = lazy(() =>
+  import("./pages/mycourses/MyOnlineCourses.jsx")
+);
 const Consultation = lazy(() =>
   import("./pages/consultation/Consultation.jsx")
 );
@@ -101,7 +107,11 @@ function App() {
             <Route path="private-courses" element={<PrivateCourses />} />
             <Route index element={<OnlineCourses />} />
           </Route>
-          <Route path="/my-courses" element={<MyCourses />} />
+          <Route path="/my-courses" element={<MyCourses />}>
+            <Route path="offline" element={<MyOfflineCourses />} />
+            <Route path="online" element={<MyOnlineCourses />} />
+            <Route index element={<MyOfflineCourses />} />
+          </Route>
           <Route path="/calculator" element={<Calculator />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/news" element={<News />} />
