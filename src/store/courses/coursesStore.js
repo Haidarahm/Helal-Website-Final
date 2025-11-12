@@ -3,7 +3,7 @@ import {
   getCourses as getCoursesApi,
   enrollCourse as enrollCourseApi,
   getEnrolledCourses as getEnrolledCoursesApi,
-} from "../apis/courses.js";
+} from "../../apis/courses/courses";
 
 const useCoursesStore = create((set, get) => ({
   // State
