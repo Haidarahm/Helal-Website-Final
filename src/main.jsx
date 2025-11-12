@@ -6,7 +6,6 @@ import "aos/dist/aos.css";
 import { ConfigProvider } from "antd";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import "antd/dist/reset.css";
 import "./index.css";
 import App from "./App.jsx";
 import "./assets/locales/i18n";

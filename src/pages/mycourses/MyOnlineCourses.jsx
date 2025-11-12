@@ -4,7 +4,6 @@ import { useTranslation } from "react-i18next";
 import { useLanguage } from "../../context/LanguageContext";
 import { useOnlineCoursesStore } from "../../store";
 import { AiFillStar } from "react-icons/ai";
-import { Card } from "antd";
 
 const MyOnlineCourses = () => {
   const { t, i18n } = useTranslation();
@@ -49,12 +48,11 @@ const MyOnlineCourses = () => {
 
       {/* Enrolled Courses Grid */}
       {!isMyCoursesLoading && myOnlineCourses.length > 0 && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
           {myOnlineCourses.map((course) => (
-            <Card
+            <div
               key={course.enroll_id}
-              className="my-courses-card group relative rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden cursor-pointer border border-gray-200 hover:border-primary"
-              bordered
+              className="group relative bg-white rounded-xl border border-gray-100 overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-md hover:-translate-y-1"
               onClick={() => {
                 if (course.meet_url) {
                   window.open(course.meet_url, "_blank", "noopener");
@@ -62,40 +60,40 @@ const MyOnlineCourses = () => {
               }}
             >
               {/* Course Image */}
-              <div className="relative h-36 overflow-hidden">
+              <div className="relative h-40 overflow-hidden bg-gray-50">
                 {course.cover_image && (
                   <img
                     src={course.cover_image}
                     alt={course.name}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
                   />
                 )}
                 {!course.cover_image && (
-                  <div className="flex items-center justify-center w-full h-full bg-linear-to-br from-primary/10 to-primary/5">
-                    <AiFillStar className="w-12 h-12 text-primary/30" />
+                  <div className="flex items-center justify-center w-full h-full bg-gray-100">
+                    <AiFillStar className="w-10 h-10 text-gray-300" />
                   </div>
                 )}
 
                 {/* Enrolled Badge */}
-                <div className="absolute top-2 left-2">
-                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold text-white bg-green-500 shadow-md">
+                <div className="absolute top-3 left-3">
+                  <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium text-white bg-green-500/90 backdrop-blur-sm">
                     ✓ {t("courses.my_courses.badge")}
                   </span>
                 </div>
 
                 {/* Live Badge */}
-                <div className="absolute top-2 right-2">
-                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold text-white bg-black/70 shadow-md">
+                <div className="absolute top-3 right-3">
+                  <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium text-white bg-black/70 backdrop-blur-sm">
                     {t("courses.my_courses.live")}
                   </span>
                 </div>
               </div>
 
               {/* Course Content */}
-              <div className="p-4 bg-white">
+              <div className="p-4">
                 {/* Course Title */}
                 <h3
-                  className={`text-base font-bold text-primary mb-1 leading-tight line-clamp-2 ${
+                  className={`text-sm font-semibold text-gray-900 mb-2 leading-snug line-clamp-2 group-hover:text-primary transition-colors duration-200 ${
                     isRTL ? "text-right" : "text-left"
                   }`}
                 >
@@ -113,18 +111,20 @@ const MyOnlineCourses = () => {
 
                 {/* Appointment Info */}
                 {course.appointment && (
-                  <div className="mb-3 rounded-lg bg-gray-50 px-3 py-2 text-xs text-gray-700">
-                    <div className="flex items-center justify-between mb-1">
-                      <span className="font-semibold">
+                  <div className="mb-3 rounded-md bg-gray-50 px-2.5 py-2 text-xs text-gray-600">
+                    <div className="flex items-center justify-between mb-1.5">
+                      <span className="font-medium text-gray-500">
                         {t("courses.my_courses.date")}
                       </span>
-                      <span>{formatDate(course.appointment.date)}</span>
+                      <span className="text-gray-700">
+                        {formatDate(course.appointment.date)}
+                      </span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="font-semibold">
+                      <span className="font-medium text-gray-500">
                         {t("courses.my_courses.time")}
                       </span>
-                      <span>
+                      <span className="text-gray-700">
                         {`${formatTime(
                           course.appointment.start_time
                         )} - ${formatTime(course.appointment.end_time)}`}
@@ -136,7 +136,7 @@ const MyOnlineCourses = () => {
                 {/* Price */}
                 <div className={`mb-3 ${isRTL ? "text-right" : "text-left"}`}>
                   <div className="flex items-baseline gap-2">
-                    <span className="text-lg font-bold text-primary">
+                    <span className="text-base font-semibold text-primary">
                       {course.price_aed && parseFloat(course.price_aed) > 0
                         ? `${course.price_aed} ${t("courses.currency.aed")}`
                         : course.price_usd && parseFloat(course.price_usd) > 0
@@ -155,30 +155,27 @@ const MyOnlineCourses = () => {
                 </div>
 
                 {/* Meet URL Section */}
-                <div className="pt-2 border-t border-gray-100">
+                <div className="pt-3 border-t border-gray-50">
                   {course.meet_url ? (
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
                         window.open(course.meet_url, "_blank", "noopener");
                       }}
-                      className="w-full bg-linear-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-primary text-white font-semibold py-2 px-4 rounded-lg transition-all duration-300 text-xs transform hover:scale-105 hover:shadow-lg flex items-center justify-center gap-2"
+                      className="w-full bg-primary hover:bg-primary-dark text-white font-medium py-2.5 px-4 rounded-lg transition-colors duration-200 text-xs flex items-center justify-center gap-2"
                     >
                       {t("courses.my_courses.join_now")}
                     </button>
                   ) : (
-                    <div className="text-center">
-                      <span className="text-xs text-gray-500 italic">
+                    <div className="text-center py-2">
+                      <span className="text-xs text-gray-400">
                         {t("courses.my_courses.course_not_started")}
                       </span>
                     </div>
                   )}
                 </div>
               </div>
-
-              {/* Hover Effect Overlay */}
-              <div className="absolute inset-0 bg-linear-to-t from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
-            </Card>
+            </div>
           ))}
         </div>
       )}

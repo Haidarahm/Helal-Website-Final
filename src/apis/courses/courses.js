@@ -22,7 +22,7 @@ export const enrollCourse = async (
   cancelUrl = "/cancel"
 ) => {
   try {
-    const response = await api.post(`/api/enroll`, {
+    const response = await api.post(`/enroll`, {
       course_id: courseId,
       currency,
       return_url: returnUrl,
@@ -37,7 +37,7 @@ export const enrollCourse = async (
 // Get enrolled courses by language
 export const getEnrolledCourses = async (lang = "ar") => {
   try {
-    const response = await api.get(`/api/enrolled_courses`, {
+    const response = await api.get(`/enrolled_courses`, {
       params: {
         lang,
       },
