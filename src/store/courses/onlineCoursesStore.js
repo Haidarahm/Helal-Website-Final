@@ -2,6 +2,7 @@ import { create } from "zustand";
 import {
   fetchOnlineCourses as fetchOnlineCoursesApi,
   fetchMyOnlineCourses as fetchMyOnlineCoursesApi,
+  enrollOnlineCourse as enrollOnlineCourseApi,
 } from "../../apis/courses/onlineCourses.js";
 
 const defaultPagination = {
@@ -83,6 +84,37 @@ const useOnlineCoursesStore = create((set) => ({
         "Failed to fetch my online courses";
       set({ error: errorMessage, isMyCoursesLoading: false });
       return [];
+    }
+  },
+
+  // Enroll in an online course
+  enrollOnlineCourse: async (
+    courseOnlineId,
+    currency = "usd",
+    returnUrl = "/success",
+    cancelUrl = "/cancel"
+  ) => {
+    try {
+      set({ isLoading: true, error: null });
+      const response = await enrollOnlineCourseApi(
+        courseOnlineId,
+        currency,
+        returnUrl,
+        cancelUrl
+      );
+
+      // Handle both wrapped and direct response formats
+      const responseData = response?.status ? response : response;
+
+      set({ isLoading: false });
+      return responseData;
+    } catch (error) {
+      const errorMessage =
+        error?.response?.data?.message ||
+        error?.message ||
+        "Failed to enroll in online course";
+      set({ error: errorMessage, isLoading: false });
+      throw error;
     }
   },
 }));

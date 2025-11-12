@@ -30,3 +30,23 @@ export const fetchMyOnlineCourses = async (lang = "ar", pagination) => {
     throw error;
   }
 };
+
+// Enroll in an online course
+export const enrollOnlineCourse = async (
+  courseOnlineId,
+  currency = "usd",
+  returnUrl = "/success",
+  cancelUrl = "/cancel"
+) => {
+  try {
+    const response = await api.post("/courses-online/enroll", {
+      course_online_id: courseOnlineId,
+      currency,
+      return_url: returnUrl,
+      cancel_url: cancelUrl,
+    });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};

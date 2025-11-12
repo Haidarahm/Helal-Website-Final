@@ -84,15 +84,29 @@ const OnlineCourses = () => {
                 </div>
 
                 <div className="space-y-3">
-                  <div className="flex items-center justify-between text-sm text-gray-600">
-                    <span className="font-semibold text-primary text-lg">
-                      {course.price
-                        ? `${course.price} USD`
-                        : isRTL
-                        ? "مجانية"
-                        : "Free"}
-                    </span>
-                    {course.meet_url && (
+                  {/* Price */}
+                  <div className={`${isRTL ? "text-right" : "text-left"}`}>
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-2xl font-bold text-primary">
+                        {course.price_aed && parseFloat(course.price_aed) > 0
+                          ? `${course.price_aed} ${t("courses.currency.aed")}`
+                          : course.price_usd && parseFloat(course.price_usd) > 0
+                          ? `${course.price_usd} ${t("courses.currency.usd")}`
+                          : t("courses.free")}
+                      </span>
+                      {course.price_usd &&
+                        parseFloat(course.price_usd) > 0 &&
+                        course.price_aed &&
+                        parseFloat(course.price_aed) > 0 && (
+                          <span className="text-sm text-gray-500">
+                            (~{course.price_usd} {t("courses.currency.usd")})
+                          </span>
+                        )}
+                    </div>
+                  </div>
+
+                  {course.meet_url && (
+                    <div className={`${isRTL ? "text-right" : "text-left"}`}>
                       <a
                         href={course.meet_url}
                         target="_blank"
@@ -101,8 +115,8 @@ const OnlineCourses = () => {
                       >
                         {isRTL ? "رابط اللقاء" : "Meeting link"}
                       </a>
-                    )}
-                  </div>
+                    </div>
+                  )}
 
                   {course.appointment && (
                     <div className="rounded-lg bg-gray-50 px-4 py-3 text-sm text-gray-700">
@@ -124,6 +138,21 @@ const OnlineCourses = () => {
                       </div>
                     </div>
                   )}
+
+                  <div>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (course.meet_url) {
+                          window.open(course.meet_url, "_blank", "noopener");
+                        }
+                      }}
+                      disabled={!course.meet_url}
+                      className="w-full bg-linear-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-primary text-white font-semibold py-2.5 px-4 rounded-lg transition-all duration-300 text-sm transform hover:scale-105 hover:shadow-xl hover:shadow-primary/30 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                    >
+                      {t("courses.enroll_button")}
+                    </button>
+                  </div>
                 </div>
               </div>
             </article>
