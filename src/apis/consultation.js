@@ -10,7 +10,7 @@ export const createConsultationCheckout = async (
   cancelUrl
 ) => {
   try {
-    const response = await api.post(`/api/consultation/checkout`, {
+    const response = await api.post(`/consultation/checkout`, {
       name,
       email,
       phone,

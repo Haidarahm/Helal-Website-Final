@@ -5,6 +5,9 @@ import { Suspense, lazy, useEffect } from "react";
 const Contact = lazy(() => import("./pages/Contact.jsx"));
 const Programs = lazy(() => import("./pages/Programs.jsx"));
 const Courses = lazy(() => import("./pages/courses/Courses.jsx"));
+const OnlineCourses = lazy(() => import("./pages/courses/OnlineCourses.jsx"));
+const OfflineCourses = lazy(() => import("./pages/courses/OfflineCourses.jsx"));
+const PrivateCourses = lazy(() => import("./pages/courses/PrivateCourses.jsx"));
 const CourseSuccess = lazy(() => import("./pages/courses/CourseSuccess.jsx"));
 const MyCourses = lazy(() => import("./pages/MyCourses.jsx"));
 const Consultation = lazy(() =>
@@ -92,7 +95,12 @@ function App() {
         <Route element={<Layout />}>
           <Route path="/" element={<Home />} />
           <Route path="/programs" element={<Programs />} />
-          <Route path="/courses" element={<Courses />} />
+          <Route path="/courses" element={<Courses />}>
+            <Route path="online-courses" element={<OnlineCourses />} />
+            <Route path="offline-courses" element={<OfflineCourses />} />
+            <Route path="private-courses" element={<PrivateCourses />} />
+            <Route index element={<OnlineCourses />} />
+          </Route>
           <Route path="/my-courses" element={<MyCourses />} />
           <Route path="/calculator" element={<Calculator />} />
           <Route path="/contact" element={<Contact />} />

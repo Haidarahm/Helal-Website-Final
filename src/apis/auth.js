@@ -3,7 +3,7 @@ import api from "./config.js";
 // Register user
 export const register = async (data) => {
   try {
-    const response = await api.post("/api/register", {
+    const response = await api.post("/register", {
       name: data.name,
       email: data.email,
       phone_number: data.phone,
@@ -19,7 +19,7 @@ export const register = async (data) => {
 // Login user
 export const login = async (data) => {
   try {
-    const response = await api.post("/api/login", {
+    const response = await api.post("/login", {
       email: data.email,
       password: data.password,
     });
@@ -32,7 +32,7 @@ export const login = async (data) => {
 // Send OTP
 export const sendOTP = async (data) => {
   try {
-    const response = await api.post("/api/send-otp", {
+    const response = await api.post("/send-otp", {
       email: data.email,
     });
     return response.data;
@@ -44,7 +44,7 @@ export const sendOTP = async (data) => {
 // Verify OTP
 export const verifyOTP = async (data) => {
   try {
-    const response = await api.post("/api/verify-otp", {
+    const response = await api.post("/verify-otp", {
       otp: data.otp,
     });
     return response.data;
@@ -56,7 +56,7 @@ export const verifyOTP = async (data) => {
 // Reset Password
 export const resetPassword = async (data) => {
   try {
-    const response = await api.post("/api/reset-password", {
+    const response = await api.post("/reset-password", {
       new_password: data.new_password,
       new_password_confirmation: data.new_password_confirmation,
     });
@@ -69,7 +69,7 @@ export const resetPassword = async (data) => {
 // Get current user personal information
 export const getUser = async () => {
   try {
-    const response = await api.get("/api/get/personal-information");
+    const response = await api.get("/get/personal-information");
     return response.data;
   } catch (error) {
     throw error;
@@ -81,7 +81,7 @@ export const updateProfileImage = async (file) => {
   try {
     const formData = new FormData();
     formData.append("profile_image", file);
-    const response = await api.post("/api/update-profile-image", formData, {
+    const response = await api.post("/update-profile-image", formData, {
       headers: { "Content-Type": "multipart/form-data" },
     });
     return response.data;
@@ -93,7 +93,7 @@ export const updateProfileImage = async (file) => {
 // Change password for authenticated user
 export const changePassword = async (data) => {
   try {
-    const response = await api.post("/api/change-password", {
+    const response = await api.post("/change-password", {
       current_password: data.current_password,
       new_password: data.new_password,
       new_password_confirmation: data.new_password_confirmation,

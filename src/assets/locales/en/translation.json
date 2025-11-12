@@ -199,6 +199,9 @@
     "loading": "Loading courses...",
     "no_courses": "No courses available at the moment.",
     "free": "Free",
+    "online_courses": "Online Courses",
+    "offline_courses": "Offline Courses",
+    "private_courses": "Private Courses",
     "currency": {
       "aed": "AED",
       "usd": "USD"

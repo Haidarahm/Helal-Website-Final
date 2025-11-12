@@ -3,7 +3,7 @@ import api from "./config.js";
 // Get news sections by language and page
 export const getNews = async (lang = "ar", page = 1, perPage = 10) => {
   try {
-    const response = await api.get(`/api/news-sections`, {
+    const response = await api.get(`/news-sections`, {
       params: {
         lang,
         page,
@@ -19,7 +19,7 @@ export const getNews = async (lang = "ar", page = 1, perPage = 10) => {
 // Fetch single news section by ID
 export const fetchNews = async (id, lang = "ar") => {
   try {
-    const response = await api.get(`/api/news-sections/${id}`, {
+    const response = await api.get(`/news-sections/${id}`, {
       params: {
         lang,
       },

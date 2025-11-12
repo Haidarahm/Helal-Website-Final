@@ -8,7 +8,7 @@ export const fetchAllCourseVideos = async (
   perPage = 10
 ) => {
   try {
-    const response = await api.get(`/api/courses/${courseId}/videos`, {
+    const response = await api.get(`/courses/${courseId}/videos`, {
       params: {
         lang,
         page,
@@ -24,7 +24,7 @@ export const fetchAllCourseVideos = async (
 // Fetch video by ID
 export const fetchVideoById = async (videoId, lang = "ar") => {
   try {
-    const response = await api.get(`/api/videos/${videoId}`, {
+    const response = await api.get(`/videos/${videoId}`, {
       params: {
         lang,
       },

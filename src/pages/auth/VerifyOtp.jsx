@@ -97,7 +97,7 @@ export const VerifyOtp = () => {
 
             <Form form={form} onFinish={handleSubmit} layout="vertical">
               <Form.Item name="otp" className="mb-4">
-                <div className="flex gap-2 justify-center">
+                <div className="flex gap-2 justify-center"   dir={isRTL ? "ltr" : "rtl"}>
                   {otp.map((digit, index) => (
                     <Input
                       key={index}
