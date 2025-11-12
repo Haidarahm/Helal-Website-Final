@@ -1,13 +1,23 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { useLanguage } from "../../context/LanguageContext";
 import { useOnlineCoursesStore } from "../../store";
 
 const OnlineCourses = () => {
   const { t, i18n } = useTranslation();
   const { isRTL } = useLanguage();
-  const { onlineCourses, pagination, isLoading, error, fetchOnlineCourses } =
-    useOnlineCoursesStore();
+  const {
+    onlineCourses,
+    pagination,
+    isLoading,
+    error,
+    fetchOnlineCourses,
+    enrollOnlineCourse,
+  } = useOnlineCoursesStore();
+  const [enrollingCourseId, setEnrollingCourseId] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -31,6 +41,56 @@ const OnlineCourses = () => {
     });
   };
 
+  const handleEnrollClick = async (course) => {
+    try {
+      setEnrollingCourseId(course.id);
+
+      const currency =
+        course.price_usd && parseFloat(course.price_usd) > 0 ? "usd" : "aed";
+
+      const baseUrl = window.location.origin;
+      const returnUrl = `${baseUrl}/Helal-Aljaberi/course-success`;
+      const cancelUrl = `${baseUrl}/Helal-Aljaberi/courses`;
+
+      const response = await enrollOnlineCourse(
+        course.id,
+        currency,
+        returnUrl,
+        cancelUrl
+      );
+
+      const redirectUrl =
+        response?.redirect_url ?? response?.data?.redirect_url;
+
+      if (redirectUrl) {
+        window.location.href = redirectUrl;
+      } else {
+        toast.error(
+          t("courses.enroll_error") ||
+            (isRTL
+              ? "فشل في معالجة التسجيل. يرجى المحاولة مرة أخرى."
+              : "Failed to process enrollment. Please try again.")
+        );
+      }
+    } catch (error) {
+      if (error?.response?.status === 401) {
+        navigate("/auth", { state: { initialForm: "signup" } });
+        setEnrollingCourseId(null);
+        return;
+      }
+
+      const errorMessage =
+        error?.response?.data?.message ||
+        error?.message ||
+        (isRTL
+          ? "فشل في التسجيل في الدورة. يرجى المحاولة مرة أخرى."
+          : "Failed to enroll in course. Please try again.");
+      toast.error(errorMessage);
+    } finally {
+      setEnrollingCourseId(null);
+    }
+  };
+
   return (
     <div className="max-w-7xl mx-auto" dir={isRTL ? "rtl" : "ltr"}>
       {error && (
@@ -39,7 +99,7 @@ const OnlineCourses = () => {
         </div>
       )}
 
-      {isLoading ? (
+      {isLoading && onlineCourses.length === 0 ? (
         <div className="flex items-center justify-center py-32">
           <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
         </div>
@@ -142,15 +202,17 @@ const OnlineCourses = () => {
                   <div>
                     <button
                       type="button"
-                      onClick={() => {
-                        if (course.meet_url) {
-                          window.open(course.meet_url, "_blank", "noopener");
-                        }
-                      }}
-                      disabled={!course.meet_url}
-                      className="w-full bg-linear-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-primary text-white font-semibold py-2.5 px-4 rounded-lg transition-all duration-300 text-sm transform hover:scale-105 hover:shadow-xl hover:shadow-primary/30 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                      onClick={() => handleEnrollClick(course)}
+                      disabled={enrollingCourseId === course.id || isLoading}
+                      className="w-full bg-linear-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-primary text-white font-semibold py-2.5 px-4 rounded-lg transition-all duration-300 text-sm transform hover:scale-105 hover:shadow-xl hover:shadow-primary/30 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-2"
                     >
-                      {t("courses.enroll_button")}
+                      {enrollingCourseId === course.id ? (
+                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                      ) : (
+                        <span className="text-white">
+                          {t("courses.enroll_button")}
+                        </span>
+                      )}
                     </button>
                   </div>
                 </div>

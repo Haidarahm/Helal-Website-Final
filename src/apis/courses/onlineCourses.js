@@ -39,7 +39,7 @@ export const enrollOnlineCourse = async (
   cancelUrl = "/cancel"
 ) => {
   try {
-    const response = await api.post("/courses-online/enroll", {
+    const response = await api.post("/enroll", {
       course_online_id: courseOnlineId,
       currency,
       return_url: returnUrl,
