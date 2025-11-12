@@ -261,7 +261,13 @@
       "enrolled_at": "مسجل منذ",
       "badge": "مسجل",
       "no_courses_title": "لا توجد دورات مسجلة",
-      "no_courses_description": "ابدأ رحلتك التعليمية من خلال التسجيل في دوراتنا التدريبية"
+      "no_courses_description": "ابدأ رحلتك التعليمية من خلال التسجيل في دوراتنا التدريبية",
+      "join_now": "انضم الآن",
+      "course_not_started": "الدورة لم تبدأ بعد",
+      "live": "مباشر",
+      "not_scheduled": "غير محدد",
+      "date": "التاريخ",
+      "time": "الوقت"
     }
   },
   "videos": {

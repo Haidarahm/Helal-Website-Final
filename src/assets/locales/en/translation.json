@@ -261,7 +261,13 @@
       "enrolled_at": "Enrolled",
       "badge": "Enrolled",
       "no_courses_title": "No Enrolled Courses",
-      "no_courses_description": "Start your learning journey by enrolling in our courses"
+      "no_courses_description": "Start your learning journey by enrolling in our courses",
+      "join_now": "Join Now",
+      "course_not_started": "Course not started yet",
+      "live": "Live",
+      "not_scheduled": "Not scheduled",
+      "date": "Date",
+      "time": "Time"
     }
   },
   "videos": {

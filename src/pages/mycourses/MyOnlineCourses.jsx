@@ -19,7 +19,7 @@ const MyOnlineCourses = () => {
   }, [i18n.language, getMyOnlineCourses]);
 
   const formatDate = (value) => {
-    if (!value) return isRTL ? "غير محدد" : "Not scheduled";
+    if (!value) return t("courses.my_courses.not_scheduled");
     return new Date(value).toLocaleDateString(i18n.language, {
       year: "numeric",
       month: "short",
@@ -86,7 +86,7 @@ const MyOnlineCourses = () => {
                 {/* Live Badge */}
                 <div className="absolute top-2 right-2">
                   <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold text-white bg-black/70 shadow-md">
-                    {isRTL ? "مباشر" : "Live"}
+                    {t("courses.my_courses.live")}
                   </span>
                 </div>
               </div>
@@ -116,13 +116,13 @@ const MyOnlineCourses = () => {
                   <div className="mb-3 rounded-lg bg-gray-50 px-3 py-2 text-xs text-gray-700">
                     <div className="flex items-center justify-between mb-1">
                       <span className="font-semibold">
-                        {isRTL ? "التاريخ" : "Date"}
+                        {t("courses.my_courses.date")}
                       </span>
                       <span>{formatDate(course.appointment.date)}</span>
                     </div>
                     <div className="flex items-center justify-between">
                       <span className="font-semibold">
-                        {isRTL ? "الوقت" : "Time"}
+                        {t("courses.my_courses.time")}
                       </span>
                       <span>
                         {`${formatTime(
@@ -154,20 +154,26 @@ const MyOnlineCourses = () => {
                   </div>
                 </div>
 
-                {/* Meet URL Link */}
-                {course.meet_url && (
-                  <div className="pt-2 border-t border-gray-100">
-                    <a
-                      href={course.meet_url}
-                      target="_blank"
-                      rel="noreferrer"
-                      onClick={(e) => e.stopPropagation()}
-                      className="text-xs text-primary hover:underline flex items-center gap-1"
+                {/* Meet URL Section */}
+                <div className="pt-2 border-t border-gray-100">
+                  {course.meet_url ? (
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        window.open(course.meet_url, "_blank", "noopener");
+                      }}
+                      className="w-full bg-linear-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-primary text-white font-semibold py-2 px-4 rounded-lg transition-all duration-300 text-xs transform hover:scale-105 hover:shadow-lg flex items-center justify-center gap-2"
                     >
-                      {isRTL ? "رابط اللقاء" : "Meeting link"} →
-                    </a>
-                  </div>
-                )}
+                      {t("courses.my_courses.join_now")}
+                    </button>
+                  ) : (
+                    <div className="text-center">
+                      <span className="text-xs text-gray-500 italic">
+                        {t("courses.my_courses.course_not_started")}
+                      </span>
+                    </div>
+                  )}
+                </div>
               </div>
 
               {/* Hover Effect Overlay */}
