@@ -397,11 +397,11 @@ export default function Consultation() {
           className="mb-8 modern-stepper"
         />
 
-        <div className="min-h-[400px]">
+        <div className="min-h-[300px]">
           {/* Step 1: Select Consultation Type */}
           {currentStep === 0 && (
             <div>
-              <h3 className="text-xl font-semibold text-primary mb-6">
+              <h3 className="text-xl font-semibold text-gray-800 mb-8 text-center">
                 {currentLanguage === "ar"
                   ? "اختر نوع الاستشارة"
                   : "Select a consultation type"}
@@ -419,81 +419,86 @@ export default function Consultation() {
                   }
                 />
               ) : (
-                <div className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {consultationTypes.map((consultation) => {
                     const { hasAED, hasUSD } =
                       getAvailableCurrencies(consultation);
-                    const priceLines = [];
-
-                    if (hasAED) {
-                      priceLines.push(
-                        `${consultation.price_aed} ${
-                          currentLanguage === "ar" ? "درهم" : "AED"
-                        }`
-                      );
-                    }
-
-                    if (hasUSD) {
-                      priceLines.push(
-                        `${consultation.price_usd} ${
-                          currentLanguage === "ar" ? "دولار" : "USD"
-                        }`
-                      );
-                    }
 
                     const isSelected =
                       selectedConsultation?.id === consultation.id;
 
+                    // Get the price to display
+                    const price = hasAED
+                      ? consultation.price_aed
+                      : hasUSD
+                      ? consultation.price_usd
+                      : null;
+                    const currency = hasAED ? "AED" : hasUSD ? "USD" : null;
+
                     return (
-                      <Card
+                      <div
                         key={consultation.id}
-                        className={`border-2 transition-all duration-300 cursor-pointer ${
+                        className={`relative rounded-xl p-6 cursor-pointer transition-all duration-300 ${
                           isSelected
-                            ? "border-primary shadow-lg"
-                            : "border-gray-100 hover:border-primary/50 hover:shadow-md"
+                            ? "bg-linear-to-br from-primary/10 to-primary/5 border-2 border-primary shadow-lg scale-[1.02]"
+                            : "bg-white border border-gray-200 hover:border-primary/40 hover:shadow-md"
                         }`}
                         onClick={() => setSelectedConsultation(consultation)}
                       >
-                        <div className="flex flex-col gap-4">
-                          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
-                            <h4 className="text-lg font-semibold text-gray-900">
-                              {consultation.type}
-                            </h4>
-                            {consultation.duration && (
-                              <span className="text-sm font-medium text-primary/80 bg-primary/10 px-3 py-1 rounded-full">
-                                {currentLanguage === "ar"
-                                  ? `المدة: ${consultation.duration} دقيقة`
-                                  : `Duration: ${consultation.duration} min`}
-                              </span>
-                            )}
+                        {/* Selection Indicator */}
+                        {isSelected && (
+                          <div className="absolute top-4 right-4 w-6 h-6 bg-primary rounded-full flex items-center justify-center">
+                            <CheckCircle className="w-4 h-4 text-white" />
                           </div>
+                        )}
 
-                          <div
-                            className={`${
-                              isRTL ? "text-right" : "text-left"
-                            } text-sm text-gray-600`}
-                          >
-                            {priceLines.length > 0 ? (
-                              priceLines.map((line, index) => (
-                                <div key={index}>{line}</div>
-                              ))
-                            ) : (
-                              <div>
+                        <div className="space-y-4">
+                          {/* Title */}
+                          <h4 className="text-lg font-bold text-gray-900 pr-8">
+                            {consultation.type}
+                          </h4>
+
+                          {/* Duration Badge */}
+                          {consultation.duration && (
+                            <div className="flex items-center gap-2">
+                              <Clock className="w-4 h-4 text-gray-500" />
+                              <span className="text-sm text-gray-600">
+                                {consultation.duration}{" "}
+                                {currentLanguage === "ar" ? "دقيقة" : "min"}
+                              </span>
+                            </div>
+                          )}
+
+                          {/* Price */}
+                          {price && currency ? (
+                            <div className="pt-2 border-t border-gray-100">
+                              <div className="flex items-baseline gap-2">
+                                <span className="text-2xl font-bold text-primary">
+                                  {price}
+                                </span>
+                                <span className="text-sm text-gray-600">
+                                  {currency}
+                                </span>
+                              </div>
+                            </div>
+                          ) : (
+                            <div className="pt-2 border-t border-gray-100">
+                              <span className="text-sm text-gray-500">
                                 {currentLanguage === "ar"
                                   ? "السعر غير متوفر"
                                   : "Pricing not available"}
-                              </div>
-                            )}
-                          </div>
+                              </span>
+                            </div>
+                          )}
                         </div>
-                      </Card>
+                      </div>
                     );
                   })}
                 </div>
               )}
 
               {pagination && pagination.last_page > 1 && (
-                <div className="flex justify-center mt-6">
+                <div className="flex justify-center mt-8">
                   <Pagination
                     current={pagination.current_page}
                     total={pagination.total}
@@ -784,7 +789,7 @@ export default function Consultation() {
         </div>
 
         {/* Navigation Buttons */}
-        <div className="flex justify-between mt-8 pt-6 border-t">
+        <div className="flex justify-between mt-8 pt-6 ">
           <Button
             onClick={currentStep === 0 ? handleCloseModal : handlePrev}
             size="large"
