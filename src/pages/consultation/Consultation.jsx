@@ -107,8 +107,12 @@ export default function Consultation() {
         selectedStartTime
       );
 
-      if (response?.redirect_url) {
-        window.location.href = response.redirect_url;
+      // Handle new response structure with nested data
+      const redirectUrl =
+        response?.data?.redirect_url || response?.redirect_url;
+
+      if (redirectUrl) {
+        window.location.href = redirectUrl;
       } else {
         toast.error(t("consultation.errors.payment_failed"));
       }

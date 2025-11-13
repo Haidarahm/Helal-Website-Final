@@ -315,7 +315,10 @@
       "duration_label": "Duration:",
       "pricing_not_available": "Pricing not available",
       "no_consultations": "No consultations available right now",
-      "no_pricing": "No pricing available for this consultation"
+      "no_pricing": "No pricing available for this consultation",
+      "no_available_dates": "No available dates at the moment",
+      "loading_availability": "Loading available dates...",
+      "availability_error": "Unable to load availability. Please try again later."
     },
     "cta": {
       "title": "Ready to Start Your Journey?",

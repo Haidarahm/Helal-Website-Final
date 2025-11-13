@@ -13,10 +13,7 @@ export const getAvailableDates = async () => {
 // Get booked appointments
 export const getBookedAppointments = async (month, year) => {
   try {
-    const response = await api.post(`/appointments`, {
-      month,
-      year,
-    });
+    const response = await api.get(`/appointments?month=${month}&year=${year}`);
     return response.data;
   } catch (error) {
     throw error;
