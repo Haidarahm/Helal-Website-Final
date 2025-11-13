@@ -1,18 +1,25 @@
 import api from "../config.js";
 
-const buildParams = (lang, pagination) => {
+const buildParams = (lang, pagination, perPage) => {
   const params = {};
   if (lang) params.lang = lang;
   if (pagination !== undefined && pagination !== null) {
     params.pagination = pagination;
   }
+  if (perPage !== undefined && perPage !== null) {
+    params.per_page = perPage;
+  }
   return params;
 };
 
-export const fetchOnlineCourses = async (lang = "ar", pagination = 1) => {
+export const fetchOnlineCourses = async (
+  lang = "ar",
+  pagination = 1,
+  perPage = 5
+) => {
   try {
     const response = await api.get("/courses-online/get", {
-      params: buildParams(lang, pagination),
+      params: buildParams(lang, pagination, perPage),
     });
     return response.data;
   } catch (error) {

@@ -16,7 +16,7 @@ export default function Hero() {
   }, []);
 
   return (
-    <div className="relative h-[90vh] md:h-screen flex items-center overflow-hidden bg-[color:var(--color-secondary)]">
+    <div className="relative h-[90vh] md:h-screen flex items-center overflow-hidden bg-secondary">
       {/* Background Overlay */}
       <div className="absolute inset-0 z-0">
         <img
@@ -31,11 +31,11 @@ export default function Hero() {
 
       {/* Content */}
       <div
-        className={`flex flex-col w-full md:w-1/2 relative mt-10 z-20 px-6 md:px-10`}
+        className={`flex gap-8 flex-col w-full md:w-1/2 relative mt-10 z-20 px-6 md:px-10`}
       >
         <h1
-          className={`text-4xl md:text-5xl 2xl:text-7xl font-extrabold text-primary tracking-tight drop-shadow-md  ${
-            isRTL ? "text-right font-family-zain" : "text-left"
+          className={`text-4xl md:text-5xl 2xl:text-7xl  font-extrabold text-primary tracking-tight  drop-shadow-md  ${
+            isRTL ? "text-right font-family-zain leading-12 md:leading-24" : "text-left"
           }`}
           data-aos="fade-up"
         >
@@ -51,7 +51,7 @@ export default function Hero() {
           {t("hero.subtitle")}
         </h2>
         <p
-          className={`text-base md:text-lg lg:text-xl text-[color:var(--color-accent)]/95 leading-relaxed md:leading-8  drop-shadow ${
+          className={`text-base md:text-lg lg:text-xl text-accent/95 leading-relaxed md:leading-8  drop-shadow ${
             isRTL ? "text-right" : "text-left"
           }`}
           data-aos="fade-up"
@@ -74,7 +74,7 @@ export default function Hero() {
           <a
             href={certPdf}
             download
-            className="px-7 py-3 md:px-8 md:py-4 rounded-xl border-2 border-primary text-primary font-semibold transition-all duration-300 hover:bg-primary hover:text-secondary"
+            className="px-4  py-3 md:px-8 md:py-4 rounded-xl border-2 border-primary text-primary font-semibold transition-all duration-300 hover:bg-primary hover:text-secondary"
           >
             {t("hero.learn_more")}
           </a>

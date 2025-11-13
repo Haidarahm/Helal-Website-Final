@@ -9,7 +9,7 @@ import {
 const defaultPagination = {
   current_page: 1,
   last_page: 1,
-  per_page: 10,
+  per_page: 5,
   total: 0,
 };
 
@@ -34,10 +34,10 @@ const useOnlineCoursesStore = create((set) => ({
 
   clearError: () => set({ error: null }),
 
-  fetchOnlineCourses: async (lang = "ar", page = 1) => {
+  fetchOnlineCourses: async (lang = "ar", page = 1, perPage = 5) => {
     try {
       set({ isLoading: true, error: null });
-      const response = await fetchOnlineCoursesApi(lang, page);
+      const response = await fetchOnlineCoursesApi(lang, page, perPage);
 
       if (response?.status && Array.isArray(response?.data)) {
         set({
@@ -45,6 +45,7 @@ const useOnlineCoursesStore = create((set) => ({
           pagination: resolvePagination(response.pagination, {
             ...defaultPagination,
             current_page: page,
+            per_page: perPage,
           }),
           isLoading: false,
         });

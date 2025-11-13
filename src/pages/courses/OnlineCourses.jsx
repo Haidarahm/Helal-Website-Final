@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useLanguage } from "../../context/LanguageContext";
 import { useOnlineCoursesStore } from "../../store";
+import { Popover, Button, Space, Pagination } from "antd";
 
 const OnlineCourses = () => {
   const { t, i18n } = useTranslation();
@@ -17,12 +18,24 @@ const OnlineCourses = () => {
     enrollOnlineCourse,
   } = useOnlineCoursesStore();
   const [enrollingCourseId, setEnrollingCourseId] = useState(null);
+  const [openPopoverId, setOpenPopoverId] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
   const navigate = useNavigate();
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    fetchOnlineCourses(i18n.language, pagination.current_page);
-  }, [i18n.language, fetchOnlineCourses, pagination.current_page]);
+    setCurrentPage(1);
+  }, [i18n.language]);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    fetchOnlineCourses(i18n.language, currentPage, 5);
+  }, [i18n.language, currentPage, fetchOnlineCourses]);
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+    window.scrollTo(0, 0);
+  };
 
   const formatDate = (value) => {
     if (!value) return isRTL ? "غير محدد" : "Not scheduled";
@@ -41,12 +54,10 @@ const OnlineCourses = () => {
     });
   };
 
-  const handleEnrollClick = async (course) => {
+  const handleEnrollClick = async (course, currency) => {
     try {
       setEnrollingCourseId(course.id);
-
-      const currency =
-        course.price_usd && parseFloat(course.price_usd) > 0 ? "usd" : "aed";
+      setOpenPopoverId(null);
 
       const baseUrl = window.location.origin;
       const returnUrl = `${baseUrl}/Helal-Aljaberi/course-success`;
@@ -89,6 +100,80 @@ const OnlineCourses = () => {
     } finally {
       setEnrollingCourseId(null);
     }
+  };
+
+  const getAvailableCurrencies = (course) => {
+    const hasAED =
+      course.price_aed &&
+      !Number.isNaN(parseFloat(course.price_aed)) &&
+      parseFloat(course.price_aed) > 0;
+    const hasUSD =
+      course.price_usd &&
+      !Number.isNaN(parseFloat(course.price_usd)) &&
+      parseFloat(course.price_usd) > 0;
+
+    return { hasAED, hasUSD };
+  };
+
+  const renderCurrencyPopover = (course) => {
+    const { hasAED, hasUSD } = getAvailableCurrencies(course);
+
+    if (!hasAED && !hasUSD) {
+      return (
+        <div className="p-2 text-sm text-gray-600">
+          {isRTL ? "لا تتوفر أسعار لهذه الدورة" : "No pricing available"}
+        </div>
+      );
+    }
+
+    if (hasAED && hasUSD) {
+      return (
+        <div className="p-2">
+          <div className="mb-3 text-sm font-semibold text-gray-700">
+            {isRTL ? "اختر العملة للدفع" : "Select payment currency"}
+          </div>
+          <Space direction="vertical" className="w-full" size="small">
+            <Button
+              type="primary"
+              block
+              onClick={() => handleEnrollClick(course, "aed")}
+              className="text-left"
+            >
+              {course.price_aed} {t("courses.currency.aed")} - AED
+            </Button>
+            <Button
+              type="primary"
+              block
+              onClick={() => handleEnrollClick(course, "usd")}
+              className="text-left"
+            >
+              {course.price_usd} {t("courses.currency.usd")} - USD
+            </Button>
+          </Space>
+        </div>
+      );
+    }
+
+    const currency = hasAED ? "aed" : "usd";
+    const price = hasAED ? course.price_aed : course.price_usd;
+    const currencyLabel = hasAED
+      ? t("courses.currency.aed")
+      : t("courses.currency.usd");
+
+    return (
+      <div className="p-2">
+        <div className="mb-3 text-sm text-gray-700">
+          {isRTL ? "السعر" : "Price"}: {price} {currencyLabel}
+        </div>
+        <Button
+          type="primary"
+          block
+          onClick={() => handleEnrollClick(course, currency)}
+        >
+          {isRTL ? "المتابعة" : "Continue"}
+        </Button>
+      </div>
+    );
   };
 
   return (
@@ -194,25 +279,68 @@ const OnlineCourses = () => {
                   )}
 
                   <div>
-                    <button
-                      type="button"
-                      onClick={() => handleEnrollClick(course)}
-                      disabled={enrollingCourseId === course.id || isLoading}
-                      className="w-full bg-linear-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-primary text-white font-semibold py-2.5 px-4 rounded-lg transition-all duration-300 text-sm transform hover:scale-105 hover:shadow-xl hover:shadow-primary/30 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-2"
+                    <Popover
+                      content={renderCurrencyPopover(course)}
+                      trigger="click"
+                      open={openPopoverId === course.id}
+                      onOpenChange={(open) =>
+                        setOpenPopoverId(open ? course.id : null)
+                      }
+                      placement={isRTL ? "bottomRight" : "bottomLeft"}
                     >
-                      {enrollingCourseId === course.id ? (
-                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                      ) : (
-                        <span className="text-white">
-                          {t("courses.enroll_button")}
-                        </span>
-                      )}
-                    </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const { hasAED, hasUSD } =
+                            getAvailableCurrencies(course);
+                          if (!hasAED && !hasUSD) {
+                            toast.error(
+                              isRTL
+                                ? "لا تتوفر أسعار لهذه الدورة"
+                                : "No pricing available for this course"
+                            );
+                            return;
+                          }
+                          if (hasAED && hasUSD) {
+                            setOpenPopoverId(course.id);
+                          } else {
+                            const currency = hasAED ? "aed" : "usd";
+                            handleEnrollClick(course, currency);
+                          }
+                        }}
+                        disabled={enrollingCourseId === course.id || isLoading}
+                        className="w-full bg-linear-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-primary text-white font-semibold py-2.5 px-4 rounded-lg transition-all duration-300 text-sm transform hover:scale-105 hover:shadow-xl hover:shadow-primary/30 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-2"
+                      >
+                        {enrollingCourseId === course.id ? (
+                          <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                        ) : (
+                          <span className="text-white">
+                            {t("courses.enroll_button")}
+                          </span>
+                        )}
+                      </button>
+                    </Popover>
                   </div>
                 </div>
               </div>
             </article>
           ))}
+        </div>
+      )}
+
+      {/* Pagination */}
+      {pagination && pagination.last_page > 1 && (
+        <div className="flex justify-center mt-12 mb-8">
+          <Pagination
+            current={pagination.current_page}
+            total={pagination.total}
+            pageSize={pagination.per_page}
+            onChange={handlePageChange}
+            showSizeChanger={false}
+            showTotal={(total, range) =>
+              `${range[0]}-${range[1]} ${isRTL ? "من" : "of"} ${total}`
+            }
+          />
         </div>
       )}
     </div>
