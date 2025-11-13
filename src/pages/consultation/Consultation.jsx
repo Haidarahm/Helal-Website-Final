@@ -1,6 +1,19 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Modal, Input, Button, Card } from "antd";
+import {
+  Modal,
+  Input,
+  Button,
+  Card,
+  Popover,
+  Pagination,
+  Space,
+  Spin,
+  Empty,
+  DatePicker,
+  TimePicker,
+} from "antd";
+import dayjs from "dayjs";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "../../context/LanguageContext";
 import { useConsultationStore, useAuthStore } from "../../store";
@@ -19,8 +32,15 @@ export default function Consultation() {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { isRTL, currentLanguage } = useLanguage();
-  const { isLoading, createConsultationCheckout } = useConsultationStore();
-  const { token } = useAuthStore();
+  const {
+    isLoading,
+    isTypesLoading,
+    consultationTypes,
+    pagination,
+    createConsultationCheckout,
+    fetchConsultationTypes,
+  } = useConsultationStore();
+  const { token, user } = useAuthStore();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState({
@@ -28,10 +48,30 @@ export default function Consultation() {
     email: "",
     phone: "",
   });
+  const [currentPage, setCurrentPage] = useState(1);
+  const [openPopoverId, setOpenPopoverId] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedStartTime, setSelectedStartTime] = useState(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  useEffect(() => {
+    if (isModalOpen) {
+      fetchConsultationTypes(currentLanguage, currentPage, 5);
+    }
+  }, [isModalOpen, currentLanguage, currentPage, fetchConsultationTypes]);
+
+  useEffect(() => {
+    if (!isModalOpen || !user) return;
+
+    setFormData((prev) => ({
+      name: prev.name || user.name || "",
+      email: prev.email || user.email || "",
+      phone: prev.phone || user.phone || "",
+    }));
+  }, [isModalOpen, user]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -41,10 +81,33 @@ export default function Consultation() {
     }));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleBookConsultation = async (
+    consultation,
+    currency,
+    date,
+    startTime
+  ) => {
+    if (!formData.name || !formData.email || !formData.phone) {
+      toast.error(
+        currentLanguage === "ar"
+          ? "يرجى إدخال الاسم والبريد الإلكتروني ورقم الهاتف قبل المتابعة."
+          : "Please provide your name, email, and phone number before continuing."
+      );
+      return;
+    }
+
+    if (!date || !startTime) {
+      toast.error(
+        currentLanguage === "ar"
+          ? "يرجى اختيار التاريخ والوقت قبل المتابعة."
+          : "Please select date and time before continuing."
+      );
+      return;
+    }
+
     try {
-      // Build return and cancel URLs
+      setOpenPopoverId(null);
+
       const baseUrl = window.location.origin;
       const returnUrl = `${baseUrl}/Helal-Aljaberi/consultation-success`;
       const cancelUrl = `${baseUrl}/Helal-Aljaberi/consultation`;
@@ -53,12 +116,14 @@ export default function Consultation() {
         formData.name,
         formData.email,
         formData.phone,
-        "usd",
+        currency,
         returnUrl,
-        cancelUrl
+        cancelUrl,
+        consultation?.id,
+        date,
+        startTime
       );
 
-      // Check if response has redirect_url and redirect
       if (response?.redirect_url) {
         window.location.href = response.redirect_url;
       } else {
@@ -80,22 +145,82 @@ export default function Consultation() {
     }
   };
 
+  const getAvailableCurrencies = (consultation) => {
+    const hasAED =
+      consultation?.price_aed &&
+      !Number.isNaN(parseFloat(consultation.price_aed)) &&
+      parseFloat(consultation.price_aed) > 0;
+    const hasUSD =
+      consultation?.price_usd &&
+      !Number.isNaN(parseFloat(consultation.price_usd)) &&
+      parseFloat(consultation.price_usd) > 0;
+
+    return { hasAED, hasUSD };
+  };
+
+  const renderCurrencyOptions = (consultation, date, startTime) => {
+    const { hasAED, hasUSD } = getAvailableCurrencies(consultation);
+
+    return (
+      <div className="p-2">
+        <div className="mb-2 text-sm font-semibold text-gray-700">
+          {currentLanguage === "ar"
+            ? "اختر العملة للمتابعة"
+            : "Select a currency to continue"}
+        </div>
+        <Space direction="vertical" className="w-full" size="small">
+          {hasAED && (
+            <Button
+              type="primary"
+              block
+              disabled={isLoading}
+              onClick={() =>
+                handleBookConsultation(consultation, "aed", date, startTime)
+              }
+            >
+              {`${consultation.price_aed} AED`}
+            </Button>
+          )}
+          {hasUSD && (
+            <Button
+              type="primary"
+              block
+              disabled={isLoading}
+              onClick={() =>
+                handleBookConsultation(consultation, "usd", date, startTime)
+              }
+            >
+              {`${consultation.price_usd} USD`}
+            </Button>
+          )}
+        </Space>
+      </div>
+    );
+  };
+
   const handleOpenModal = () => {
-    // Check if user is authenticated
     if (!token) {
-      // Redirect to signup if not authenticated
       navigate("/auth", { state: { initialForm: "signup" } });
       return;
     }
+    setCurrentPage(1);
     setIsModalOpen(true);
   };
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
+    setOpenPopoverId(null);
     setFormData({ name: "", email: "", phone: "" });
+    setSelectedDate(null);
+    setSelectedStartTime(null);
   };
 
-  const benefits = t("consultation.benefits", { returnObjects: true });
+  const handlePaginationChange = (page) => {
+    setOpenPopoverId(null);
+    setCurrentPage(page);
+  };
+
+  const benefits = t("consultation.benefits", { returnObjects: true }) || [];
 
   return (
     <div className="w-full bg-white min-h-screen" dir={isRTL ? "rtl" : "ltr"}>
@@ -169,7 +294,7 @@ export default function Consultation() {
                 type="primary"
                 size="large"
                 onClick={handleOpenModal}
-                className="bg-primary hover:bg-primary-dark border-none px-8 py-6 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+                className="bg-primary  hover:bg-primary-dark border-none px-8 py-6 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
               >
                 {t("consultation.form.title")}
               </Button>
@@ -191,7 +316,7 @@ export default function Consultation() {
         onCancel={handleCloseModal}
         footer={null}
         width="90%"
-        style={{ maxWidth: "600px" }}
+        style={{ maxWidth: "700px" }}
         className="consultation-modal"
         styles={{
           body: {
@@ -204,90 +329,303 @@ export default function Consultation() {
           },
         }}
       >
-        <form onSubmit={handleSubmit}>
-          <div className="space-y-6">
-            {/* Name Field */}
-            <div>
-              <label
-                className={`block mb-2 text-sm font-medium text-text-primary ${
-                  isRTL ? "text-right" : "text-left"
-                }`}
-              >
-                {t("consultation.form.full_name")}
-              </label>
-              <Input
-                name="name"
-                value={formData.name}
-                onChange={handleInputChange}
-                required
-                size="large"
-                prefix={<User className="text-primary" />}
-                className={isRTL ? "text-right" : "text-left"}
-                placeholder={t("consultation.form.name_placeholder")}
-                dir={isRTL ? "rtl" : "ltr"}
-              />
-            </div>
+        <div className="space-y-8">
+          <div>
+            <h3 className="text-xl font-semibold text-primary mb-4">
+              {currentLanguage === "ar" ? "بياناتك الشخصية" : "Your Details"}
+            </h3>
+            <div className="space-y-6">
+              {/* Name Field */}
+              <div>
+                <label
+                  className={`block mb-2 text-sm font-medium text-text-primary ${
+                    isRTL ? "text-right" : "text-left"
+                  }`}
+                >
+                  {t("consultation.form.full_name")}
+                </label>
+                <Input
+                  name="name"
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  required
+                  size="large"
+                  prefix={<User className="text-primary" />}
+                  className={isRTL ? "text-right" : "text-left"}
+                  placeholder={t("consultation.form.name_placeholder")}
+                  dir={isRTL ? "rtl" : "ltr"}
+                />
+              </div>
 
-            {/* Email Field */}
-            <div>
-              <label
-                className={`block mb-2 text-sm font-medium text-text-primary ${
-                  isRTL ? "text-right" : "text-left"
-                }`}
-              >
-                {t("consultation.form.email")}
-              </label>
-              <Input
-                name="email"
-                type="email"
-                value={formData.email}
-                onChange={handleInputChange}
-                required
-                size="large"
-                prefix={<Mail className="text-primary" />}
-                className={isRTL ? "text-right" : "text-left"}
-                placeholder={t("consultation.form.email_placeholder")}
-                dir="ltr"
-              />
-            </div>
+              {/* Email Field */}
+              <div>
+                <label
+                  className={`block mb-2 text-sm font-medium text-text-primary ${
+                    isRTL ? "text-right" : "text-left"
+                  }`}
+                >
+                  {t("consultation.form.email")}
+                </label>
+                <Input
+                  name="email"
+                  type="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  required
+                  size="large"
+                  prefix={<Mail className="text-primary" />}
+                  className={isRTL ? "text-right" : "text-left"}
+                  placeholder={t("consultation.form.email_placeholder")}
+                  dir="ltr"
+                />
+              </div>
 
-            {/* Phone Field */}
-            <div>
-              <label
-                className={`block mb-2 text-sm font-medium text-text-primary ${
-                  isRTL ? "text-right" : "text-left"
-                }`}
-              >
-                {t("consultation.form.phone")}
-              </label>
-              <Input
-                name="phone"
-                type="tel"
-                value={formData.phone}
-                onChange={handleInputChange}
-                required
-                size="large"
-                prefix={<Phone className="text-primary" />}
-                className={isRTL ? "text-right" : "text-left"}
-                placeholder={t("consultation.form.phone_placeholder")}
-                dir="ltr"
-              />
-            </div>
+              {/* Date and Time Selection */}
+              <div>
+                <label
+                  className={`block mb-2 text-sm font-medium text-text-primary ${
+                    isRTL ? "text-right" : "text-left"
+                  }`}
+                >
+                  {currentLanguage === "ar"
+                    ? "اختر التاريخ والوقت"
+                    : "Select Date and Time"}
+                </label>
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <div className="flex-1">
+                    <DatePicker
+                      size="large"
+                      className="w-full"
+                      placeholder={
+                        currentLanguage === "ar"
+                          ? "اختر التاريخ"
+                          : "Select Date"
+                      }
+                      format="DD-MM-YYYY"
+                      value={
+                        selectedDate ? dayjs(selectedDate, "DD-MM-YYYY") : null
+                      }
+                      onChange={(date) => {
+                        if (date) {
+                          const formattedDate = date.format("DD-MM-YYYY");
+                          setSelectedDate(formattedDate);
+                        } else {
+                          setSelectedDate(null);
+                        }
+                      }}
+                      disabledDate={(current) => {
+                        // Disable past dates
+                        return current && current < dayjs().startOf("day");
+                      }}
+                    />
+                  </div>
+                  <div className="flex-1">
+                    <TimePicker
+                      size="large"
+                      className="w-full"
+                      placeholder={
+                        currentLanguage === "ar" ? "اختر الوقت" : "Select Time"
+                      }
+                      format="HH:mm"
+                      value={
+                        selectedStartTime
+                          ? dayjs(selectedStartTime, "HH:mm")
+                          : null
+                      }
+                      onChange={(time) => {
+                        if (time) {
+                          const formattedTime = time.format("HH:mm");
+                          setSelectedStartTime(formattedTime);
+                        } else {
+                          setSelectedStartTime(null);
+                        }
+                      }}
+                      minuteStep={30}
+                      hourStep={1}
+                    />
+                  </div>
+                </div>
+              </div>
 
-            {/* Submit Button */}
-            <Button
-              htmlType="submit"
-              type="primary"
-              size="large"
-              loading={isLoading}
-              className="w-full h-14 rounded-xl text-lg font-semibold bg-primary hover:bg-primary-dark border-none"
-            >
-              {isLoading
-                ? t("consultation.form.loading")
-                : t("consultation.form.submit_button")}
-            </Button>
+              {/* Phone Field */}
+              <div>
+                <label
+                  className={`block mb-2 text-sm font-medium text-text-primary ${
+                    isRTL ? "text-right" : "text-left"
+                  }`}
+                >
+                  {t("consultation.form.phone")}
+                </label>
+                <Input
+                  name="phone"
+                  type="tel"
+                  value={formData.phone}
+                  onChange={handleInputChange}
+                  required
+                  size="large"
+                  prefix={<Phone className="text-primary" />}
+                  className={isRTL ? "text-right" : "text-left"}
+                  placeholder={t("consultation.form.phone_placeholder")}
+                  dir="ltr"
+                />
+              </div>
+            </div>
           </div>
-        </form>
+
+          <div>
+            <h3 className="text-xl font-semibold text-primary mb-4">
+              {currentLanguage === "ar"
+                ? "اختر نوع الاستشارة"
+                : "Select a consultation type"}
+            </h3>
+            {isTypesLoading ? (
+              <div className="flex justify-center py-12">
+                <Spin size="large" />
+              </div>
+            ) : consultationTypes.length === 0 ? (
+              <Empty
+                description={
+                  currentLanguage === "ar"
+                    ? "لا توجد استشارات متاحة حالياً"
+                    : "No consultations available right now"
+                }
+              />
+            ) : (
+              <div className="space-y-4">
+                {consultationTypes.map((consultation) => {
+                  const { hasAED, hasUSD } =
+                    getAvailableCurrencies(consultation);
+                  const priceLines = [];
+
+                  if (hasAED) {
+                    priceLines.push(
+                      `${consultation.price_aed} ${
+                        currentLanguage === "ar" ? "درهم" : "AED"
+                      }`
+                    );
+                  }
+
+                  if (hasUSD) {
+                    priceLines.push(
+                      `${consultation.price_usd} ${
+                        currentLanguage === "ar" ? "دولار" : "USD"
+                      }`
+                    );
+                  }
+
+                  return (
+                    <Card
+                      key={consultation.id}
+                      className="border border-gray-100 shadow-sm hover:shadow-lg transition-all duration-300"
+                    >
+                      <div className="flex flex-col gap-4">
+                        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
+                          <h4 className="text-lg font-semibold text-gray-900">
+                            {consultation.type}
+                          </h4>
+                          {consultation.duration && (
+                            <span className="text-sm font-medium text-primary/80 bg-primary/10 px-3 py-1 rounded-full">
+                              {currentLanguage === "ar"
+                                ? `المدة: ${consultation.duration} دقيقة`
+                                : `Duration: ${consultation.duration} min`}
+                            </span>
+                          )}
+                        </div>
+
+                        <div
+                          className={`${
+                            isRTL ? "text-right" : "text-left"
+                          } text-sm text-gray-600`}
+                        >
+                          {priceLines.length > 0 ? (
+                            priceLines.map((line, index) => (
+                              <div key={index}>{line}</div>
+                            ))
+                          ) : (
+                            <div>
+                              {currentLanguage === "ar"
+                                ? "السعر غير متوفر"
+                                : "Pricing not available"}
+                            </div>
+                          )}
+                        </div>
+
+                        <div>
+                          <Popover
+                            content={renderCurrencyOptions(
+                              consultation,
+                              selectedDate,
+                              selectedStartTime
+                            )}
+                            trigger="click"
+                            open={
+                              openPopoverId === consultation.id &&
+                              hasAED &&
+                              hasUSD
+                            }
+                            onOpenChange={(open) =>
+                              setOpenPopoverId(open ? consultation.id : null)
+                            }
+                            placement={isRTL ? "bottomRight" : "bottomLeft"}
+                          >
+                            <Button
+                              type="primary"
+                              block
+                              size="large"
+                              disabled={isLoading}
+                              onClick={() => {
+                                if (!hasAED && !hasUSD) {
+                                  toast.error(
+                                    currentLanguage === "ar"
+                                      ? "لا تتوفر أسعار لهذه الاستشارة"
+                                      : "No pricing available for this consultation"
+                                  );
+                                  return;
+                                }
+
+                                if (hasAED && hasUSD) {
+                                  setOpenPopoverId(consultation.id);
+                                } else {
+                                  handleBookConsultation(
+                                    consultation,
+                                    hasAED ? "aed" : "usd",
+                                    selectedDate,
+                                    selectedStartTime
+                                  );
+                                }
+                              }}
+                              className="bg-primary hover:bg-primary-dark border-none"
+                            >
+                              {isLoading &&
+                              openPopoverId === consultation.id ? (
+                                <Spin size="small" />
+                              ) : (
+                                t("consultation.form.submit_button")
+                              )}
+                            </Button>
+                          </Popover>
+                        </div>
+                      </div>
+                    </Card>
+                  );
+                })}
+              </div>
+            )}
+
+            {pagination && pagination.last_page > 1 && (
+              <div className="flex justify-center mt-6">
+                <Pagination
+                  current={pagination.current_page}
+                  total={pagination.total}
+                  pageSize={pagination.per_page}
+                  onChange={handlePaginationChange}
+                  showSizeChanger={false}
+                  disabled={isTypesLoading}
+                />
+              </div>
+            )}
+          </div>
+        </div>
       </Modal>
     </div>
   );
