@@ -293,6 +293,46 @@
       "success": "Consultation booked successfully!",
       "error": "Failed to book consultation. Please try again."
     },
+    "steps": {
+      "consultation_type": "Consultation Type",
+      "personal_info": "Personal Info",
+      "date_time": "Date & Time",
+      "payment": "Payment"
+    },
+    "step_content": {
+      "select_consultation_type": "Select a consultation type",
+      "your_personal_info": "Your Personal Information",
+      "select_date_time": "Select Date and Time",
+      "select_payment": "Select Payment",
+      "date": "Date",
+      "time": "Time",
+      "select_date": "Select Date",
+      "select_time": "Select Time",
+      "date_time_label": "Date & Time:",
+      "select_currency": "Select payment currency",
+      "select_currency_continue": "Select a currency to continue",
+      "duration_min": "min",
+      "duration_label": "Duration:",
+      "pricing_not_available": "Pricing not available",
+      "no_consultations": "No consultations available right now",
+      "no_pricing": "No pricing available for this consultation"
+    },
+    "cta": {
+      "title": "Ready to Start Your Journey?",
+      "description": "Book your private consultation now and receive personalized expert guidance to achieve your financial goals."
+    },
+    "buttons": {
+      "next": "Next",
+      "previous": "Previous",
+      "cancel": "Cancel"
+    },
+    "errors": {
+      "select_consultation": "Please select a consultation type",
+      "fill_personal_info": "Please fill in all personal information",
+      "select_date_time": "Please select date and time",
+      "payment_failed": "Failed to process payment. Please try again.",
+      "booking_failed": "Failed to book consultation. Please try again."
+    },
     "why_title": "Why Choose Private Consultation?",
     "benefits": [
       {

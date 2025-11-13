@@ -293,6 +293,46 @@
       "success": "تم حجز الاستشارة بنجاح!",
       "error": "فشل حجز الاستشارة. يرجى المحاولة مرة أخرى."
     },
+    "steps": {
+      "consultation_type": "نوع الاستشارة",
+      "personal_info": "البيانات الشخصية",
+      "date_time": "التاريخ والوقت",
+      "payment": "الدفع"
+    },
+    "step_content": {
+      "select_consultation_type": "اختر نوع الاستشارة",
+      "your_personal_info": "بياناتك الشخصية",
+      "select_date_time": "اختر التاريخ والوقت",
+      "select_payment": "اختر طريقة الدفع",
+      "date": "التاريخ",
+      "time": "الوقت",
+      "select_date": "اختر التاريخ",
+      "select_time": "اختر الوقت",
+      "date_time_label": "التاريخ والوقت:",
+      "select_currency": "اختر العملة للدفع",
+      "select_currency_continue": "اختر العملة للمتابعة",
+      "duration_min": "دقيقة",
+      "duration_label": "المدة:",
+      "pricing_not_available": "السعر غير متوفر",
+      "no_consultations": "لا توجد استشارات متاحة حالياً",
+      "no_pricing": "لا تتوفر أسعار لهذه الاستشارة"
+    },
+    "cta": {
+      "title": "مستعد لبدء رحلتك؟",
+      "description": "احجز استشارتك الخاصة الآن واحصل على إرشاد خبير مخصص لتحقيق أهدافك المالية."
+    },
+    "buttons": {
+      "next": "التالي",
+      "previous": "السابق",
+      "cancel": "إلغاء"
+    },
+    "errors": {
+      "select_consultation": "يرجى اختيار نوع الاستشارة",
+      "fill_personal_info": "يرجى إدخال جميع البيانات الشخصية",
+      "select_date_time": "يرجى اختيار التاريخ والوقت",
+      "payment_failed": "فشل معالجة الدفع. يرجى المحاولة مرة أخرى.",
+      "booking_failed": "فشل حجز الاستشارة. يرجى المحاولة مرة أخرى."
+    },
     "why_title": "لماذا تختار الاستشارة الخاصة؟",
     "benefits": [
       {
