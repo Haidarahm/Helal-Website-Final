@@ -1,5 +1,5 @@
 import { useEffect, useMemo } from "react";
-import { DatePicker, TimePicker } from "antd";
+import { DatePicker } from "antd";
 import dayjs from "dayjs";
 import { useTranslation } from "react-i18next";
 import useAvailabilityStore from "../../../store/availabilityStore.js";
@@ -40,6 +40,21 @@ const ConsultationScheduleStep = ({
     });
     return weekdays;
   }, [availabilities]);
+
+  // Generate time slots from 1:00 to 24:00
+  const timeSlots = useMemo(() => {
+    const slots = [];
+    for (let hour = 1; hour <= 24; hour++) {
+      const timeStr = `${String(hour).padStart(2, "0")}:00`;
+      slots.push(timeStr);
+    }
+    return slots;
+  }, []);
+
+  // Handle time selection
+  const handleTimeSelect = (timeStr) => {
+    onTimeChange(timeStr);
+  };
 
   return (
     <div className="space-y-6">
@@ -86,22 +101,32 @@ const ConsultationScheduleStep = ({
         >
           {t("consultation.step_content.time")}
         </label>
-        <TimePicker
-          size="large"
-          className="w-full"
-          placeholder={t("consultation.step_content.select_time")}
-          format="HH:mm"
-          value={selectedStartTime ? dayjs(selectedStartTime, "HH:mm") : null}
-          onChange={(time) => {
-            if (time) {
-              onTimeChange(time.format("HH:mm"));
-            } else {
-              onTimeChange(null);
-            }
-          }}
-          minuteStep={30}
-          hourStep={1}
-        />
+        <div className="max-h-64 overflow-y-auto border border-gray-200 rounded-lg p-4 bg-white">
+          <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 gap-2">
+            {timeSlots.map((timeStr) => {
+              const isSelected = selectedStartTime === timeStr;
+
+              return (
+                <button
+                  key={timeStr}
+                  type="button"
+                  onClick={() => handleTimeSelect(timeStr)}
+                  className={`
+                    px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200
+                    ${
+                      isSelected
+                        ? "bg-primary text-white shadow-md scale-105"
+                        : "bg-white text-text-primary border border-gray-300 hover:border-primary hover:bg-primary/5 hover:text-primary"
+                    }
+                    ${isRTL ? "text-right" : "text-left"}
+                  `}
+                >
+                  {timeStr}
+                </button>
+              );
+            })}
+          </div>
+        </div>
       </div>
     </div>
   );
