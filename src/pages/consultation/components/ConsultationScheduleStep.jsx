@@ -1,6 +1,8 @@
+import { useEffect, useMemo } from "react";
 import { DatePicker, TimePicker } from "antd";
 import dayjs from "dayjs";
 import { useTranslation } from "react-i18next";
+import useAvailabilityStore from "../../../store/availabilityStore.js";
 
 const ConsultationScheduleStep = ({
   selectedDate,
@@ -10,6 +12,34 @@ const ConsultationScheduleStep = ({
   isRTL,
 }) => {
   const { t } = useTranslation();
+  const { availabilities, fetchAvailableDates } = useAvailabilityStore();
+
+  // Fetch available dates on mount
+  useEffect(() => {
+    fetchAvailableDates();
+  }, [fetchAvailableDates]);
+
+  // Get available weekdays from availabilities
+  const availableWeekdays = useMemo(() => {
+    const weekdays = new Set();
+    availabilities.forEach((availability) => {
+      // Map day names to dayjs day numbers (0 = Sunday, 1 = Monday, etc.)
+      const dayMap = {
+        Sunday: 0,
+        Monday: 1,
+        Tuesday: 2,
+        Wednesday: 3,
+        Thursday: 4,
+        Friday: 5,
+        Saturday: 6,
+      };
+      const dayNum = dayMap[availability.day];
+      if (dayNum !== undefined) {
+        weekdays.add(dayNum);
+      }
+    });
+    return weekdays;
+  }, [availabilities]);
 
   return (
     <div className="space-y-6">
@@ -34,9 +64,17 @@ const ConsultationScheduleStep = ({
               onDateChange(null);
             }
           }}
-          disabledDate={(current) =>
-            current && current < dayjs().startOf("day")
-          }
+          disabledDate={(current) => {
+            if (!current) return false;
+            // Disable past dates
+            if (current < dayjs().startOf("day")) return true;
+            // Disable dates that are not in available weekdays
+            if (availableWeekdays.size > 0) {
+              const dayOfWeek = current.day();
+              return !availableWeekdays.has(dayOfWeek);
+            }
+            return false;
+          }}
         />
       </div>
 
