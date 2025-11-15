@@ -370,7 +370,12 @@ export default function Consultation() {
               : t("consultation.buttons.previous")}
           </Button>
           {currentStep < 3 && (
-            <Button type="primary" onClick={handleNext} size="large">
+            <Button
+              type="primary"
+              onClick={handleNext}
+              size="large"
+              className="hover:opacity-90 transition-opacity"
+            >
               {t("consultation.buttons.next")}
             </Button>
           )}

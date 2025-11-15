@@ -19,3 +19,17 @@ export const getBookedAppointments = async (month, year) => {
     throw error;
   }
 };
+
+// Get available intervals for a specific date
+export const getAvailableIntervals = async (date) => {
+  try {
+    const response = await api.get(`/available-intervals`, {
+      params:{
+        date: date,
+      }
+    });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};

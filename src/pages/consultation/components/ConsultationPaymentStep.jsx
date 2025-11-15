@@ -1,4 +1,3 @@
-import { Button, Card, Space } from "antd";
 import { useTranslation } from "react-i18next";
 
 const ConsultationPaymentStep = ({
@@ -20,58 +19,62 @@ const ConsultationPaymentStep = ({
   const renderCurrencyButtons = () => {
     if (hasAED && hasUSD) {
       return (
-        <Space direction="vertical" className="w-full" size="middle">
-          <Button
-            type="primary"
-            block
-            size="large"
+        <div className="space-y-3">
+          <button
+            type="button"
             disabled={isLoading}
             onClick={() => onPay("AED")}
-            className="bg-primary hover:bg-primary-dark"
+            className="w-full bg-primary text-white py-4 px-6 rounded-lg font-semibold text-lg hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {`${selectedConsultation.price_aed} AED`}
-          </Button>
-          <Button
-            type="primary"
-            block
-            size="large"
+            <span className="text-2xl font-bold">
+              {selectedConsultation.price_aed}
+            </span>{" "}
+            <span className="text-base font-normal">AED</span>
+          </button>
+          <button
+            type="button"
             disabled={isLoading}
             onClick={() => onPay("USD")}
-            className="bg-primary hover:bg-primary-dark"
+            className="w-full bg-primary text-white py-4 px-6 rounded-lg font-semibold text-lg hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {`${selectedConsultation.price_usd} USD`}
-          </Button>
-        </Space>
+            <span className="text-2xl font-bold">
+              {selectedConsultation.price_usd}
+            </span>{" "}
+            <span className="text-base font-normal">USD</span>
+          </button>
+        </div>
       );
     }
 
     if (hasAED) {
       return (
-        <Button
-          type="primary"
-          block
-          size="large"
+        <button
+          type="button"
           disabled={isLoading}
           onClick={() => onPay("AED")}
-          className="bg-primary hover:bg-primary-dark"
+          className="w-full bg-primary text-white py-4 px-6 rounded-lg font-semibold text-lg hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {`${selectedConsultation.price_aed} AED`}
-        </Button>
+          <span className="text-2xl font-bold">
+            {selectedConsultation.price_aed}
+          </span>{" "}
+          <span className="text-base font-normal">AED</span>
+        </button>
       );
     }
 
     if (hasUSD) {
       return (
-        <Button
-          type="primary"
-          block
-          size="large"
+        <button
+          type="button"
           disabled={isLoading}
           onClick={() => onPay("USD")}
-          className="bg-primary hover:bg-primary-dark"
+          className="w-full bg-primary text-white py-4 px-6 rounded-lg font-semibold text-lg hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {`${selectedConsultation.price_usd} USD`}
-        </Button>
+          <span className="text-2xl font-bold">
+            {selectedConsultation.price_usd}
+          </span>{" "}
+          <span className="text-base font-normal">USD</span>
+        </button>
       );
     }
 
@@ -83,34 +86,34 @@ const ConsultationPaymentStep = ({
   };
 
   return (
-    <div className="space-y-4">
-      <Card className="border border-gray-200">
+    <div className="space-y-6">
+      <div className="bg-gray-50 rounded-lg p-6 border border-gray-100">
         <div className="space-y-4">
           <div>
-            <h4 className="text-lg font-semibold text-gray-900 mb-2">
+            <h4 className="text-xl font-bold text-gray-900 mb-1">
               {selectedConsultation.type}
             </h4>
             {selectedConsultation.duration && (
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-gray-500">
                 {t("consultation.step_content.duration_label")}{" "}
                 {selectedConsultation.duration}{" "}
                 {t("consultation.step_content.duration_min")}
               </p>
             )}
           </div>
-          <div className="border-t pt-4">
-            <p className="text-sm text-gray-600 mb-2">
+          <div className="border-t border-gray-200 pt-4">
+            <p className="text-xs text-gray-500 mb-1 uppercase tracking-wide">
               {t("consultation.step_content.date_time_label")}
             </p>
-            <p className="font-medium">
-              {selectedDate} {selectedStartTime && `at ${selectedStartTime}`}
+            <p className="text-base font-semibold text-gray-900">
+              {selectedDate} {selectedStartTime && `• ${selectedStartTime}`}
             </p>
           </div>
         </div>
-      </Card>
+      </div>
 
       <div>
-        <p className="text-sm font-medium text-gray-700 mb-4">
+        <p className="text-sm font-semibold text-gray-900 mb-3">
           {t("consultation.step_content.select_currency")}
         </p>
         {renderCurrencyButtons()}

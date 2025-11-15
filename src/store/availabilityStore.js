@@ -2,14 +2,17 @@ import { create } from "zustand";
 import {
   getAvailableDates as getAvailableDatesApi,
   getBookedAppointments as getBookedAppointmentsApi,
+  getAvailableIntervals as getAvailableIntervalsApi,
 } from "../apis/availability.js";
 
 const useAvailabilityStore = create((set, get) => ({
   // State
   availabilities: [],
   bookedAppointments: [],
+  availableIntervals: null,
   isLoading: false,
   isAppointmentsLoading: false,
+  isIntervalsLoading: false,
   error: null,
 
   // Actions
@@ -78,11 +81,43 @@ const useAvailabilityStore = create((set, get) => ({
     }
   },
 
+  // Fetch available intervals for a specific date
+  fetchAvailableIntervals: async (date) => {
+    try {
+      set({ isIntervalsLoading: true, error: null });
+      const response = await getAvailableIntervalsApi(date);
+
+      if (response?.status === "success" && response?.data) {
+        set({
+          availableIntervals: response.data,
+          isIntervalsLoading: false,
+        });
+        return response.data;
+      }
+
+      throw new Error("Invalid response format");
+    } catch (error) {
+      const errorMessage =
+        error?.response?.data?.message ||
+        error?.message ||
+        "Failed to fetch available intervals";
+      set({
+        error: errorMessage,
+        isIntervalsLoading: false,
+        availableIntervals: null,
+      });
+      return null;
+    }
+  },
+
   // Clear booked appointments
   clearBookedAppointments: () => set({ bookedAppointments: [] }),
 
   // Clear availabilities
   clearAvailabilities: () => set({ availabilities: [] }),
+
+  // Clear available intervals
+  clearAvailableIntervals: () => set({ availableIntervals: null }),
 }));
 
 export default useAvailabilityStore;
