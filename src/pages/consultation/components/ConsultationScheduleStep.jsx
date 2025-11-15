@@ -159,42 +159,49 @@ const ConsultationScheduleStep = ({
           {t("consultation.step_content.time")}
         </label>
         {!selectedDate ? (
-          <div className="p-4 text-center text-text-secondary border border-gray-200 rounded-lg bg-gray-50">
-            {t("consultation.step_content.select_date_first")}
+          <div className="p-6 text-center text-text-secondary border border-gray-200 rounded-xl bg-gray-50">
+            <p className="text-sm">
+              {t("consultation.step_content.select_date_first")}
+            </p>
           </div>
         ) : isIntervalsLoading ? (
-          <div className="flex items-center justify-center py-8 border border-gray-200 rounded-lg bg-white">
+          <div className="flex items-center justify-center py-12 border border-gray-200 rounded-xl bg-white">
             <Spin size="large" />
           </div>
         ) : timeSlots.length === 0 ? (
-          <div className="p-4 text-center text-text-secondary border border-gray-200 rounded-lg bg-gray-50">
-            {t("consultation.step_content.no_time_slots")}
+          <div className="p-6 text-center text-text-secondary border border-gray-200 rounded-xl bg-gray-50">
+            <p className="text-sm">
+              {t("consultation.step_content.no_time_slots")}
+            </p>
           </div>
         ) : (
-          <div className="max-h-64 overflow-y-auto border border-gray-200 rounded-lg p-4 bg-white">
-            <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 gap-2">
-              {timeSlots.map((timeStr) => {
-                const isSelected = selectedStartTime === timeStr;
+          <div className="border border-gray-200 rounded-xl bg-white overflow-hidden">
+            <div className="max-h-80 overflow-y-auto p-3 sm:p-4">
+              <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 2xl:grid-cols-8 gap-2 sm:gap-3">
+                {timeSlots.map((timeStr) => {
+                  const isSelected = selectedStartTime === timeStr;
 
-                return (
-                  <button
-                    key={timeStr}
-                    type="button"
-                    onClick={() => handleTimeSelect(timeStr)}
-                    className={`
-                      px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200
-                      ${
-                        isSelected
-                          ? "bg-primary text-white shadow-md scale-105"
-                          : "bg-white text-text-primary border border-gray-300 hover:border-primary hover:bg-primary/5 hover:text-primary"
-                      }
-                      ${isRTL ? "text-right" : "text-left"}
-                    `}
-                  >
-                    {timeStr}
-                  </button>
-                );
-              })}
+                  return (
+                    <button
+                      key={timeStr}
+                      type="button"
+                      onClick={() => handleTimeSelect(timeStr)}
+                      className={`
+                        px-2.5 py-2.5 sm:px-3 sm:py-3 text-xs sm:text-sm font-medium rounded-lg 
+                        transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-1
+                        ${
+                          isSelected
+                            ? "bg-primary text-white shadow-md scale-105 ring-2 ring-primary ring-offset-1"
+                            : "bg-white text-text-primary border border-gray-300 hover:border-primary hover:bg-primary/5 hover:text-primary active:scale-95"
+                        }
+                        ${isRTL ? "text-right" : "text-left"}
+                      `}
+                    >
+                      {timeStr}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
           </div>
         )}
