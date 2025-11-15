@@ -315,7 +315,10 @@ export default function Consultation() {
 
           {currentStep === 1 && (
             <>
-              <h3 className="text-xl font-semibold text-primary mb-6">
+              <h3
+                className="text-xl font-semibold text-primary mb-6"
+                dir={isRTL ? "rtl" : "ltr"}
+              >
                 {t("consultation.step_content.your_personal_info")}
               </h3>
               <ConsultationPersonalInfoStep
@@ -329,7 +332,10 @@ export default function Consultation() {
 
           {currentStep === 2 && (
             <>
-              <h3 className="text-xl font-semibold text-primary mb-6">
+              <h3
+                className="text-xl font-semibold text-primary mb-6"
+                dir={isRTL ? "rtl" : "ltr"}
+              >
                 {t("consultation.step_content.select_date_time")}
               </h3>
               <ConsultationScheduleStep
@@ -344,7 +350,10 @@ export default function Consultation() {
 
           {currentStep === 3 && (
             <>
-              <h3 className="text-xl font-semibold text-primary mb-6">
+              <h3
+                className="text-xl font-semibold text-primary mb-6"
+                dir={isRTL ? "rtl" : "ltr"}
+              >
                 {t("consultation.step_content.select_payment")}
               </h3>
               <ConsultationPaymentStep
@@ -354,6 +363,7 @@ export default function Consultation() {
                 getAvailableCurrencies={getAvailableCurrencies}
                 onPay={handleBookConsultation}
                 isLoading={isLoading}
+                isRTL={isRTL}
               />
             </>
           )}
@@ -374,7 +384,7 @@ export default function Consultation() {
               type="primary"
               onClick={handleNext}
               size="large"
-              className="hover:opacity-90 transition-opacity"
+              className="hover:opacity-95 active:opacity-90 transition-all duration-200"
             >
               {t("consultation.buttons.next")}
             </Button>
