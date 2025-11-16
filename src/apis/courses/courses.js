@@ -1,11 +1,13 @@
 import api from "./../config.js";
 
 // Get courses by language
-export const getCourses = async (lang = "ar") => {
+export const getCourses = async (lang = "ar", page = 1, per_page = 5) => {
   try {
     const response = await api.get(`/courses`, {
       params: {
         lang,
+        page,
+        per_page,
       },
     });
     return response.data;

@@ -8,6 +8,12 @@ import {
 const useCoursesStore = create((set, get) => ({
   // State
   courses: [],
+  pagination: {
+    current_page: 1,
+    last_page: 1,
+    per_page: 5,
+    total: 0,
+  },
   enrolledCourses: [],
   isLoading: false,
   error: null,
@@ -17,16 +23,21 @@ const useCoursesStore = create((set, get) => ({
   setError: (error) => set({ error, isLoading: false }),
   setLoading: (isLoading) => set({ isLoading }),
 
-  // Fetch courses
-  fetchCourses: async (lang = "ar") => {
+  // Fetch courses (offline) with pagination
+  fetchCourses: async (lang = "ar", page = 1, perPage = 5) => {
     try {
       set({ isLoading: true, error: null });
-      const response = await getCoursesApi(lang);
-    
-      if (response?.status === true) {
-        console.log(response.data);
+      const response = await getCoursesApi(lang, page, perPage);
+
+      if (response?.status === true && Array.isArray(response?.data)) {
         set({
           courses: response.data,
+          pagination: response.pagination ?? {
+            current_page: page,
+            last_page: 1,
+            per_page: perPage,
+            total: response.data.length,
+          },
           isLoading: false,
         });
         return response.data;
@@ -38,7 +49,12 @@ const useCoursesStore = create((set, get) => ({
         error?.response?.data?.message ||
         error?.message ||
         "Failed to fetch courses";
-      set({ error: errorMessage, isLoading: false });
+      set({
+        error: errorMessage,
+        isLoading: false,
+        pagination: { current_page: 1, last_page: 1, per_page: 5, total: 0 },
+        courses: [],
+      });
       return [];
     }
   },

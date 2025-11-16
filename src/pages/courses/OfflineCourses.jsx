@@ -5,20 +5,31 @@ import { useCoursesStore } from "../../store";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { Popover, Button, Space } from "antd";
+import { Popover, Button, Space, Pagination } from "antd";
 
 const OfflineCourses = () => {
   const { t, i18n } = useTranslation();
   const { isRTL } = useLanguage();
-  const { courses, isLoading, enrollCourse, fetchCourses } = useCoursesStore();
+  const { courses, pagination, isLoading, enrollCourse, fetchCourses } =
+    useCoursesStore();
   const [enrollingCourseId, setEnrollingCourseId] = useState(null);
   const [openPopoverId, setOpenPopoverId] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
   const navigate = useNavigate();
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    fetchCourses(i18n.language);
+    setCurrentPage(1);
+    fetchCourses(i18n.language, 1, 5);
   }, [i18n.language, fetchCourses]);
+
+  useEffect(() => {
+    // keep local page in sync with store pagination when it changes externally
+    if (pagination?.current_page && pagination.current_page !== currentPage) {
+      setCurrentPage(pagination.current_page);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pagination?.current_page]);
 
   const handleEnrollClick = async (course, currency) => {
     try {
@@ -271,6 +282,23 @@ const OfflineCourses = () => {
               </div>
             </article>
           ))}
+        </div>
+      )}
+
+      {/* Pagination */}
+      {pagination?.total > (pagination?.per_page || 5) && (
+        <div className="flex items-center justify-center mt-10">
+          <Pagination
+            current={pagination.current_page || currentPage}
+            pageSize={pagination.per_page || 5}
+            total={pagination.total || 0}
+            onChange={(p) => {
+              setCurrentPage(p);
+              fetchCourses(i18n.language, p, pagination.per_page || 5);
+              window.scrollTo(0, 0);
+            }}
+            showSizeChanger={false}
+          />
         </div>
       )}
     </div>

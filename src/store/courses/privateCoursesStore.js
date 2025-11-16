@@ -12,7 +12,7 @@ const usePrivateCoursesStore = create((set, get) => ({
   pagination: {
     current_page: 1,
     last_page: 1,
-    per_page: 10,
+    per_page: 5,
     total: 0,
   },
   optionsByLessonId: {},
@@ -33,7 +33,7 @@ const usePrivateCoursesStore = create((set, get) => ({
   clearEnrollment: () => set({ enrollment: null }),
 
   // Actions
-  fetchPrivateLessons: async ({ lang, page = 1, per_page = 10 } = {}) => {
+  fetchPrivateLessons: async ({ lang, page = 1, per_page = 5 } = {}) => {
     try {
       set({ isLoading: true, error: null });
       const response = await fetchPrivateLessonsApi({ lang, page, per_page });
@@ -60,7 +60,7 @@ const usePrivateCoursesStore = create((set, get) => ({
         "Failed to fetch private lessons";
       set({
         lessons: [],
-        pagination: { current_page: 1, last_page: 1, per_page: 10, total: 0 },
+        pagination: { current_page: 1, last_page: 1, per_page: 5, total: 0 },
         isLoading: false,
         error: message,
       });

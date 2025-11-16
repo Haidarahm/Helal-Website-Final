@@ -25,12 +25,14 @@ const OnlineCourses = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
     setCurrentPage(1);
+    fetchOnlineCourses(i18n.language, 1, 5);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [i18n.language]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
     fetchOnlineCourses(i18n.language, currentPage, 5);
-  }, [i18n.language, currentPage, fetchOnlineCourses]);
+  }, [currentPage, fetchOnlineCourses, i18n.language]);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -332,9 +334,9 @@ const OnlineCourses = () => {
       {pagination && pagination.last_page > 1 && (
         <div className="flex justify-center mt-12 mb-8">
           <Pagination
-            current={pagination.current_page}
-            total={pagination.total}
-            pageSize={pagination.per_page}
+            current={currentPage}
+            total={pagination.total || 0}
+            pageSize={pagination.per_page || 5}
             onChange={handlePageChange}
             showSizeChanger={false}
             showTotal={(total, range) =>

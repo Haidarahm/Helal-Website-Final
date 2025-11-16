@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "../../context/LanguageContext";
 import { usePrivateCoursesStore } from "../../store";
+import { Pagination } from "antd";
 
 const PrivateCourses = () => {
   const { t, i18n } = useTranslation();
@@ -19,7 +20,7 @@ const PrivateCourses = () => {
   }, []);
 
   useEffect(() => {
-    fetchPrivateLessons({ lang, page, per_page: 9 });
+    fetchPrivateLessons({ lang, page, per_page: 5 });
   }, [lang, page, fetchPrivateLessons]);
 
   return (
@@ -27,7 +28,6 @@ const PrivateCourses = () => {
       className="max-w-7xl mx-auto px-4 md:px-6 py-8"
       dir={isRTL ? "rtl" : "ltr"}
     >
-
       {/* Grid */}
       {isLoading ? (
         <div className="py-24 text-center text-gray-500">
@@ -77,35 +77,15 @@ const PrivateCourses = () => {
       )}
 
       {/* Pagination */}
-      {pagination?.last_page > 1 && (
-        <div className="flex items-center justify-center gap-3 mt-10">
-          <button
-            type="button"
-            disabled={page <= 1}
-            onClick={() => setPage((p) => Math.max(1, p - 1))}
-            className={`px-4 py-2 rounded-lg border ${
-              page <= 1 ? "opacity-50 cursor-not-allowed" : "hover:bg-gray-50"
-            }`}
-          >
-            {t("prev") || (isRTL ? "السابق" : "Prev")}
-          </button>
-          <span className="text-sm text-gray-600">
-            {pagination.current_page || page} / {pagination.last_page}
-          </span>
-          <button
-            type="button"
-            disabled={page >= (pagination.last_page || 1)}
-            onClick={() =>
-              setPage((p) => Math.min(pagination.last_page || p + 1, p + 1))
-            }
-            className={`px-4 py-2 rounded-lg border ${
-              page >= (pagination.last_page || 1)
-                ? "opacity-50 cursor-not-allowed"
-                : "hover:bg-gray-50"
-            }`}
-          >
-            {t("next") || (isRTL ? "التالي" : "Next")}
-          </button>
+      {pagination && (
+        <div className="flex items-center justify-center mt-10">
+          <Pagination
+            current={pagination.current_page || page}
+            pageSize={pagination.per_page || 5}
+            total={pagination.total || lessons.length}
+            onChange={(p) => setPage(p)}
+            showSizeChanger={false}
+          />
         </div>
       )}
     </div>

@@ -4,7 +4,7 @@ const buildParams = (lang, pagination, perPage) => {
   const params = {};
   if (lang) params.lang = lang;
   if (pagination !== undefined && pagination !== null) {
-    params.pagination = pagination;
+    params.page = pagination;
   }
   if (perPage !== undefined && perPage !== null) {
     params.per_page = perPage;
