@@ -121,6 +121,13 @@ const PrivateCourses = () => {
       className="max-w-7xl mx-auto px-4 md:px-6 py-8"
       dir={isRTL ? "rtl" : "ltr"}
     >
+      {/* Description */}
+      <div className="mb-8 text-center max-w-4xl mx-auto">
+        <p className="text-gray-700 leading-relaxed text-base md:text-lg">
+          {t("courses.private_courses_desc")}
+        </p>
+      </div>
+
       {/* Grid */}
       {isLoading ? (
         <div className="flex items-center justify-center py-32">
@@ -298,27 +305,31 @@ const PrivateCourses = () => {
                                 </span>
                               </div>
 
-                              <div className="flex items-center gap-2 text-sm font-semibold text-primary pt-1">
-                                {opt.price_aed &&
-                                  parseFloat(opt.price_aed) > 0 && (
-                                    <span>
-                                      {opt.price_aed}{" "}
-                                      {t("courses.currency.aed")}
-                                    </span>
-                                  )}
-                                {opt.price_aed &&
-                                  opt.price_usd &&
-                                  parseFloat(opt.price_aed) > 0 &&
-                                  parseFloat(opt.price_usd) > 0 && (
-                                    <span className="text-gray-400">•</span>
-                                  )}
-                                {opt.price_usd &&
-                                  parseFloat(opt.price_usd) > 0 && (
-                                    <span>
-                                      {opt.price_usd}{" "}
-                                      {t("courses.currency.usd")}
-                                    </span>
-                                  )}
+                              <div className="pt-2 border-t border-gray-100">
+                                <div className="flex items-baseline gap-3">
+                                  {opt.price_usd &&
+                                    parseFloat(opt.price_usd) > 0 && (
+                                      <div className="flex items-baseline gap-1">
+                                        <span className="text-2xl font-bold text-primary">
+                                          {opt.price_usd}
+                                        </span>
+                                        <span className="text-sm font-semibold text-gray-600">
+                                          {t("courses.currency.usd")}
+                                        </span>
+                                      </div>
+                                    )}
+                                  {opt.price_aed &&
+                                    parseFloat(opt.price_aed) > 0 && (
+                                      <div className="flex items-baseline gap-1">
+                                        <span className="text-lg font-semibold text-gray-700">
+                                          {opt.price_aed}
+                                        </span>
+                                        <span className="text-xs font-medium text-gray-500">
+                                          {t("courses.currency.aed")}
+                                        </span>
+                                      </div>
+                                    )}
+                                </div>
                               </div>
                             </div>
                           </div>

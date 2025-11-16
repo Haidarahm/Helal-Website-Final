@@ -50,7 +50,7 @@ export default function MyCourses() {
           </div>
 
           {/* Selector Buttons */}
-          <div className="max-w-4xl mx-auto mb-12 flex justify-center">
+          <div className="max-w-4xl mx-auto flex justify-center">
             <div
               className={`flex gap-4 ${
                 isRTL ? "flex-row-reverse" : "flex-row"

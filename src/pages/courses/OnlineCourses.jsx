@@ -179,7 +179,17 @@ const OnlineCourses = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto" dir={isRTL ? "rtl" : "ltr"}>
+    <div
+      className="max-w-7xl mx-auto px-4 md:px-6 py-8"
+      dir={isRTL ? "rtl" : "ltr"}
+    >
+      {/* Description */}
+      <div className="mb-8 text-center max-w-4xl mx-auto">
+        <p className="text-gray-700 leading-relaxed text-base md:text-lg">
+          {t("courses.online_courses_desc")}
+        </p>
+      </div>
+
       {isLoading ? (
         <div className="flex items-center justify-center py-32">
           <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>

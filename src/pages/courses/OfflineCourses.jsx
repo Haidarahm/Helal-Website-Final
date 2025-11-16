@@ -146,7 +146,17 @@ const OfflineCourses = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto" dir={isRTL ? "rtl" : "ltr"}>
+    <div
+      className="max-w-7xl mx-auto px-4 md:px-6 py-8"
+      dir={isRTL ? "rtl" : "ltr"}
+    >
+      {/* Description */}
+      <div className="mb-8 text-center max-w-4xl mx-auto">
+        <p className="text-gray-700 leading-relaxed text-base md:text-lg">
+          {t("courses.offline_courses_desc")}
+        </p>
+      </div>
+
       {courses.length === 0 && !isLoading && (
         <div className="text-center py-32 text-gray-500 text-lg">
           {t("courses.no_courses") || "No courses available"}

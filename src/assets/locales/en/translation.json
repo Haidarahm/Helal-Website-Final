@@ -283,7 +283,10 @@
     "no_options": "No options available",
     "price_label": "Price",
     "review_booking": "Review Booking",
-    "confirm_enroll": "Confirm Enrollment"
+    "confirm_enroll": "Confirm Enrollment",
+    "online_courses_desc": "Specialized online sessions in trading and investment that provide you with practical and direct explanations to help you understand markets and make informed decisions. The sessions are characterized by simplicity, clarity, and immediate application, giving you the essential skills to start with confidence and achieve better results in less time.",
+    "offline_courses_desc": "Recorded sessions in trading and investment that provide clear and concise explanations to help you understand market fundamentals and apply them practically. You can watch them anytime at your own pace, to acquire the necessary skills and build your confidence in making informed investment decisions.",
+    "private_courses_desc": "Individual private sessions in trading and investment that provide you with direct education designed entirely according to your level and goals. You will receive professional step-by-step guidance, with personal analysis of your inquiries and strategies, helping you develop your skills quickly and make more accurate and confident decisions in the market."
   },
   "videos": {
     "title": "Videos",
