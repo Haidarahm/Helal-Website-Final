@@ -30,8 +30,8 @@ const PrivateCourses = () => {
     >
       {/* Grid */}
       {isLoading ? (
-        <div className="py-24 text-center text-gray-500">
-          {t("loading") || (isRTL ? "جاري التحميل..." : "Loading...")}
+        <div className="flex items-center justify-center py-32">
+          <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
         </div>
       ) : lessons.length === 0 ? (
         <div className="py-24 text-center text-gray-500">

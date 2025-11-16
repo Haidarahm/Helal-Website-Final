@@ -180,7 +180,7 @@ const OnlineCourses = () => {
 
   return (
     <div className="max-w-7xl mx-auto" dir={isRTL ? "rtl" : "ltr"}>
-      {isLoading && onlineCourses.length === 0 ? (
+      {isLoading ? (
         <div className="flex items-center justify-center py-32">
           <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
         </div>
