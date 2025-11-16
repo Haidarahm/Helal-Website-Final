@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { useLanguage } from "../../context/LanguageContext";
 import certPdf from "../../assets/pdf/الخبرات.pdf";
 import { useNavigate } from "react-router-dom";
-
+import cert from "../../assets/certificates/1.jpg";
 export default function Hero() {
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -35,7 +35,9 @@ export default function Hero() {
       >
         <h1
           className={`text-4xl md:text-5xl 2xl:text-7xl  font-extrabold text-primary tracking-tight  drop-shadow-md  ${
-            isRTL ? "text-right font-family-zain leading-12 md:leading-24" : "text-left"
+            isRTL
+              ? "text-right font-family-zain leading-12 md:leading-24"
+              : "text-left"
           }`}
           data-aos="fade-up"
         >
@@ -88,6 +90,9 @@ export default function Hero() {
         data-aos-delay="150"
       >
         <div className="container-image relative h-full w-full">
+          {/* <div className="certificate absolute h-full flex items-center">
+            <img className="top-0 left-0 w-full " src={cert} alt="" />
+          </div> */}
           <img
             src={helal}
             alt="Helal"
