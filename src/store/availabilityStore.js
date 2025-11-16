@@ -1,23 +1,19 @@
 import { create } from "zustand";
 import {
   getAvailableDates as getAvailableDatesApi,
-  getBookedAppointments as getBookedAppointmentsApi,
   getAvailableIntervals as getAvailableIntervalsApi,
 } from "../apis/availability.js";
 
 const useAvailabilityStore = create((set, get) => ({
   // State
   availabilities: [],
-  bookedAppointments: [],
   availableIntervals: null,
   isLoading: false,
-  isAppointmentsLoading: false,
   isIntervalsLoading: false,
   error: null,
 
   // Actions
-  setError: (error) =>
-    set({ error, isLoading: false, isAppointmentsLoading: false }),
+  setError: (error) => set({ error, isLoading: false }),
   setLoading: (isLoading) => set({ isLoading }),
 
   // Fetch available dates
@@ -52,35 +48,6 @@ const useAvailabilityStore = create((set, get) => ({
     }
   },
 
-  // Fetch booked appointments
-  fetchBookedAppointments: async (month, year) => {
-    try {
-      set({ isAppointmentsLoading: true, error: null });
-      const response = await getBookedAppointmentsApi(month, year);
-
-      if (response?.status && Array.isArray(response?.data)) {
-        set({
-          bookedAppointments: response.data,
-          isAppointmentsLoading: false,
-        });
-        return response.data;
-      }
-
-      throw new Error("Invalid response format");
-    } catch (error) {
-      const errorMessage =
-        error?.response?.data?.message ||
-        error?.message ||
-        "Failed to fetch booked appointments";
-      set({
-        error: errorMessage,
-        isAppointmentsLoading: false,
-        bookedAppointments: [],
-      });
-      return [];
-    }
-  },
-
   // Fetch available intervals for a specific date
   fetchAvailableIntervals: async (date) => {
     try {
@@ -109,9 +76,6 @@ const useAvailabilityStore = create((set, get) => ({
       return null;
     }
   },
-
-  // Clear booked appointments
-  clearBookedAppointments: () => set({ bookedAppointments: [] }),
 
   // Clear availabilities
   clearAvailabilities: () => set({ availabilities: [] }),
