@@ -24,6 +24,7 @@ export const ResetPassword = () => {
   const handleSubmit = async (values) => {
     try {
       await resetPassword({
+        otp: otp,
         new_password: values.password,
         new_password_confirmation: values.confirmPassword,
       });
