@@ -170,7 +170,7 @@ const PrivateCourses = () => {
 
       {/* Pagination */}
       {pagination && (
-        <div className="flex items-center justify-center mt-10">
+        <div className="flex items-center justify-center mt-10" dir="ltr">
           <Pagination
             current={pagination.current_page || page}
             pageSize={pagination.per_page || 5}
@@ -186,18 +186,18 @@ const PrivateCourses = () => {
         open={isModalOpen}
         onCancel={() => setIsModalOpen(false)}
         footer={null}
-        width={720}
+        width={820}
         destroyOnClose
         centered
         className="private-lesson-modal"
       >
-        <div className="mb-8">
+        <div className="mb-8" dir={isRTL ? "rtl" : "ltr"}>
           <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
             {t("courses.enroll_private_lesson")}
           </h2>
           <Steps
             current={currentStep}
-            direction={isRTL ? "horizontal" : "horizontal"}
+            direction="horizontal"
             items={[
               {
                 title: t("courses.select_option"),
@@ -219,7 +219,7 @@ const PrivateCourses = () => {
           />
         </div>
 
-        <div className="mt-6">
+        <div className="mt-6" dir={isRTL ? "rtl" : "ltr"}>
           {currentStep === 0 && (
             <div>
               {isOptionsLoading ? (
@@ -236,39 +236,90 @@ const PrivateCourses = () => {
                   value={selectedOptionId}
                   onChange={(e) => setSelectedOptionId(e.target.value)}
                 >
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {lessonOptions.map((opt) => (
                       <label
                         key={opt.id}
-                        className={`border rounded-lg p-4 cursor-pointer transition-colors ${
+                        className={`border rounded-lg p-4 cursor-pointer transition-all hover:shadow-md ${
                           selectedOptionId === opt.id
-                            ? "border-primary bg-primary/5"
+                            ? "border-primary bg-primary/5 shadow-md"
                             : "border-gray-200 hover:border-primary"
                         }`}
                       >
                         <div className="flex items-start gap-3">
-                          <Radio value={opt.id} />
-                          <div>
-                            <div className="font-semibold text-gray-800">
-                              {opt.place}
+                          <Radio value={opt.id} className="mt-1" />
+                          <div className="flex-1 min-w-0">
+                            <div className="mb-3">
+                              <div className="font-semibold text-gray-900 text-base line-clamp-1">
+                                {lang === "ar"
+                                  ? opt.lesson?.title_ar
+                                  : opt.lesson?.title_en}
+                              </div>
+                              <div className="text-sm text-gray-600 mt-1 line-clamp-2">
+                                {lang === "ar"
+                                  ? opt.lesson?.description_ar
+                                  : opt.lesson?.description_en}
+                              </div>
                             </div>
-                            <div className="text-sm text-gray-600 mt-1">
-                              {t("consultation.step_content.duration_label")}{" "}
-                              {opt.duration}{" "}
-                              {t("consultation.step_content.duration_min")}
-                            </div>
-                            <div className="text-sm text-gray-700 mt-2">
-                              {t("courses.price_label")}:
-                              {opt.price_aed && parseFloat(opt.price_aed) > 0
-                                ? ` ${opt.price_aed} ${t(
-                                    "courses.currency.aed"
-                                  )}`
-                                : ""}
-                              {opt.price_usd && parseFloat(opt.price_usd) > 0
-                                ? ` ${opt.price_usd} ${t(
-                                    "courses.currency.usd"
-                                  )}`
-                                : ""}
+
+                            <div className="space-y-2">
+                              <div className="flex items-center gap-2 text-sm text-gray-700">
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  className="h-4 w-4 text-primary shrink-0"
+                                  viewBox="0 0 20 20"
+                                  fill="currentColor"
+                                >
+                                  <path
+                                    fillRule="evenodd"
+                                    d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
+                                    clipRule="evenodd"
+                                  />
+                                </svg>
+                                <span className="font-medium">{opt.place}</span>
+                              </div>
+
+                              <div className="flex items-center gap-2 text-sm text-gray-600">
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  className="h-4 w-4 text-primary shrink-0"
+                                  viewBox="0 0 20 20"
+                                  fill="currentColor"
+                                >
+                                  <path
+                                    fillRule="evenodd"
+                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
+                                    clipRule="evenodd"
+                                  />
+                                </svg>
+                                <span>
+                                  {opt.duration}{" "}
+                                  {t("consultation.step_content.duration_min")}
+                                </span>
+                              </div>
+
+                              <div className="flex items-center gap-2 text-sm font-semibold text-primary pt-1">
+                                {opt.price_aed &&
+                                  parseFloat(opt.price_aed) > 0 && (
+                                    <span>
+                                      {opt.price_aed}{" "}
+                                      {t("courses.currency.aed")}
+                                    </span>
+                                  )}
+                                {opt.price_aed &&
+                                  opt.price_usd &&
+                                  parseFloat(opt.price_aed) > 0 &&
+                                  parseFloat(opt.price_usd) > 0 && (
+                                    <span className="text-gray-400">•</span>
+                                  )}
+                                {opt.price_usd &&
+                                  parseFloat(opt.price_usd) > 0 && (
+                                    <span>
+                                      {opt.price_usd}{" "}
+                                      {t("courses.currency.usd")}
+                                    </span>
+                                  )}
+                              </div>
                             </div>
                           </div>
                         </div>

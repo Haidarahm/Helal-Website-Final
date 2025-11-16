@@ -332,7 +332,7 @@ const OnlineCourses = () => {
 
       {/* Pagination */}
       {pagination && pagination.last_page > 1 && (
-        <div className="flex justify-center mt-12 mb-8">
+        <div className="flex justify-center mt-12 mb-8" dir="ltr">
           <Pagination
             current={currentPage}
             total={pagination.total || 0}

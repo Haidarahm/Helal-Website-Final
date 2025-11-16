@@ -287,7 +287,7 @@ const OfflineCourses = () => {
 
       {/* Pagination */}
       {pagination?.total > (pagination?.per_page || 5) && (
-        <div className="flex items-center justify-center mt-10">
+        <div className="flex items-center justify-center mt-10" dir="ltr">
           <Pagination
             current={pagination.current_page || currentPage}
             pageSize={pagination.per_page || 5}
