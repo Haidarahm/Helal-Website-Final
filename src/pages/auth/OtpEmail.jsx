@@ -25,25 +25,23 @@ export const OtpEmail = () => {
 
   return (
     <div
-      className="min-h-screen bg-white flex items-center justify-center px-4 py-12 auth-container"
+      className="auth-page flex items-center justify-center px-4 py-12 auth-container"
       dir={isRTL ? "rtl" : "ltr"}
     >
       <div className="w-full max-w-md">
         {/* Back Button */}
         <button
           onClick={() => navigate(-1)}
-          className="mb-6 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors shadow-sm flex items-center gap-2"
+          className="auth-back-btn mb-6 px-4 py-2 transition-colors flex items-center gap-2"
         >
           <ArrowLeft size={20} className={isRTL ? "rotate-180" : ""} />
           <span>{t("auth.back")}</span>
         </button>
 
         {/* Form Container */}
-        <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+        <div className="auth-card overflow-hidden">
           <div className="p-8">
-            <h2 className="text-2xl font-bold text-gray-800 mb-2">
-              {t("auth.reset_password")}
-            </h2>
+            <h2 className="auth-section-title">{t("auth.reset_password")}</h2>
             <p className="text-gray-600 mb-6">
               {t("auth.enter_email_to_reset")}
             </p>
@@ -60,9 +58,7 @@ export const OtpEmail = () => {
                 <Input
                   size="large"
                   prefix={
-                    <Mail
-                      className={`text-gray-400 ${isRTL ? "ml-2" : "mr-2"}`}
-                    />
+                    <Mail className={`auth-icon ${isRTL ? "ml-2" : "mr-2"}`} />
                   }
                   placeholder={t("auth.placeholder_email")}
                 />

@@ -74,30 +74,31 @@ export const VerifyOtp = () => {
 
   return (
     <div
-      className="min-h-screen bg-white flex items-center justify-center px-4 py-12 auth-container"
+      className="auth-page flex items-center justify-center px-4 py-12 auth-container"
       dir={isRTL ? "rtl" : "ltr"}
     >
       <div className="w-full max-w-md">
         {/* Back Button */}
         <button
           onClick={() => navigate(-1)}
-          className="mb-6 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors shadow-sm flex items-center gap-2"
+          className="auth-back-btn mb-6 px-4 py-2 transition-colors flex items-center gap-2"
         >
           <ArrowLeft size={20} className={isRTL ? "rotate-180" : ""} />
           <span>{t("auth.back")}</span>
         </button>
 
         {/* Form Container */}
-        <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+        <div className="auth-card overflow-hidden">
           <div className="p-8">
-            <h2 className="text-2xl font-bold text-gray-800 mb-2">
-              {t("auth.verify_otp")}
-            </h2>
+            <h2 className="auth-section-title">{t("auth.verify_otp")}</h2>
             <p className="text-gray-600 mb-6">{t("auth.enter_otp_code")}</p>
 
             <Form form={form} onFinish={handleSubmit} layout="vertical">
               <Form.Item name="otp" className="mb-4">
-                <div className="flex gap-2 justify-center"   dir={isRTL ? "ltr" : "rtl"}>
+                <div
+                  className="flex gap-2 justify-center"
+                  dir={isRTL ? "ltr" : "rtl"}
+                >
                   {otp.map((digit, index) => (
                     <Input
                       key={index}
@@ -107,10 +108,7 @@ export const VerifyOtp = () => {
                       onKeyDown={(e) => handleKeyDown(index, e)}
                       onPaste={handlePaste}
                       maxLength={1}
-                      className="text-center font-bold text-2xl h-14 w-14"
-                      style={{
-                        borderRadius: "8px",
-                      }}
+                      className="otp-input"
                     />
                   ))}
                 </div>

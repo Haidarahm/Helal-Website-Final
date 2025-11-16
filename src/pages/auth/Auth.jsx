@@ -92,40 +92,32 @@ export const Auth = () => {
 
   return (
     <div
-      className="min-h-screen bg-white flex items-center justify-center px-4 py-12 auth-container"
+      className="auth-page flex items-center justify-center px-4 py-12 auth-container"
       dir={isRTL ? "rtl" : "ltr"}
     >
       <div className="w-full max-w-md">
         {/* Back Button */}
         <button
           onClick={() => navigate(-1)}
-          className="mb-6 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors shadow-sm flex items-center gap-2"
+          className="auth-back-btn mb-6 px-4 py-2 transition-colors flex items-center gap-2"
         >
           <ArrowLeft size={20} className={isRTL ? "rotate-180" : ""} />
           <span>{t("auth.back")}</span>
         </button>
 
         {/* Form Container */}
-        <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+        <div className="auth-card overflow-hidden">
           {/* Toggle Buttons */}
-          <div className="flex bg-gray-50 border-b border-gray-200">
+          <div className="auth-toggle">
             <button
               onClick={() => setIsSignUp(true)}
-              className={`flex-1 px-6 py-4 text-center font-semibold transition-all duration-300 ${
-                isSignUp
-                  ? "bg-primary text-white shadow-md"
-                  : "text-gray-600 hover:text-primary"
-              }`}
+              className={`auth-toggle-btn ${isSignUp ? "active" : ""}`}
             >
               {t("auth.sign_up")}
             </button>
             <button
               onClick={() => setIsSignUp(false)}
-              className={`flex-1 px-6 py-4 text-center font-semibold transition-all duration-300 ${
-                !isSignUp
-                  ? "bg-primary text-white shadow-md"
-                  : "text-gray-600 hover:text-primary"
-              }`}
+              className={`auth-toggle-btn ${!isSignUp ? "active" : ""}`}
             >
               {t("auth.sign_in")}
             </button>
@@ -136,7 +128,7 @@ export const Auth = () => {
             {isSignUp ? (
               /* Sign Up Form */
               <form onSubmit={handleSignUpSubmit} className="space-y-5">
-                <h2 className="text-2xl font-bold text-gray-800 mb-6">
+                <h2 className="auth-section-title">
                   {t("auth.create_account")}
                 </h2>
 
@@ -147,7 +139,7 @@ export const Auth = () => {
                   </label>
                   <div className="relative">
                     <User
-                      className={`absolute top-1/2 -translate-y-1/2 text-gray-400 ${
+                      className={`auth-icon absolute top-1/2 -translate-y-1/2 ${
                         isRTL ? "right-3" : "left-3"
                       }`}
                       size={20}
@@ -158,7 +150,7 @@ export const Auth = () => {
                       onChange={(e) =>
                         handleSignUpChange("name", e.target.value)
                       }
-                      className={`w-full py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all ${
+                      className={`auth-input ${
                         isRTL ? "pr-11 pl-4" : "pl-11 pr-4"
                       }`}
                       placeholder={t("auth.placeholder_name")}
@@ -174,7 +166,7 @@ export const Auth = () => {
                   </label>
                   <div className="relative">
                     <Mail
-                      className={`absolute top-1/2 -translate-y-1/2 text-gray-400 ${
+                      className={`auth-icon absolute top-1/2 -translate-y-1/2 ${
                         isRTL ? "right-3" : "left-3"
                       }`}
                       size={20}
@@ -185,7 +177,7 @@ export const Auth = () => {
                       onChange={(e) =>
                         handleSignUpChange("email", e.target.value)
                       }
-                      className={`w-full py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all ${
+                      className={`auth-input ${
                         isRTL ? "pr-11 pl-4" : "pl-11 pr-4"
                       }`}
                       placeholder={t("auth.placeholder_email")}
@@ -201,7 +193,7 @@ export const Auth = () => {
                   </label>
                   <div className="relative">
                     <Phone
-                      className={`absolute top-1/2 -translate-y-1/2 text-gray-400 ${
+                      className={`auth-icon absolute top-1/2 -translate-y-1/2 ${
                         isRTL ? "right-3" : "left-3"
                       }`}
                       size={20}
@@ -212,7 +204,7 @@ export const Auth = () => {
                       onChange={(e) =>
                         handleSignUpChange("phone", e.target.value)
                       }
-                      className={`w-full py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all ${
+                      className={`auth-input ${
                         isRTL ? "pr-11 pl-4" : "pl-11 pr-4"
                       }`}
                       placeholder={t("auth.placeholder_phone")}
@@ -228,7 +220,7 @@ export const Auth = () => {
                   </label>
                   <div className="relative">
                     <Lock
-                      className={`absolute top-1/2 -translate-y-1/2 text-gray-400 ${
+                      className={`auth-icon absolute top-1/2 -translate-y-1/2 ${
                         isRTL ? "right-3" : "left-3"
                       }`}
                       size={20}
@@ -239,7 +231,7 @@ export const Auth = () => {
                       onChange={(e) =>
                         handleSignUpChange("password", e.target.value)
                       }
-                      className={`w-full py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all ${
+                      className={`auth-input ${
                         isRTL ? "pr-11 pl-11" : "pl-11 pr-11"
                       }`}
                       placeholder={t("auth.placeholder_password")}
@@ -264,7 +256,7 @@ export const Auth = () => {
                   </label>
                   <div className="relative">
                     <Lock
-                      className={`absolute top-1/2 -translate-y-1/2 text-gray-400 ${
+                      className={`auth-icon absolute top-1/2 -translate-y-1/2 ${
                         isRTL ? "right-3" : "left-3"
                       }`}
                       size={20}
@@ -275,7 +267,7 @@ export const Auth = () => {
                       onChange={(e) =>
                         handleSignUpChange("confirmPassword", e.target.value)
                       }
-                      className={`w-full py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all ${
+                      className={`auth-input ${
                         isRTL ? "pr-11 pl-11" : "pl-11 pr-11"
                       }`}
                       placeholder={t("auth.placeholder_confirm_password")}
@@ -317,9 +309,7 @@ export const Auth = () => {
             ) : (
               /* Sign In Form */
               <form onSubmit={handleSignInSubmit} className="space-y-5">
-                <h2 className="text-2xl font-bold text-gray-800 mb-6">
-                  {t("auth.welcome_back")}
-                </h2>
+                <h2 className="auth-section-title">{t("auth.welcome_back")}</h2>
 
                 {/* Email Field */}
                 <div>
@@ -328,7 +318,7 @@ export const Auth = () => {
                   </label>
                   <div className="relative">
                     <Mail
-                      className={`absolute top-1/2 -translate-y-1/2 text-gray-400 ${
+                      className={`auth-icon absolute top-1/2 -translate-y-1/2 ${
                         isRTL ? "right-3" : "left-3"
                       }`}
                       size={20}
@@ -339,7 +329,7 @@ export const Auth = () => {
                       onChange={(e) =>
                         handleSignInChange("email", e.target.value)
                       }
-                      className={`w-full py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all ${
+                      className={`auth-input ${
                         isRTL ? "pr-11 pl-4" : "pl-11 pr-4"
                       }`}
                       placeholder={t("auth.placeholder_email")}
@@ -355,7 +345,7 @@ export const Auth = () => {
                   </label>
                   <div className="relative">
                     <Lock
-                      className={`absolute top-1/2 -translate-y-1/2 text-gray-400 ${
+                      className={`auth-icon absolute top-1/2 -translate-y-1/2 ${
                         isRTL ? "right-3" : "left-3"
                       }`}
                       size={20}
@@ -366,7 +356,7 @@ export const Auth = () => {
                       onChange={(e) =>
                         handleSignInChange("password", e.target.value)
                       }
-                      className={`w-full py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all ${
+                      className={`auth-input ${
                         isRTL ? "pr-11 pl-11" : "pl-11 pr-11"
                       }`}
                       placeholder={t("auth.placeholder_password")}
@@ -389,7 +379,7 @@ export const Auth = () => {
                   <button
                     type="button"
                     onClick={() => navigate("/otp-email")}
-                    className="text-sm text-primary hover:underline"
+                    className="text-sm text-primary hover:underline hover:opacity-90 transition-opacity"
                   >
                     {t("auth.forgot_password")}
                   </button>
