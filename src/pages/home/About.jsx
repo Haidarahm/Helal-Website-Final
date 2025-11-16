@@ -8,7 +8,7 @@ export default function About() {
 
   return (
     <section
-      className={`relative flex  bg-[color:var(--color-accent)] text-[color:var(--color-text-primary)] top-12 ${
+      className={`relative flex h-screen items-center bg-accent text-text-primary top-12 ${
         isRTL ? "flex-row-reverse" : "flex-row"
       }`}
     >
