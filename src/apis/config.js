@@ -36,6 +36,22 @@ api.interceptors.response.use(
     // Handle common errors here
     if (error.response) {
       // Server responded with error status
+      if (error.response.status === 401) {
+        // Unauthorized: clear stored auth and force logout
+        try {
+          localStorage.clear();
+        } catch (_) {
+          // ignore storage errors
+        }
+        // Redirect to auth/login page if available
+        if (typeof window !== "undefined" && window.location) {
+          // Avoid redirect loops if already on auth routes
+          const currentPath = window.location.pathname || "";
+          if (!currentPath.toLowerCase().includes("auth")) {
+            window.location.href = "/auth";
+          }
+        }
+      }
       console.error("API Error:", error.response.status, error.response.data);
     } else if (error.request) {
       // Request made but no response received
@@ -49,5 +65,3 @@ api.interceptors.response.use(
 );
 
 export default api;
-
-
