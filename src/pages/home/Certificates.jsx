@@ -1,7 +1,8 @@
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, Pagination } from "swiper/modules";
+import { Autoplay, Pagination, EffectCoverflow } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
+import "swiper/css/effect-coverflow";
 
 import cert1 from "../../assets/certificates/1.jpg";
 import cert2 from "../../assets/certificates/2.jpg";
@@ -20,46 +21,70 @@ export const Certificates = () => {
   const { isRTL } = useLanguage();
 
   return (
-    <section className="w-full bg-secondary py-12 md:py-16 px-4 md:px-6">
-      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10 items-center">
-        {/* Left: Texts */}
-        <div className="md:order-1 order-2">
-          <h2
-            className={`text-3xl md:text-4xl font-bold text-primary-light ${
-              isRTL ? "text-right" : "text-left"
-            }`}
-          >
+    <section className="relative w-full bg-secondary py-14 md:py-20 px-4 md:px-8">
+      <div
+        className="pointer-events-none absolute inset-0 opacity-40"
+        style={{
+          background:
+            "radial-gradient(800px 400px at 10% 10%, rgba(249,148,60,0.18), transparent 60%), radial-gradient(700px 500px at 90% 80%, rgba(174,70,7,0.12), transparent 60%)",
+        }}
+      />
+      <div className="relative max-w-7xl mx-auto">
+        <div className={`text-center ${isRTL ? "rtl" : ""}`}>
+          <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight text-primary-light">
             {t("certificates.title")}
           </h2>
-          <p
-            className={`mt-4 text-accent-muted leading-relaxed ${
-              isRTL ? "text-right" : "text-left"
-            }`}
-          >
+          <p className="mt-4 max-w-3xl mx-auto text-accent-muted leading-relaxed">
             {t("certificates.description")}
           </p>
         </div>
 
-        {/* Right: Swiper */}
-        <div className="md:order-2 order-1">
+        <div className="mt-10 md:mt-14">
           <Swiper
-            modules={[Autoplay, Pagination]}
-            slidesPerView={1}
-            spaceBetween={16}
+            modules={[EffectCoverflow, Autoplay, Pagination]}
+            effect="coverflow"
+            centeredSlides
+            grabCursor
             loop
-            autoplay={{ delay: 2500, disableOnInteraction: false }}
+            slidesPerView={"auto"}
+            spaceBetween={24}
+            coverflowEffect={{
+              rotate: 0,
+              stretch: 0,
+              depth: 160,
+              modifier: 2.2,
+              slideShadows: false,
+            }}
+            autoplay={{
+              delay: 2600,
+              disableOnInteraction: false,
+              pauseOnMouseEnter: true,
+            }}
             pagination={{ clickable: true }}
-            className="rounded-2xl"
+            className="!px-2"
           >
-            {[cert1, cert2, cert3, cert4, cert5,cert6,cert7,cert8,cert9].map((src, index) => (
-              <SwiperSlide key={index}>
-                <div className="w-full h-[320px] sm:h-[380px] md:h-[520px] bg-accent-muted rounded-2xl flex items-center justify-center p-3 sm:p-4 md:p-6 shadow-lg shadow-black/10">
+            {[
+              cert1,
+              cert2,
+              cert3,
+              cert4,
+              cert5,
+              cert6,
+              cert7,
+              cert8,
+              cert9,
+            ].map((src, index) => (
+              <SwiperSlide
+                key={index}
+                className="!w-[260px] sm:!w-[320px] md:!w-[380px] lg:!w-[420px]"
+              >
+                <div className="w-full h-[300px] sm:h-[360px] md:h-[460px] lg:h-[520px] rounded-2xl overflow-hidden bg-white/80 backdrop-blur-sm shadow-[0_10px_30px_rgba(0,0,0,0.08)] ring-1 ring-black/5 flex items-center justify-center">
                   <img
                     src={src}
                     alt={`certificate-${index + 1}`}
                     loading="lazy"
                     decoding="async"
-                    className="max-w-full max-h-full object-contain rounded-lg"
+                    className="max-w-full max-h-full object-contain transition-transform duration-500 ease-out hover:scale-105"
                   />
                 </div>
               </SwiperSlide>
