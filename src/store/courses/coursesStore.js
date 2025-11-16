@@ -22,13 +22,14 @@ const useCoursesStore = create((set, get) => ({
     try {
       set({ isLoading: true, error: null });
       const response = await getCoursesApi(lang);
-
-      if (response?.status === "success" && response?.courses) {
+    
+      if (response?.status === true) {
+        console.log(response.data);
         set({
-          courses: response.courses,
+          courses: response.data,
           isLoading: false,
         });
-        return response.courses;
+        return response.data;
       } else {
         throw new Error("Invalid response format");
       }
