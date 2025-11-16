@@ -268,7 +268,22 @@
       "not_scheduled": "غير محدد",
       "date": "التاريخ",
       "time": "الوقت"
-    }
+    },
+    "private_success_title": "تم إتمام الحجز بنجاح!",
+    "private_success_desc": "تم تأكيد حجز الدرس الخاص. ستتلقى تفاصيل إضافية عبر البريد الإلكتروني قريباً.",
+    "lesson_details": "تفاصيل الدرس",
+    "back_to_courses": "العودة إلى الدورات",
+    "enroll_private_lesson": "تسجيل في الدرس الخاص",
+    "select_option": "اختر الخيار",
+    "choose_lesson_details": "اختر تفاصيل الدرس",
+    "schedule_time": "تحديد الوقت",
+    "pick_date_time": "اختر التاريخ والوقت",
+    "confirm_booking": "تأكيد الحجز",
+    "review_details": "مراجعة التفاصيل",
+    "no_options": "لا توجد خيارات متاحة",
+    "price_label": "السعر",
+    "review_booking": "مراجعة الحجز",
+    "confirm_enroll": "تأكيد التسجيل"
   },
   "videos": {
     "title": "الفيديوهات",
@@ -391,5 +406,13 @@
     "update_password": "تحديث كلمة المرور",
     "image_updated": "تم تحديث صورة الملف الشخصي",
     "image_upload_failed": "فشل تحميل الصورة"
+  },
+  "common": {
+    "check_email": "تحقق من بريدك",
+    "add_to_calendar": "أضف للتقويم",
+    "dont_miss": "لا تفوت الموعد",
+    "need_help": "تحتاج مساعدة؟",
+    "were_here": "نحن هنا لك",
+    "thanks_note": "شكراً لاختيارك لنا. نتطلع للقائك قريباً!"
   }
 }

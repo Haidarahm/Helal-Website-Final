@@ -9,6 +9,9 @@ const OnlineCourses = lazy(() => import("./pages/courses/OnlineCourses.jsx"));
 const OfflineCourses = lazy(() => import("./pages/courses/OfflineCourses.jsx"));
 const PrivateCourses = lazy(() => import("./pages/courses/PrivateCourses.jsx"));
 const CourseSuccess = lazy(() => import("./pages/courses/CourseSuccess.jsx"));
+const PrivateLessonSuccess = lazy(() =>
+  import("./pages/courses/PrivateLessonSuccess.jsx")
+);
 const MyCourses = lazy(() => import("./pages/mycourses/MyCourses.jsx"));
 const MyOfflineCourses = lazy(() =>
   import("./pages/mycourses/MyOfflineCourses.jsx")
@@ -127,6 +130,11 @@ function App() {
         </Route>
         {/* Course Success */}
         <Route path="/course-success" element={<CourseSuccess />} />
+        {/* Private Lesson Success */}
+        <Route
+          path="/private-lesson-success"
+          element={<PrivateLessonSuccess />}
+        />
         {/* Consultation Success */}
         <Route path="/consultation-success" element={<ConsultationSuccess />} />
         {/* Payment pages removed */}

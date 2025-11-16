@@ -268,7 +268,22 @@
       "not_scheduled": "Not scheduled",
       "date": "Date",
       "time": "Time"
-    }
+    },
+    "private_success_title": "Enrollment Successful!",
+    "private_success_desc": "Your private lesson has been confirmed. You will receive additional details via email shortly.",
+    "lesson_details": "Lesson details",
+    "back_to_courses": "Back to Courses",
+    "enroll_private_lesson": "Enroll in Private Lesson",
+    "select_option": "Select Option",
+    "choose_lesson_details": "Choose lesson details",
+    "schedule_time": "Schedule Time",
+    "pick_date_time": "Pick date and time",
+    "confirm_booking": "Confirm Booking",
+    "review_details": "Review details",
+    "no_options": "No options available",
+    "price_label": "Price",
+    "review_booking": "Review Booking",
+    "confirm_enroll": "Confirm Enrollment"
   },
   "videos": {
     "title": "Videos",
@@ -391,5 +406,13 @@
     "update_password": "Update Password",
     "image_updated": "Profile image updated",
     "image_upload_failed": "Failed to upload image"
+  },
+  "common": {
+    "check_email": "Check Email",
+    "add_to_calendar": "Add to Calendar",
+    "dont_miss": "Don't miss it",
+    "need_help": "Need Help?",
+    "were_here": "We're here",
+    "thanks_note": "Thank you for choosing us. We look forward to seeing you soon!"
   }
 }
