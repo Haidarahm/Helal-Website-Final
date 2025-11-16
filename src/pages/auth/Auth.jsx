@@ -375,7 +375,7 @@ export const Auth = () => {
                 </div>
 
                 {/* Forgot Password Link */}
-                <div className="flex justify-end">
+                <div className="flex justify-end" dir={isRTL ? "ltr" : "rtl"}>
                   <button
                     type="button"
                     onClick={() => navigate("/otp-email")}
