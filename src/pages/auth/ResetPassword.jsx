@@ -28,7 +28,7 @@ export const ResetPassword = () => {
         new_password: values.password,
         new_password_confirmation: values.confirmPassword,
       });
-      navigate("/auth");
+      navigate("/auth", { state: { initialForm: "signin" } });
       form.resetFields();
     } catch (error) {
       console.error("Reset password failed:", error);
