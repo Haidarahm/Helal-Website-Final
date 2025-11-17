@@ -133,26 +133,7 @@ const MyOnlineCourses = () => {
                   </div>
                 )}
 
-                {/* Price */}
-                <div className={`mb-3 ${isRTL ? "text-right" : "text-left"}`}>
-                  <div className="flex items-baseline gap-2">
-                    <span className="text-base font-semibold text-primary">
-                      {course.price_aed && parseFloat(course.price_aed) > 0
-                        ? `${course.price_aed} ${t("courses.currency.aed")}`
-                        : course.price_usd && parseFloat(course.price_usd) > 0
-                        ? `${course.price_usd} ${t("courses.currency.usd")}`
-                        : t("courses.free")}
-                    </span>
-                    {course.price_usd &&
-                      parseFloat(course.price_usd) > 0 &&
-                      course.price_aed &&
-                      parseFloat(course.price_aed) > 0 && (
-                        <span className="text-xs text-gray-500">
-                          (~{course.price_usd} {t("courses.currency.usd")})
-                        </span>
-                      )}
-                  </div>
-                </div>
+            
 
                 {/* Meet URL Section */}
                 <div className="pt-3 border-t border-gray-50">
