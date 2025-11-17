@@ -21,6 +21,7 @@ const usePrivateCoursesStore = create((set, get) => ({
   isOptionsLoading: false,
   isEnrolling: false,
   error: null,
+  lessonsCache: {},
 
   // Helpers
   setError: (error) =>
@@ -35,17 +36,40 @@ const usePrivateCoursesStore = create((set, get) => ({
   // Actions
   fetchPrivateLessons: async ({ lang, page = 1, per_page = 5 } = {}) => {
     try {
+      const cacheKey = `${lang}:${page}:${per_page}`;
+      const cachedEntry = get().lessonsCache?.[cacheKey];
+
+      if (cachedEntry) {
+        set({
+          lessons: cachedEntry.lessons,
+          pagination: cachedEntry.pagination,
+          isLoading: false,
+          error: null,
+        });
+        return cachedEntry.response;
+      }
+
       set({ isLoading: true, error: null });
       const response = await fetchPrivateLessonsApi({ lang, page, per_page });
 
       if (response?.status && Array.isArray(response?.data)) {
+        const nextPagination = response.pagination ?? {
+          current_page: page,
+          last_page: 1,
+          per_page,
+          total: response.data.length,
+        };
+
         set({
           lessons: response.data,
-          pagination: response.pagination ?? {
-            current_page: page,
-            last_page: 1,
-            per_page,
-            total: response.data.length,
+          pagination: nextPagination,
+          lessonsCache: {
+            ...get().lessonsCache,
+            [cacheKey]: {
+              lessons: response.data,
+              pagination: nextPagination,
+              response,
+            },
           },
           isLoading: false,
         });

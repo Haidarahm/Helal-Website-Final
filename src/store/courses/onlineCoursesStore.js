@@ -23,7 +23,7 @@ const resolvePagination = (pagination, fallback = defaultPagination) => {
   };
 };
 
-const useOnlineCoursesStore = create((set) => ({
+const useOnlineCoursesStore = create((set, get) => ({
   onlineCourses: [],
   myOnlineCourses: [],
   pagination: defaultPagination,
@@ -31,22 +31,45 @@ const useOnlineCoursesStore = create((set) => ({
   isLoading: false,
   isMyCoursesLoading: false,
   error: null,
+  onlineCoursesCache: {},
 
   clearError: () => set({ error: null }),
 
   fetchOnlineCourses: async (lang = "ar", page = 1, perPage = 5) => {
     try {
+      const cacheKey = `${lang}:${page}:${perPage}`;
+      const cachedEntry = get().onlineCoursesCache?.[cacheKey];
+
+      if (cachedEntry) {
+        set({
+          onlineCourses: cachedEntry.courses,
+          pagination: cachedEntry.pagination,
+          isLoading: false,
+          error: null,
+        });
+        return cachedEntry.courses;
+      }
+
       set({ isLoading: true, error: null });
       const response = await fetchOnlineCoursesApi(lang, page, perPage);
 
       if (response?.status && Array.isArray(response?.data)) {
+        const nextPagination = resolvePagination(response.pagination, {
+          ...defaultPagination,
+          current_page: page,
+          per_page: perPage,
+        });
+
         set({
           onlineCourses: response.data,
-          pagination: resolvePagination(response.pagination, {
-            ...defaultPagination,
-            current_page: page,
-            per_page: perPage,
-          }),
+          pagination: nextPagination,
+          onlineCoursesCache: {
+            ...get().onlineCoursesCache,
+            [cacheKey]: {
+              courses: response.data,
+              pagination: nextPagination,
+            },
+          },
           isLoading: false,
         });
         return response.data;

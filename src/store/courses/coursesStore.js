@@ -17,6 +17,7 @@ const useCoursesStore = create((set, get) => ({
   enrolledCourses: [],
   isLoading: false,
   error: null,
+  coursesCache: {},
 
   // Actions
   setCourses: (courses) => set({ courses }),
@@ -26,17 +27,39 @@ const useCoursesStore = create((set, get) => ({
   // Fetch courses (offline) with pagination
   fetchCourses: async (lang = "ar", page = 1, perPage = 5) => {
     try {
+      const cacheKey = `${lang}:${page}:${perPage}`;
+      const cachedEntry = get().coursesCache?.[cacheKey];
+
+      if (cachedEntry) {
+        set({
+          courses: cachedEntry.courses,
+          pagination: cachedEntry.pagination,
+          isLoading: false,
+          error: null,
+        });
+        return cachedEntry.courses;
+      }
+
       set({ isLoading: true, error: null });
       const response = await getCoursesApi(lang, page, perPage);
 
       if (response?.status === true && Array.isArray(response?.data)) {
+        const nextPagination = response.pagination ?? {
+          current_page: page,
+          last_page: 1,
+          per_page: perPage,
+          total: response.data.length,
+        };
+
         set({
           courses: response.data,
-          pagination: response.pagination ?? {
-            current_page: page,
-            last_page: 1,
-            per_page: perPage,
-            total: response.data.length,
+          pagination: nextPagination,
+          coursesCache: {
+            ...get().coursesCache,
+            [cacheKey]: {
+              courses: response.data,
+              pagination: nextPagination,
+            },
           },
           isLoading: false,
         });
