@@ -152,7 +152,7 @@ const OfflineCourses = () => {
     >
       {/* Description */}
       <div className="mb-8 text-center max-w-4xl mx-auto">
-        <p className="text-gray-700 leading-relaxed text-base md:text-lg">
+        <p className="text-gray-700 leading-relaxed text-sm md:text-base lg:text-lg line-clamp-3 md:line-clamp-none">
           {t("courses.offline_courses_desc")}
         </p>
       </div>

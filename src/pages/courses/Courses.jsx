@@ -80,42 +80,87 @@ export default function Courses() {
       </div>
 
       {/* Selector Buttons */}
-      <div className="max-w-4xl mx-auto flex justify-center ">
-        <div
-          className={`flex gap-4 ${isRTL ? "flex-row-reverse" : "flex-row"}`}
-          data-aos="fade-up"
-          data-aos-delay="300"
-        >
-          <button
-            onClick={() => handleButtonClick("online")}
-            className={`px-6 py-3 rounded-lg font-semibold text-base transition-all duration-300 transform hover:scale-105 ${
-              activeButton === "online"
-                ? "bg-primary text-white shadow-lg scale-105"
-                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+      <div className="max-w-4xl mx-auto mb-6">
+        {/* Mobile: Swiper/Scrollable */}
+        <div className="md:hidden overflow-x-auto scrollbar-hide px-4">
+          <div
+            className={`flex gap-3 min-w-max ${
+              isRTL ? "flex-row-reverse" : "flex-row"
             }`}
+            data-aos="fade-up"
+            data-aos-delay="300"
           >
-            {t("courses.online_courses") || "Online Courses"}
-          </button>
-          <button
-            onClick={() => handleButtonClick("offline")}
-            className={`px-6 py-3 rounded-lg font-semibold text-base transition-all duration-300 transform hover:scale-105 ${
-              activeButton === "offline"
-                ? "bg-primary text-white shadow-lg scale-105"
-                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-            }`}
+            <button
+              onClick={() => handleButtonClick("online")}
+              className={`px-5 py-2.5 rounded-lg font-semibold text-sm whitespace-nowrap transition-all duration-300 ${
+                activeButton === "online"
+                  ? "bg-primary text-white shadow-lg"
+                  : "bg-gray-100 text-gray-700"
+              }`}
+            >
+              {t("courses.online_courses") || "Online Courses"}
+            </button>
+            <button
+              onClick={() => handleButtonClick("offline")}
+              className={`px-5 py-2.5 rounded-lg font-semibold text-sm whitespace-nowrap transition-all duration-300 ${
+                activeButton === "offline"
+                  ? "bg-primary text-white shadow-lg"
+                  : "bg-gray-100 text-gray-700"
+              }`}
+            >
+              {t("courses.offline_courses") || "Offline Courses"}
+            </button>
+            <button
+              onClick={() => handleButtonClick("private")}
+              className={`px-5 py-2.5 rounded-lg font-semibold text-sm whitespace-nowrap transition-all duration-300 ${
+                activeButton === "private"
+                  ? "bg-primary text-white shadow-lg"
+                  : "bg-gray-100 text-gray-700"
+              }`}
+            >
+              {t("courses.private_courses") || "Private Courses"}
+            </button>
+          </div>
+        </div>
+
+        {/* Desktop: Centered Buttons */}
+        <div className="hidden md:flex justify-center">
+          <div
+            className={`flex gap-4 ${isRTL ? "flex-row-reverse" : "flex-row"}`}
+            data-aos="fade-up"
+            data-aos-delay="300"
           >
-            {t("courses.offline_courses") || "Offline Courses"}
-          </button>
-          <button
-            onClick={() => handleButtonClick("private")}
-            className={`px-6 py-3 rounded-lg font-semibold text-base transition-all duration-300 transform hover:scale-105 ${
-              activeButton === "private"
-                ? "bg-primary text-white shadow-lg scale-105"
-                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-            }`}
-          >
-            {t("courses.private_courses") || "Private Courses"}
-          </button>
+            <button
+              onClick={() => handleButtonClick("online")}
+              className={`px-6 py-3 rounded-lg font-semibold text-base transition-all duration-300 transform hover:scale-105 ${
+                activeButton === "online"
+                  ? "bg-primary text-white shadow-lg scale-105"
+                  : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+              }`}
+            >
+              {t("courses.online_courses") || "Online Courses"}
+            </button>
+            <button
+              onClick={() => handleButtonClick("offline")}
+              className={`px-6 py-3 rounded-lg font-semibold text-base transition-all duration-300 transform hover:scale-105 ${
+                activeButton === "offline"
+                  ? "bg-primary text-white shadow-lg scale-105"
+                  : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+              }`}
+            >
+              {t("courses.offline_courses") || "Offline Courses"}
+            </button>
+            <button
+              onClick={() => handleButtonClick("private")}
+              className={`px-6 py-3 rounded-lg font-semibold text-base transition-all duration-300 transform hover:scale-105 ${
+                activeButton === "private"
+                  ? "bg-primary text-white shadow-lg scale-105"
+                  : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+              }`}
+            >
+              {t("courses.private_courses") || "Private Courses"}
+            </button>
+          </div>
         </div>
       </div>
 

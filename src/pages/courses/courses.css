@@ -20,14 +20,30 @@
   transform: translateY(30px);
 }
 
-.courses-card-modern:nth-child(1) { animation-delay: 0.1s; }
-.courses-card-modern:nth-child(2) { animation-delay: 0.2s; }
-.courses-card-modern:nth-child(3) { animation-delay: 0.3s; }
-.courses-card-modern:nth-child(4) { animation-delay: 0.4s; }
-.courses-card-modern:nth-child(5) { animation-delay: 0.5s; }
-.courses-card-modern:nth-child(6) { animation-delay: 0.6s; }
-.courses-card-modern:nth-child(7) { animation-delay: 0.7s; }
-.courses-card-modern:nth-child(8) { animation-delay: 0.8s; }
+.courses-card-modern:nth-child(1) {
+  animation-delay: 0.1s;
+}
+.courses-card-modern:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.courses-card-modern:nth-child(3) {
+  animation-delay: 0.3s;
+}
+.courses-card-modern:nth-child(4) {
+  animation-delay: 0.4s;
+}
+.courses-card-modern:nth-child(5) {
+  animation-delay: 0.5s;
+}
+.courses-card-modern:nth-child(6) {
+  animation-delay: 0.6s;
+}
+.courses-card-modern:nth-child(7) {
+  animation-delay: 0.7s;
+}
+.courses-card-modern:nth-child(8) {
+  animation-delay: 0.8s;
+}
 
 @keyframes coursesCardFadeIn {
   to {
@@ -62,7 +78,8 @@
 }
 
 @keyframes pricePulse {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1);
   }
   50% {
@@ -81,15 +98,13 @@
 
 /* Glow effect on hover */
 .courses-card-modern::before {
-  content: '';
+  content: "";
   position: absolute;
   inset: -2px;
   border-radius: 1rem;
   padding: 2px;
   background: linear-gradient(135deg, #f9943c, #ae4607);
-  -webkit-mask: 
-    linear-gradient(#fff 0 0) content-box, 
-    linear-gradient(#fff 0 0);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   opacity: 0;
@@ -104,7 +119,8 @@
 
 /* Course Success Page Styles */
 @keyframes successIconBounce {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0);
   }
   50% {
@@ -160,13 +176,17 @@
 }
 
 .my-courses-card::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   height: 4px;
-  background: linear-gradient(90deg, var(--color-primary), var(--color-primary-dark));
+  background: linear-gradient(
+    90deg,
+    var(--color-primary),
+    var(--color-primary-dark)
+  );
   opacity: 0;
   transition: opacity 0.3s ease;
   z-index: 10;
@@ -192,12 +212,37 @@
   transform: translateY(20px);
 }
 
-.my-courses-card:nth-child(1) { animation-delay: 0.1s; }
-.my-courses-card:nth-child(2) { animation-delay: 0.2s; }
-.my-courses-card:nth-child(3) { animation-delay: 0.3s; }
-.my-courses-card:nth-child(4) { animation-delay: 0.4s; }
-.my-courses-card:nth-child(5) { animation-delay: 0.5s; }
-.my-courses-card:nth-child(6) { animation-delay: 0.6s; }
-.my-courses-card:nth-child(7) { animation-delay: 0.7s; }
-.my-courses-card:nth-child(8) { animation-delay: 0.8s; }
+.my-courses-card:nth-child(1) {
+  animation-delay: 0.1s;
+}
+.my-courses-card:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.my-courses-card:nth-child(3) {
+  animation-delay: 0.3s;
+}
+.my-courses-card:nth-child(4) {
+  animation-delay: 0.4s;
+}
+.my-courses-card:nth-child(5) {
+  animation-delay: 0.5s;
+}
+.my-courses-card:nth-child(6) {
+  animation-delay: 0.6s;
+}
+.my-courses-card:nth-child(7) {
+  animation-delay: 0.7s;
+}
+.my-courses-card:nth-child(8) {
+  animation-delay: 0.8s;
+}
 
+/* Hide scrollbar for mobile swiper */
+.scrollbar-hide {
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scrollbar-width: none; /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
+}
