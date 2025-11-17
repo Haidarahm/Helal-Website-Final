@@ -97,7 +97,7 @@ const useOnlineCoursesStore = create((set) => ({
     cancelUrl = "/cancel"
   ) => {
     try {
-      set({ isLoading: true, error: null });
+      set({ error: null });
       const response = await enrollOnlineCourseApi(
         courseOnlineId,
         currency,
@@ -108,14 +108,13 @@ const useOnlineCoursesStore = create((set) => ({
       // Handle both wrapped and direct response formats
       const responseData = response?.status ? response : response;
 
-      set({ isLoading: false });
       return responseData;
     } catch (error) {
       const errorMessage =
         error?.response?.data?.message ||
         error?.message ||
         "Failed to enroll in online course";
-      set({ error: errorMessage, isLoading: false });
+      set({ error: errorMessage });
       throw error;
     }
   },
