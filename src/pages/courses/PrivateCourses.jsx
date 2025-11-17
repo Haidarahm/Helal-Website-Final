@@ -129,7 +129,7 @@ const PrivateCourses = () => {
       </div>
 
       {/* Grid */}
-      {isLoading ? (
+      {isLoading && lessons.length === 0 ? (
         <div className="flex items-center justify-center py-32">
           <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
         </div>
@@ -138,40 +138,54 @@ const PrivateCourses = () => {
           {t("courses.no_courses")}
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {lessons.map((item) => (
-            <div
-              key={item.id}
-              className="bg-white rounded-xl shadow-[0_10px_30px_rgba(0,0,0,0.06)] border border-gray-100 overflow-hidden flex flex-col"
-            >
-              <div className="aspect-16/10 w-full bg-accent-muted">
-                <img
-                  src={item.cover_image}
-                  alt={item.title}
-                  className="w-full h-full object-cover"
-                  loading="lazy"
-                  decoding="async"
-                />
-              </div>
-              <div className="p-4 flex-1 flex flex-col">
-                <h3 className="text-lg font-semibold text-gray-800 line-clamp-2">
-                  {item.title}
-                </h3>
-                <p className="text-sm text-gray-500 mt-2 line-clamp-2">
-                  {item.description}
+        <div className="relative">
+          {/* Loading overlay during pagination */}
+          {isLoading && lessons.length > 0 && (
+            <div className="absolute inset-0 bg-white/60 backdrop-blur-[2px] z-10 flex items-center justify-center rounded-2xl min-h-[400px]">
+              <div className="flex flex-col items-center gap-3">
+                <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+                <p className="text-sm text-gray-600 font-medium">
+                  {isRTL ? "جاري التحميل..." : "Loading..."}
                 </p>
-                <div className="mt-auto pt-4">
-                  <button
-                    type="button"
-                    onClick={() => openEnrollModal(item.id)}
-                    className="w-full bg-primary text-white font-semibold py-2.5 rounded-lg transition-colors hover:bg-primary-dark"
-                  >
-                    {t("courses.enroll_button")}
-                  </button>
-                </div>
               </div>
             </div>
-          ))}
+          )}
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {lessons.map((item) => (
+              <div
+                key={item.id}
+                className="bg-white rounded-xl shadow-[0_10px_30px_rgba(0,0,0,0.06)] border  border-gray-100 overflow-hidden flex flex-col"
+              >
+                <div className="aspect-16/10 w-full bg-accent-muted overflow-hidden">
+                  <img
+                    src={item.cover_image}
+                    alt={item.title}
+                    className="w-full h-full object-cover"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </div>
+                <div className="p-4 flex-1 flex flex-col">
+                  <h3 className="text-lg font-semibold text-gray-800 line-clamp-2">
+                    {item.title}
+                  </h3>
+                  <p className="text-sm text-gray-500 mt-2 line-clamp-2">
+                    {item.description}
+                  </p>
+                  <div className="mt-auto pt-4">
+                    <button
+                      type="button"
+                      onClick={() => openEnrollModal(item.id)}
+                      className="w-full bg-primary text-white font-semibold py-2.5 rounded-lg transition-colors hover:bg-primary-dark"
+                    >
+                      {t("courses.enroll_button")}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       )}
 
@@ -184,6 +198,7 @@ const PrivateCourses = () => {
             total={pagination.total || lessons.length}
             onChange={(p) => setPage(p)}
             showSizeChanger={false}
+            disabled={isLoading}
           />
         </div>
       )}
