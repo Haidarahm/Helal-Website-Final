@@ -337,6 +337,7 @@
       "no_consultations": "No consultations available right now",
       "no_pricing": "No pricing available for this consultation",
       "no_available_dates": "No available dates at the moment",
+      "no_time_slots": "No time slots available right now",
       "loading_availability": "Loading available dates...",
       "availability_error": "Unable to load availability. Please try again later."
     },

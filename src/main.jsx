@@ -41,7 +41,7 @@ createRoot(document.getElementById("root")).render(
           },
         }}
       >
-        <BrowserRouter basename="/Helal-Aljaberi/">
+        <BrowserRouter>
           <App />
           <ToastContainer
             position="top-right"

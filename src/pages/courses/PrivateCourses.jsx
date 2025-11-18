@@ -92,8 +92,8 @@ const PrivateCourses = () => {
       const payload = {
         private_information_id: selectedOptionId,
         currency,
-        return_url: `${baseUrl}/Helal-Aljaberi/private-lesson-success`,
-        cancel_url: `${baseUrl}/Helal-Aljaberi/courses`,
+        return_url: `${baseUrl}/private-lesson-success`,
+        cancel_url: `${baseUrl}/courses`,
         date: selectedDate, // expected format "DD-MM-YYYY"
         start_time: selectedTime, // "HH:mm"
       };

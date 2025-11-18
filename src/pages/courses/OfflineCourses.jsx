@@ -40,8 +40,8 @@ const OfflineCourses = () => {
       setOpenPopoverId(null);
 
       const baseUrl = window.location.origin;
-      const returnUrl = `${baseUrl}/Helal-Aljaberi/course-success`;
-      const cancelUrl = `${baseUrl}/Helal-Aljaberi/courses`;
+      const returnUrl = `${baseUrl}/course-success`;
+      const cancelUrl = `${baseUrl}/courses`;
 
       const response = await enrollCourse(
         course.id,

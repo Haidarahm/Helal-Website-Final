@@ -71,7 +71,7 @@ export default function Navbar() {
         <nav className={`hidden md:flex items-center gap-1`}>
           <div className={`nav-items flex ${isRTL ? "flex-row-reverse" : ""}`}>
             <NavItem to="/">{t("nav.home")}</NavItem>
-            <NavItem to="/programs">{t("nav.programs")}</NavItem>
+            {/* <NavItem to="/programs">{t("nav.programs")}</NavItem> */}
             <NavItem to="/courses">{t("nav.courses")}</NavItem>
             <NavItem to="/news">News</NavItem>
             <NavItem to="/contact">{t("nav.contact")}</NavItem>

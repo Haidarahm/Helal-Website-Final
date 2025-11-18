@@ -52,7 +52,7 @@ export default function Consultation() {
 
   useEffect(() => {
     if (isModalOpen) {
-      fetchConsultationTypes(currentLanguage, currentPage, 5);
+      fetchConsultationTypes(currentLanguage, currentPage, 4);
     }
   }, [isModalOpen, currentLanguage, currentPage, fetchConsultationTypes]);
 
@@ -92,8 +92,8 @@ export default function Consultation() {
 
     try {
       const baseUrl = window.location.origin;
-      const returnUrl = `${baseUrl}/Helal-Aljaberi/consultation-success`;
-      const cancelUrl = `${baseUrl}/Helal-Aljaberi/consultation`;
+      const returnUrl = `${baseUrl}/consultation-success`;
+      const cancelUrl = `${baseUrl}/consultation`;
 
       const response = await createConsultationCheckout(
         formData.name,
