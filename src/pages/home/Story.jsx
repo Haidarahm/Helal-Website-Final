@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import story from "../../assets/home/story.png";
+import story from "../../assets/home/story.webp";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { useTranslation } from "react-i18next";

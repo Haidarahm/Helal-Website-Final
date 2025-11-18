@@ -36,7 +36,7 @@ export default function Hero() {
         <h1
           className={`text-4xl md:text-5xl 2xl:text-7xl  font-extrabold text-primary tracking-tight  drop-shadow-md  ${
             isRTL
-              ? "text-right font-family-zain leading-12 md:leading-24"
+              ? "text-right font-family-zain leading-12 md:leading-18"
               : "text-left"
           }`}
           data-aos="fade-up"
