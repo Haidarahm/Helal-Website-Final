@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import { useLanguage } from "../../context/LanguageContext";
+import SEO from "../../components/SEO";
 
 import "./courses.css";
 
@@ -58,8 +59,26 @@ export default function Courses() {
     }
   };
 
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "Course",
+    "name": t("courses.title") || "Training Courses",
+    "description": t("courses.description") || "Discover a wide range of specialized training courses",
+    "provider": {
+      "@type": "Person",
+      "name": "Helal Al Jabri",
+      "jobTitle": "Trainer & Investment Expert"
+    }
+  };
+
   return (
     <div className="bg-white text-gray-900 py-20 px-6 md:px-20 overflow-hidden">
+      <SEO
+        title={t("courses.title") || "Training Courses"}
+        description={t("courses.description") || "Discover a wide range of specialized training courses designed to develop your skills and build your professional future"}
+        type="website"
+        structuredData={structuredData}
+      />
       {/* Header Section */}
       <div className="max-w-4xl mx-auto text-center mb-16">
         <h1

@@ -4,6 +4,7 @@ import "aos/dist/aos.css";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "../context/LanguageContext";
 import PricingModal from "../components/PricingModal";
+import SEO from "../components/SEO";
 import img1 from "../assets/images/1.webp";
 import img2 from "../assets/images/2.webp";
 import img3 from "../assets/images/3.webp";
@@ -46,8 +47,30 @@ export default function Programs() {
     image: images[i % images.length],
   }));
 
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": t("programs.title") || "Training Programs",
+    "description": t("programs.description") || "Professional training programs designed to enhance your skills",
+    "itemListElement": programs.map((program, index) => ({
+      "@type": "ListItem",
+      "position": index + 1,
+      "item": {
+        "@type": "Course",
+        "name": program.title,
+        "description": program.description
+      }
+    }))
+  };
+
   return (
     <div className="bg-secondary text-accent py-16 px-6 md:px-20 overflow-hidden">
+      <SEO
+        title={t("programs.title") || "Training Programs"}
+        description={t("programs.description") || "Browse professional training workshops and courses designed to enhance your skills, mindset, and career growth"}
+        type="website"
+        structuredData={structuredData}
+      />
      <div className="header flex flex-col mt-6 overflow-hidden">
      <h1
         className={`text-4xl  xl:text-5xl 2xl:text-6xl font-bold text-primary text-center mb-4`}

@@ -22,7 +22,7 @@ export default function Hero() {
         <img
           src={background}
           className="w-full h-full object-cover"
-          alt=""
+          alt={t("hero.title") || "Background"}
           loading="lazy"
           decoding="async"
         />
@@ -91,7 +91,7 @@ export default function Hero() {
       >
         <div className="container-image relative h-full w-full">
           {/* <div className="certificate absolute h-full flex items-center">
-            <img className="top-0 left-0 w-full " src={cert} alt="" />
+            <img className="top-0 left-0 w-full " src={cert} alt={t("hero.title") || "Certificate"} />
           </div> */}
           <img
             src={helal}

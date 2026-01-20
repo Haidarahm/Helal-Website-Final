@@ -6,6 +6,7 @@ import { useLanguage } from "../context/LanguageContext";
 import { Mail, Phone, MapPin, Send } from "lucide-react";
 import { Card, Input, Button } from "antd";
 import { useContactStore } from "../store";
+import SEO from "../components/SEO";
 
 export default function Contact() {
   const { t, ready } = useTranslation();
@@ -77,8 +78,35 @@ export default function Contact() {
     );
   }
 
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "ContactPage",
+    name: t("contact_page.title") || "Contact Us",
+    description: t("contact_page.description") || "Get in touch with us",
+    mainEntity: {
+      "@type": "Organization",
+      name: "Helal Al Jabri",
+      email: "He779@tikit.ae",
+      telephone: "+971 503 338 444",
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "Muscat",
+        addressCountry: "Oman",
+      },
+    },
+  };
+
   return (
     <div className="w-full bg-white" dir={isRTL ? "rtl" : "ltr"}>
+      <SEO
+        title={t("contact_page.title") || "Contact Us"}
+        description={
+          t("contact_page.description") ||
+          "Ready to start your trading journey? Contact us today and let's discuss how we can help you achieve your financial goals"
+        }
+        type="website"
+        structuredData={structuredData}
+      />
       {/* Header Section */}
       <section className="mt-20 px-6 md:px-20">
         <div className="max-w-6xl mx-auto text-center mb-16">
@@ -138,7 +166,7 @@ export default function Contact() {
                       {t("contact_page.email")}
                     </p>
                     <p className="text-text-primary font-semibold">
-                      haidarahmad421@gmail.com
+                      He779@tikit.ae
                     </p>
                   </div>
                 </div>

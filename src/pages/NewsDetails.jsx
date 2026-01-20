@@ -7,6 +7,7 @@ import { ArrowLeft } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "../context/LanguageContext";
 import { useNewsStore } from "../store";
+import SEO from "../components/SEO";
 
 export const NewsDetails = () => {
   const { id } = useParams();
@@ -67,11 +68,36 @@ export const NewsDetails = () => {
     );
   }
 
+  const structuredData = singleNews ? {
+    "@context": "https://schema.org",
+    "@type": "NewsArticle",
+    "headline": singleNews.title,
+    "description": singleNews.description,
+    "image": singleNews.images && singleNews.images.length > 0 ? singleNews.images : undefined,
+    "author": {
+      "@type": "Person",
+      "name": "Helal Al Jabri"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Helal Al Jabri"
+    }
+  } : null;
+
   return (
     <div
       className="min-h-screen bg-white py-20 px-4 md:px-20"
       dir={isRTL ? "rtl" : "ltr"}
     >
+      {singleNews && (
+        <SEO
+          title={singleNews.title}
+          description={singleNews.description || singleNews.subtitle}
+          image={singleNews.images && singleNews.images.length > 0 ? singleNews.images[0] : undefined}
+          type="article"
+          structuredData={structuredData}
+        />
+      )}
       <div className="max-w-7xl mx-auto">
         {/* Back Button */}
         <button

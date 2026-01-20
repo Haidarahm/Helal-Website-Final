@@ -8,7 +8,7 @@ export default function About() {
 
   return (
     <section
-      className={`relative flex h-screen items-center bg-accent text-text-primary top-12 ${
+      className={`relative flex md:min-h-screen items-center bg-accent text-text-primary top-12 ${
         isRTL ? "flex-row-reverse" : "flex-row"
       }`}
     >

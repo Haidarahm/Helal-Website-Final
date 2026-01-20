@@ -1,0 +1,21 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://he779.com/sitemap.xml
+
+# Disallow admin/auth pages
+Disallow: /auth
+Disallow: /otp-email
+Disallow: /verify-otp
+Disallow: /reset-password
+
+# Allow all other pages
+Allow: /
+Allow: /programs
+Allow: /courses
+Allow: /news
+Allow: /contact
+Allow: /calculator
+Allow: /consultation
+

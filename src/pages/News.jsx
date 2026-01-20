@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import { useLanguage } from "../context/LanguageContext";
 import { useNewsStore } from "../store";
 import { Pagination } from "antd";
+import SEO from "../components/SEO";
 
 export const News = () => {
   const { t, i18n } = useTranslation();
@@ -30,11 +31,24 @@ export const News = () => {
     window.scrollTo(0, 0);
   };
 
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    "name": t("news.title") || "Latest News & Updates",
+    "description": t("news.description") || "Stay updated with our latest training programs, success stories, and trading insights"
+  };
+
   return (
     <div
       className="min-h-screen bg-white py-20 px-4 md:px-20 overflow-hidden"
       dir={isRTL ? "rtl" : "ltr"}
     >
+      <SEO
+        title={t("news.title") || "Latest News & Updates"}
+        description={t("news.description") || "Stay updated with our latest training programs, success stories, and trading insights"}
+        type="website"
+        structuredData={structuredData}
+      />
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-16">

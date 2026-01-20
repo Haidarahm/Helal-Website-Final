@@ -88,7 +88,7 @@ const usePrivateCoursesStore = create((set, get) => ({
         isLoading: false,
         error: message,
       });
-      toast.error(message);
+      
       return null;
     }
   },
