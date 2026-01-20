@@ -418,5 +418,11 @@
     "need_help": "Need Help?",
     "were_here": "We're here",
     "thanks_note": "Thank you for choosing us. We look forward to seeing you soon!"
+  },
+  "broadcast": {
+    "title": "Hilal Al Jabri Broadcasts",
+    "subtitle": "Exclusive Content",
+    "description": "Discover a wealth of knowledge and insights through our exclusive broadcasts. Join thousands of listeners who are transforming their financial future with expert advice and strategies.",
+    "check_all": "Check All Broadcasts"
   }
 }

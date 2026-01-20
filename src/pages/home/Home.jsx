@@ -1,6 +1,7 @@
 import Hero from "./Hero";
 import About from "./About";
 import { Statistics } from "./Statistics";
+import Broadcast from "./Broadcast/Broadcast";
 import "./home.css";
 import { Story } from "./Story";
 import { Adaptation } from "./Adaption";
@@ -52,6 +53,7 @@ const Home = () => {
       <Hero />
       <About />
       <Statistics />
+      <Broadcast />
       <Story />
       <Adaptation />
       <Certificates />
