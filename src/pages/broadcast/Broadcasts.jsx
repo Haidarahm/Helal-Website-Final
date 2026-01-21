@@ -105,12 +105,12 @@ const Broadcasts = () => {
                     <div className="relative aspect-video md:aspect-[16/10] overflow-hidden rounded-3xl shadow-xl shadow-black/5 ring-1 ring-black/5 transition-all duration-700 hover:shadow-2xl hover:shadow-primary/10">
                       <img
                         alt={item.title}
-                        src={item.image}
+                        src={item.cover}
                         className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
                       />
                       <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/5 transition-colors duration-500"></div>
                       <div className="absolute bottom-4 right-4 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-xl text-xs font-bold text-secondary uppercase tracking-widest shadow-lg">
-                        {item.date}
+                        {new Date(item.created_at).toLocaleDateString(i18n.language === "ar" ? "ar-EG" : "en-US")}
                       </div>
                     </div>
                   </div>

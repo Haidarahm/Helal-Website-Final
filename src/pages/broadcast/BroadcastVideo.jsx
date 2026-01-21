@@ -26,6 +26,18 @@ const BroadcastVideo = () => {
     });
   }, [broadcastId, i18n.language, fetchBroadcastById]);
 
+  // Helper to transform YouTube URL to embed URL
+  const getEmbedUrl = (url) => {
+    if (!url) return "";
+    try {
+      const videoIdMatch = url.match(/(?:youtu\.be\/|youtube\.com\/(?:.*v=|\/embed\/))([^&?]*)/);
+      const videoId = videoIdMatch ? videoIdMatch[1] : "";
+      return `https://www.youtube.com/embed/${videoId}`;
+    } catch (e) {
+      return url;
+    }
+  };
+
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-accent">
@@ -77,7 +89,7 @@ const BroadcastVideo = () => {
             </Tag>
             <div className="flex items-center gap-2 text-text-light text-sm font-medium">
               <Calendar className="w-4 h-4 text-primary" />
-              {singleBroadcast?.date}
+              {new Date(singleBroadcast?.created_at).toLocaleDateString(i18n.language === "ar" ? "ar-EG" : "en-US")}
             </div>
           </div>
 
@@ -107,7 +119,7 @@ const BroadcastVideo = () => {
           data-aos-delay="200"
         >
           <iframe
-            src={singleBroadcast?.video_url}
+            src={getEmbedUrl(singleBroadcast?.youtube_link)}
             title={singleBroadcast?.title}
             className="absolute inset-0 w-full h-full"
             frameBorder="0"
