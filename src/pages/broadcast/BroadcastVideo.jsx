@@ -102,7 +102,7 @@ const BroadcastVideo = () => {
 
         {/* Full Width Video Section */}
         <div 
-          className="relative w-full aspect-video md:aspect-[21/9] lg:aspect-[2.4/1] rounded-[2.5rem] overflow-hidden shadow-2xl shadow-primary/10 ring-1 ring-black/5"
+          className="relative w-full aspect-video md:aspect-[2/1] rounded-[2.5rem] overflow-hidden shadow-2xl shadow-primary/10 ring-1 ring-black/5"
           data-aos="zoom-in"
           data-aos-delay="200"
         >
