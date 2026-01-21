@@ -128,19 +128,6 @@ const BroadcastVideo = () => {
           ></iframe>
         </div>
 
-        {/* Action Footer */}
-        <div className="mt-12 flex justify-between items-center py-8 border-t border-secondary/10" data-aos="fade-up">
-          <div className="flex items-center gap-4">
-            <span className="text-secondary/50 font-bold text-xs uppercase tracking-widest">{isRTL ? "مشاركة" : "Share"}</span>
-            <button className="p-3 bg-white rounded-2xl hover:bg-primary hover:text-white transition-all duration-300 shadow-sm hover:shadow-primary/20">
-              <Share2 className="w-5 h-5" />
-            </button>
-          </div>
-          <button className="group text-secondary font-bold flex items-center gap-2 hover:text-primary transition-colors">
-            {isRTL ? "التالي" : "Next"}
-            {isRTL ? <ArrowLeft className="w-5 h-5 transition-transform group-hover:-translate-x-1" /> : <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />}
-          </button>
-        </div>
       </div>
     </div>
   );
