@@ -17,3 +17,12 @@ export const getBroadcasts = async (lang = "ar", page = 1, perPage = 6) => {
         throw error;
     }
 };
+
+export const getBroadcastById = async (id, lang = "ar") => {
+    try {
+        const response = await api.get(`/broadcasts/${id}`, { params: { lang } });
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};

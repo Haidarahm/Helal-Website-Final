@@ -4,6 +4,7 @@ import "aos/dist/aos.css";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "../../context/LanguageContext";
 import { useBroadcastsStore } from "../../store";
+import { Link } from "react-router-dom";
 import { Card, Empty, Spin } from "antd";
 import SEO from "../../components/SEO";
 
@@ -131,13 +132,16 @@ const Broadcasts = () => {
                       {item.description}
                     </p>
                     
-                    <button className="relative group/btn px-8 py-3.5 bg-secondary text-accent font-bold rounded-2xl hover:bg-primary transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 shadow-lg hover:shadow-primary/30 flex items-center gap-3 overflow-hidden">
+                    <Link 
+                      to={`/broadcast/${item.id}`}
+                      className="relative group/btn px-8 py-3.5 bg-secondary text-accent font-bold rounded-2xl hover:bg-primary transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 shadow-lg hover:shadow-primary/30 flex items-center gap-3 overflow-hidden"
+                    >
                       <span className="relative z-10">{t("broadcast.watch") || "Watch"}</span>
                       <span className="relative z-10 text-xl transition-transform duration-300 group-hover/btn:translate-x-1 rtl:group-hover/btn:-translate-x-1">
                         {isRTL ? "←" : "→"}
                       </span>
                       <div className="absolute inset-0 bg-primary translate-y-full group-hover/btn:translate-y-0 transition-transform duration-300"></div>
-                    </button>
+                    </Link>
                   </div>
                 </div>
               );

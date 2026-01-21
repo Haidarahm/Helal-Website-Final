@@ -1,9 +1,13 @@
 import { create } from "zustand";
-import { getBroadcasts as getBroadcastsApi } from "../apis/broadcasts.js";
+import {
+    getBroadcasts as getBroadcastsApi,
+    getBroadcastById as getBroadcastByIdApi
+} from "../apis/broadcasts.js";
 
 const useBroadcastsStore = create((set) => ({
     // State
     broadcasts: [],
+    singleBroadcast: null,
     pagination: null,
     isLoading: false,
     error: null,
@@ -66,6 +70,49 @@ const useBroadcastsStore = create((set) => ({
         } catch (error) {
             set({ error: error.message, isLoading: false });
             return [];
+        }
+    },
+
+    // Fetch single broadcast
+    fetchBroadcastById: async (id, lang = "ar") => {
+        try {
+            set({ isLoading: true, error: null, singleBroadcast: null });
+
+            // Attempt real API call
+            try {
+                const response = await getBroadcastByIdApi(id, lang);
+                if (response?.status && response?.data) {
+                    set({
+                        singleBroadcast: response.data,
+                        isLoading: false,
+                    });
+                    return response.data;
+                }
+            } catch (apiError) {
+                console.warn("Single Broadcast API failed, using mock data:", apiError.message);
+            }
+
+            // Mock Data Fallthrough
+            const mockBroadcast = {
+                id: parseInt(id),
+                title: lang === "ar" ? `عنوان البث رقم ${id}` : `Broadcast Title ${id}`,
+                description: lang === "ar"
+                    ? `هذا هو الوصف الكامل للبث رقم ${id}. محتوى تعليمي شامل حول استراتيجيات التداول والتحليل المالي المتقدم. سوف نتعلم في هذا الفيديو كيفية التعامل مع تقلبات السوق بفعالية.`
+                    : `This is the full description for broadcast ${id}. Comprehensive educational content about trading strategies and advanced financial analysis. In this video, we will learn how to handle market volatility effectively.`,
+                video_url: "https://www.youtube.com/embed/dQw4w9WgXcQ", // Placeholder
+                date: new Date().toLocaleDateString(lang === "ar" ? "ar-EG" : "en-US"),
+                image: `https://picsum.photos/1200/600?random=${id}`,
+            };
+
+            set({
+                singleBroadcast: mockBroadcast,
+                isLoading: false,
+            });
+
+            return mockBroadcast;
+        } catch (error) {
+            set({ error: error.message, isLoading: false });
+            return null;
         }
     },
 }));
