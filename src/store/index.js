@@ -7,3 +7,4 @@ export { default as useContactStore } from "./contactStore.js";
 export { default as useConsultationStore } from "./consultationStore.js";
 export { default as useAvailabilityStore } from "./availabilityStore.js";
 export { default as useVideosStore } from "./videosStore.js";
+export { default as useBroadcastsStore } from "./broadcastsStore.js";

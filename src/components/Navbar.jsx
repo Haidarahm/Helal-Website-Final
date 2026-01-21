@@ -73,6 +73,7 @@ export default function Navbar() {
             <NavItem to="/">{t("nav.home")}</NavItem>
             {/* <NavItem to="/programs">{t("nav.programs")}</NavItem> */}
             <NavItem to="/courses">{t("nav.courses")}</NavItem>
+            <NavItem to="/broadcasts">{t("broadcast.page_title") || "Broadcasts"}</NavItem>
             <NavItem to="/news">News</NavItem>
             <NavItem to="/contact">{t("nav.contact")}</NavItem>
           </div>
@@ -167,6 +168,9 @@ export default function Navbar() {
           </MobileNavItem>
           <MobileNavItem to="/courses" onClick={close}>
             {t("nav.courses")}
+          </MobileNavItem>
+          <MobileNavItem to="/broadcasts" onClick={close}>
+            {t("broadcast.page_title") || "Broadcasts"}
           </MobileNavItem>
           <MobileNavItem to="/news" onClick={close}>
             News

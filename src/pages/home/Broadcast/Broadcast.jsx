@@ -10,17 +10,17 @@ const Broadcast = () => {
   const { isRTL } = useLanguage();
 
   return (
-    <section className="relative w-full py-16 md:py-24 bg-secondary overflow-hidden">
+    <section className="relative w-full py-16 md:py-24 bg-accent overflow-hidden">
       <div className="container mx-auto px-6 md:px-10">
         <div
-          className={`flex flex-col lg:flex-row items-center gap-12 lg:gap-20 ${
+          className={`flex flex-col lg:flex-row items-center gap-12 lg:gap-40 ${
             isRTL ? "lg:flex-row-reverse" : ""
           }`}
         >
           {/* Image Section (Left) */}
           <div className="w-full lg:w-1/2 relative group" data-aos="fade-right">
-            <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-white/10">
-              <div className="absolute inset-0 bg-primary/10 group-hover:bg-transparent transition-colors duration-500 z-10"></div>
+            <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-black/5">
+              <div className="absolute inset-0 bg-primary/5 group-hover:bg-transparent transition-colors duration-500 z-10"></div>
               <img
                 src={broadcastImage}
                 alt={t("broadcast.title") || "Hilal Al Jabri Broadcasts"}
@@ -30,12 +30,12 @@ const Broadcast = () => {
             </div>
             {/* Decorative Element */}
             <div
-              className={`absolute -bottom-6 -right-6 w-24 h-24 bg-primary/20 rounded-full blur-2xl -z-10 ${
+              className={`absolute -bottom-6 -right-6 w-24 h-24 bg-primary/10 rounded-full blur-2xl -z-10 ${
                 isRTL ? "-left-6 right-auto" : ""
               }`}
             ></div>
             <div
-              className={`absolute -top-6 -left-6 w-32 h-32 bg-primary-dark/20 rounded-full blur-2xl -z-10 ${
+              className={`absolute -top-6 -left-6 w-32 h-32 bg-primary-dark/10 rounded-full blur-2xl -z-10 ${
                 isRTL ? "-right-6 left-auto" : ""
               }`}
             ></div>
@@ -54,13 +54,13 @@ const Broadcast = () => {
               <h3 className="text-primary font-bold tracking-wider uppercase text-sm md:text-base">
                 {t("broadcast.subtitle") || "Exclusive Content"}
               </h3>
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-primary leading-tight">
                 {t("broadcast.title") || "Hilal Al Jabri Broadcasts"}
               </h2>
             </div>
 
             <p
-              className={`text-gray-300 text-lg leading-relaxed ${
+              className={`text-text-secondary text-lg leading-relaxed ${
                 isRTL ? "text-right" : "text-left"
               }`}
             >

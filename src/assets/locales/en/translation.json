@@ -423,6 +423,12 @@
     "title": "Hilal Al Jabri Broadcasts",
     "subtitle": "Exclusive Content",
     "description": "Discover a wealth of knowledge and insights through our exclusive broadcasts. Join thousands of listeners who are transforming their financial future with expert advice and strategies.",
-    "check_all": "Check All Broadcasts"
+    "check_all": "Check All Broadcasts",
+    "page_title": "Broadcasts",
+    "page_description": "Watch and listen to our latest educational content and market insights.",
+    "loading": "Loading broadcasts...",
+    "no_broadcasts": "No broadcasts available.",
+    "watch": "Watch",
+    "of": "of"
   }
 }

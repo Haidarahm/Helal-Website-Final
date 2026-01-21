@@ -199,7 +199,9 @@ export const News = () => {
               onChange={handlePageChange}
               showSizeChanger={false}
               showTotal={(total, range) =>
-                `${range[0]}-${range[1]} ${t("news.of") || "of"} ${total}`
+                isRTL
+                  ? `${total} ${t("news.of") || "من"} ${range[0]} - ${range[1]}`
+                  : `${range[0]}-${range[1]} ${t("news.of") || "of"} ${total}`
               }
             />
           </div>

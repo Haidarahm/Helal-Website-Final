@@ -56,6 +56,7 @@ const Profile = lazy(() => import("./pages/home/Profile.jsx"));
 const Videos = lazy(() => import("./pages/videos/Videos.jsx"));
 const VideoContainer = lazy(() => import("./pages/videos/VideoContainer.jsx"));
 const Meet = lazy(() => import("./pages/Meet.jsx"));
+const Broadcasts = lazy(() => import("./pages/broadcast/Broadcasts.jsx"));
 
 // Simple Loader Component
 function Loader() {
@@ -119,6 +120,7 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/news" element={<News />} />
           <Route path="/news/:id" element={<NewsDetails />} />
+          <Route path="/broadcasts" element={<Broadcasts />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/my-courses/:id" element={<Videos />} />
           <Route
