@@ -101,7 +101,7 @@ const Broadcasts = () => {
                 >
                   {/* Image Section - Wider */}
                   <div className="w-full md:w-[60%] group">
-                    <div className="relative aspect-video md:aspect-[21/9] overflow-hidden rounded-3xl shadow-xl shadow-black/5 ring-1 ring-black/5 transition-all duration-700 hover:shadow-2xl hover:shadow-primary/10">
+                    <div className="relative aspect-video md:aspect-[16/10] overflow-hidden rounded-3xl shadow-xl shadow-black/5 ring-1 ring-black/5 transition-all duration-700 hover:shadow-2xl hover:shadow-primary/10">
                       <img
                         alt={item.title}
                         src={item.image}
