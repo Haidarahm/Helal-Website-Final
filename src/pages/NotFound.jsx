@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { useLanguage } from "../context/LanguageContext";
 import { motion } from "framer-motion";
 import { Home, ArrowLeft } from "lucide-react";
+import SEO from "../components/SEO";
 
 const NotFound = () => {
   const navigate = useNavigate();
@@ -10,11 +11,20 @@ const NotFound = () => {
   const { isRTL } = useLanguage();
 
   return (
-    <div
-      className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 px-4"
-      dir={isRTL ? "rtl" : "ltr"}
-    >
-      <motion.div
+    <>
+      <SEO
+        title={isRTL ? "الصفحة غير موجودة - 404" : "Page Not Found - 404"}
+        description={
+          isRTL
+            ? "عذراً، الصفحة التي تبحث عنها غير موجودة. قد تكون الصفحة قد تم نقلها أو حذفها."
+            : "Sorry, the page you are looking for does not exist. The page may have been moved or deleted."
+        }
+      />
+      <div
+        className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 px-4"
+        dir={isRTL ? "rtl" : "ltr"}
+      >
+        <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
@@ -113,9 +123,10 @@ const NotFound = () => {
               {isRTL ? "اتصل بنا" : "Contact Us"}
             </button>
           </div>
+          </motion.div>
         </motion.div>
-      </motion.div>
-    </div>
+      </div>
+    </>
   );
 };
 

@@ -5,6 +5,7 @@ import { useLanguage } from "../../context/LanguageContext";
 import { Button } from "antd";
 import { CheckCircle, Home } from "lucide-react";
 import "./consultation.css";
+import SEO from "../../components/SEO";
 
 export default function ConsultationSuccess() {
   const { t } = useTranslation();
@@ -20,9 +21,18 @@ export default function ConsultationSuccess() {
   };
 
   return (
-    <div className="w-full bg-white min-h-screen" dir={isRTL ? "rtl" : "ltr"}>
-      {/* Success Section */}
-      <section className="min-h-screen flex items-center justify-center px-6 py-20">
+    <>
+      <SEO
+        title={t("consultation.success.title") || (isRTL ? "تم الحجز بنجاح" : "Consultation Booked Successfully")}
+        description={
+          isRTL
+            ? "تم حجز استشارتك بنجاح. سيتم التواصل معك قريباً."
+            : "Your consultation has been booked successfully. We will contact you soon."
+        }
+      />
+      <div className="w-full bg-white min-h-screen" dir={isRTL ? "rtl" : "ltr"}>
+        {/* Success Section */}
+        <section className="min-h-screen flex items-center justify-center px-6 py-20">
         <div className="max-w-2xl mx-auto text-center consultation-success-content">
           {/* Success Icon */}
           <div className="inline-flex items-center justify-center w-32 h-32 bg-linear-to-br from-green-500 to-green-600 rounded-full mb-8 consultation-success-icon">
@@ -103,8 +113,9 @@ export default function ConsultationSuccess() {
           >
             {t("consultation.success.back_home")}
           </Button>
-        </div>
-      </section>
-    </div>
+          </div>
+        </section>
+      </div>
+    </>
   );
 }

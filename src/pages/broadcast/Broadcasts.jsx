@@ -60,7 +60,7 @@ const Broadcasts = () => {
 
   return (
     <div
-      className="min-h-screen bg-accent py-24 px-4 md:px-10 lg:px-20"
+      className="min-h-screen bg-accent py-24 px-4 md:px-10 "
       dir={isRTL ? "rtl" : "ltr"}
     >
       <SEO
@@ -70,7 +70,7 @@ const Broadcasts = () => {
         structuredData={structuredData}
       />
       
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-7xl mx-auto">
         {/* Header Section */}
         <div className="text-center mb-20" data-aos="fade-up">
           <h1 className="text-4xl md:text-5xl lg:text-7xl font-extrabold text-primary mb-6 leading-tight">
@@ -101,8 +101,8 @@ const Broadcasts = () => {
                   data-aos={isEven ? "fade-right" : "fade-left"}
                 >
                   {/* Image Section - Wider */}
-                  <div className="w-full md:w-[60%] group">
-                    <div className="relative aspect-video md:aspect-[16/10] overflow-hidden rounded-3xl shadow-xl shadow-black/5 ring-1 ring-black/5 transition-all duration-700 hover:shadow-2xl hover:shadow-primary/10">
+                  <div className="w-full md:w-[70%] group">
+                    <div className="relative aspect-video md:aspect-16/10 overflow-hidden rounded-3xl shadow-xl shadow-black/5 ring-1 ring-black/5 transition-all duration-700 hover:shadow-2xl hover:shadow-primary/10">
                       <img
                         alt={item.title}
                         src={item.cover}
@@ -116,7 +116,7 @@ const Broadcasts = () => {
                   </div>
 
                   {/* Text Section - Narrower */}
-                  <div className="w-full md:w-[40%] flex flex-col items-start text-start">
+                  <div className="w-full md:w-[30%] flex flex-col items-start text-start">
                     <div className="flex items-center gap-3 mb-4">
                       <span className="h-0.5 w-8 bg-primary/60 rounded-full"></span>
                       <span className="text-primary font-bold text-sm tracking-widest uppercase">

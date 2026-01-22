@@ -5,6 +5,7 @@ import { useLanguage } from "../../context/LanguageContext";
 import { useAuthStore } from "../../store";
 import { User, Mail, Phone, Lock, Eye, EyeOff, ArrowLeft } from "lucide-react";
 import "./auth.css";
+import SEO from "../../components/SEO";
 
 export const Auth = () => {
   const location = useLocation();
@@ -91,12 +92,21 @@ export const Auth = () => {
   };
 
   return (
-    <div
-      className="auth-page flex items-center justify-center px-4 py-12 auth-container"
-      dir={isRTL ? "rtl" : "ltr"}
-    >
-      <div className="w-full max-w-md">
-        {/* Back Button */}
+    <>
+      <SEO
+        title={isSignUp ? (isRTL ? "إنشاء حساب" : "Sign Up") : (isRTL ? "تسجيل الدخول" : "Sign In")}
+        description={
+          isRTL
+            ? "انضم إلى منصة هلال الجابري للتداول والاستثمار. سجل الآن للوصول إلى الدورات والاستشارات."
+            : "Join Helal Al Jabri platform for trading and investment. Sign up now to access courses and consultations."
+        }
+      />
+      <div
+        className="auth-page flex items-center justify-center px-4 py-12 auth-container"
+        dir={isRTL ? "rtl" : "ltr"}
+      >
+        <div className="w-full max-w-md">
+          {/* Back Button */}
         <button
           onClick={() => navigate(-1)}
           className="auth-back-btn mb-6 px-4 py-2 transition-colors flex items-center gap-2"
@@ -401,9 +411,10 @@ export const Auth = () => {
                 </button>
               </form>
             )}
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };

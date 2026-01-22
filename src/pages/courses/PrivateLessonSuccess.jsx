@@ -2,13 +2,23 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "../../context/LanguageContext";
 import { useNavigate } from "react-router-dom";
+import SEO from "../../components/SEO";
 
 const PrivateLessonSuccess = () => {
   const { t } = useTranslation();
   const { isRTL } = useLanguage();
   const navigate = useNavigate();
   return (
-    <div className="min-h-[60vh] flex items-center justify-center px-4 py-12">
+    <>
+      <SEO
+        title={isRTL ? "تم الحجز بنجاح" : "Booking Successful"}
+        description={
+          isRTL
+            ? "تم تأكيد حجز الدرس الخاص بنجاح. ستتلقى تفاصيل إضافية عبر البريد الإلكتروني."
+            : "Your private lesson has been confirmed. You will receive details via email."
+        }
+      />
+      <div className="min-h-[60vh] flex items-center justify-center px-4 py-12">
       <div className="max-w-2xl w-full">
         {/* Success Card */}
         <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
@@ -152,7 +162,8 @@ const PrivateLessonSuccess = () => {
           {t("common.thanks_note")}
         </p>
       </div>
-    </div>
+      </div>
+    </>
   );
 };
 

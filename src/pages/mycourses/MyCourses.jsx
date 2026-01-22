@@ -2,6 +2,7 @@ import { useTranslation } from "react-i18next";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import { useLanguage } from "../../context/LanguageContext";
+import SEO from "../../components/SEO";
 
 export default function MyCourses() {
   const { t, i18n } = useTranslation();
@@ -36,9 +37,18 @@ export default function MyCourses() {
   };
 
   return (
-    <div className="w-full bg-white min-h-screen" dir={isRTL ? "rtl" : "ltr"}>
-      {/* Header Section */}
-      <section className="mt-20 px-6 md:px-20 py-12">
+    <>
+      <SEO
+        title={t("courses.my_courses.title") || (isRTL ? "دوراتي" : "My Courses")}
+        description={
+          isRTL
+            ? "عرض وإدارة الدورات التي سجلت بها - دورات التداول والاستثمار والتطوير الذاتي"
+            : "View and manage your enrolled courses - Trading, investment, and personal development courses"
+        }
+      />
+      <div className="w-full bg-white min-h-screen" dir={isRTL ? "rtl" : "ltr"}>
+        {/* Header Section */}
+        <section className="mt-20 px-6 md:px-20 py-12">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
             <h1 className="text-4xl xl:text-5xl 2xl:text-6xl font-bold text-primary mb-4">
@@ -82,7 +92,8 @@ export default function MyCourses() {
           {/* Outlet for nested routes */}
           <Outlet />
         </div>
-      </section>
-    </div>
+        </section>
+      </div>
+    </>
   );
 }

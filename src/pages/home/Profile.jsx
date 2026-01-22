@@ -12,6 +12,7 @@ import {
   FiBookOpen,
   FiCamera,
 } from "react-icons/fi";
+import SEO from "../../components/SEO";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -74,9 +75,18 @@ const Profile = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 px-4 md:px-20 py-20">
-      <div className="mx-auto max-w-5xl">
-        {/* Header */}
+    <>
+      <SEO
+        title={t("profile.title") || (isRTL ? "الملف الشخصي" : "My Profile")}
+        description={
+          isRTL
+            ? "إدارة معلومات حسابك الشخصي وتغيير كلمة المرور"
+            : "Manage your account information and change your password"
+        }
+      />
+      <div className="min-h-screen bg-gray-50 px-4 md:px-20 py-20">
+        <div className="mx-auto max-w-5xl">
+          {/* Header */}
         <div className={`mb-8 ${isRTL ? "text-right" : "text-left"}`}>
           <h1 className="text-4xl md:text-5xl font-bold text-primary mb-3">
             {t("profile.title")}
@@ -319,11 +329,12 @@ const Profile = () => {
                   </Button>
                 </Form>
               </Card>
+              </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

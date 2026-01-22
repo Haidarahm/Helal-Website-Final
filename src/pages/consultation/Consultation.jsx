@@ -15,6 +15,7 @@ import {
   MessageSquare,
 } from "lucide-react";
 import "./consultation.css";
+import SEO from "../../components/SEO";
 import ConsultationStepIndicator from "./components/ConsultationStepIndicator.jsx";
 import ConsultationTypeStep from "./components/ConsultationTypeStep.jsx";
 import ConsultationPersonalInfoStep from "./components/ConsultationPersonalInfoStep.jsx";
@@ -190,8 +191,33 @@ export default function Consultation() {
 
   const benefits = t("consultation.benefits", { returnObjects: true }) || [];
 
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: isRTL ? "استشارات مالية واستثمارية" : "Financial & Investment Consultation",
+    description: isRTL
+      ? "احصل على استشارة شخصية مع هلال الجابري في مجال التداول والاستثمار"
+      : "Get personalized consultation with Helal Al Jabri in trading and investment",
+    provider: {
+      "@type": "Person",
+      name: "Helal Al Jabri",
+    },
+    serviceType: "Consultation",
+    areaServed: "Worldwide",
+  };
+
   return (
-    <div className="w-full bg-white min-h-screen" dir={isRTL ? "rtl" : "ltr"}>
+    <>
+      <SEO
+        title={t("consultation.title") || (isRTL ? "الاستشارات" : "Consultation")}
+        description={
+          isRTL
+            ? "احصل على استشارة شخصية مع هلال الجابري في مجال التداول والاستثمار والتطوير الذاتي"
+            : "Get personalized consultation with Helal Al Jabri in trading, investment, and personal development"
+        }
+        structuredData={structuredData}
+      />
+      <div className="w-full bg-white min-h-screen" dir={isRTL ? "rtl" : "ltr"}>
       {/* Header Section */}
       <section className="mt-20 px-6 md:px-20 py-16">
         <div className="max-w-6xl mx-auto">
@@ -392,5 +418,6 @@ export default function Consultation() {
         </div>
       </Modal>
     </div>
+    </>
   );
 }

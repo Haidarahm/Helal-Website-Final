@@ -1,0 +1,23 @@
+{
+  "name": "Helal Al Jabri - Trainer & Investment Expert",
+  "short_name": "Helal Al Jabri",
+  "description": "Certified trainer and investment expert empowering thousands to achieve financial growth through innovative training and strategic insight.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#f9943c",
+  "icons": [
+    {
+      "src": "/favicon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "lang": "en",
+  "dir": "ltr"
+}

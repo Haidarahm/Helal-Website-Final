@@ -5,6 +5,7 @@ import { useLanguage } from "../../context/LanguageContext";
 import { useVideosStore } from "../../store";
 import { Pagination, Card } from "antd";
 import { FiPlay } from "react-icons/fi";
+import SEO from "../../components/SEO";
 
 export const Videos = () => {
   const { t, i18n } = useTranslation();
@@ -191,12 +192,21 @@ export const Videos = () => {
   };
 
   return (
-    <div
-      className="min-h-screen bg-white py-20 px-4 md:px-20 overflow-hidden"
-      dir={isRTL ? "rtl" : "ltr"}
-    >
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
+    <>
+      <SEO
+        title={t("videos.title", "Videos") || (isRTL ? "الفيديوهات" : "Videos")}
+        description={
+          isRTL
+            ? "شاهد أحدث الفيديوهات التدريبية والدروس في التداول والاستثمار والتطوير الذاتي"
+            : "Watch our latest training videos and tutorials in trading, investment, and personal development"
+        }
+      />
+      <div
+        className="min-h-screen bg-white py-20 px-4 md:px-20 overflow-hidden"
+        dir={isRTL ? "rtl" : "ltr"}
+      >
+        <div className="max-w-7xl mx-auto">
+          {/* Header */}
         <div className="text-center mb-16">
           <h1
             className="text-4xl xl:text-5xl 2xl:text-6xl font-bold text-primary mb-6"
@@ -300,8 +310,9 @@ export const Videos = () => {
             />
           </div>
         )}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

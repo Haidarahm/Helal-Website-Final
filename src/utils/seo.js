@@ -4,7 +4,7 @@
 
 const SITE_URL = "https://he779.com";
 const SITE_NAME = "Helal Al Jabri - Trainer & Investment Expert";
-const DEFAULT_IMAGE = "/vite.svg";
+const DEFAULT_IMAGE = "/logo.png";
 
 /**
  * Sets the document title

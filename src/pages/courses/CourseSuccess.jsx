@@ -5,6 +5,7 @@ import { useLanguage } from "../../context/LanguageContext";
 import { Button } from "antd";
 import { CheckCircle, BookOpen, Home } from "lucide-react";
 import "./courses.css";
+import SEO from "../../components/SEO";
 
 export default function CourseSuccess() {
   const { t } = useTranslation();
@@ -24,9 +25,18 @@ export default function CourseSuccess() {
   };
 
   return (
-    <div className="w-full bg-white min-h-screen" dir={isRTL ? "rtl" : "ltr"}>
-      {/* Success Section */}
-      <section className="min-h-screen flex items-center justify-center px-6 py-20">
+    <>
+      <SEO
+        title={t("courses.success.title") || (isRTL ? "تم التسجيل بنجاح" : "Enrollment Successful")}
+        description={
+          isRTL
+            ? "تم التسجيل في الدورة بنجاح. يمكنك الآن البدء في التعلم."
+            : "You have successfully enrolled in the course. You can now start learning."
+        }
+      />
+      <div className="w-full bg-white min-h-screen" dir={isRTL ? "rtl" : "ltr"}>
+        {/* Success Section */}
+        <section className="min-h-screen flex items-center justify-center px-6 py-20">
         <div className="max-w-2xl mx-auto text-center course-success-content">
           {/* Success Icon */}
           <div className="inline-flex items-center justify-center w-32 h-32 bg-linear-to-br from-green-500 to-green-600 rounded-full mb-8 course-success-icon">
@@ -112,8 +122,9 @@ export default function CourseSuccess() {
               {t("courses.success.back_home")}
             </Button>
           </div>
-        </div>
-      </section>
-    </div>
+          </div>
+        </section>
+      </div>
+    </>
   );
 }

@@ -1,21 +1,22 @@
+# Robots.txt for he779.com
+# https://he779.com
+
 User-agent: *
 Allow: /
 
-# Sitemap
+# Disallow admin and private areas
+Disallow: /api/
+Disallow: /admin/
+
+# Allow search engines to crawl all content
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+# Sitemap location
 Sitemap: https://he779.com/sitemap.xml
 
-# Disallow admin/auth pages
-Disallow: /auth
-Disallow: /otp-email
-Disallow: /verify-otp
-Disallow: /reset-password
-
-# Allow all other pages
-Allow: /
-Allow: /programs
-Allow: /courses
-Allow: /news
-Allow: /contact
-Allow: /calculator
-Allow: /consultation
-
+# Crawl-delay (optional, for politeness)
+Crawl-delay: 1

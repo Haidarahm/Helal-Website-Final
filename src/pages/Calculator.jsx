@@ -4,6 +4,7 @@ import { FaCalculator, FaDollarSign, FaPercentage } from "react-icons/fa";
 import { FiTrendingUp, FiTrendingDown } from "react-icons/fi";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "../context/LanguageContext";
+import SEO from "../components/SEO";
 
 const { Option } = Select;
 
@@ -138,11 +139,37 @@ export const Calculator = () => {
     setContractSize(value);
   };
 
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    name: isRTL ? "حاسبة حجم الصفقة" : "Position Size Calculator",
+    description: isRTL
+      ? "حاسبة حجم الصفقة للتداول - احسب حجم الصفقة المثالي بناءً على رأس المال ونسبة المخاطرة"
+      : "Trading position size calculator - Calculate optimal position size based on capital and risk percentage",
+    applicationCategory: "FinanceApplication",
+    operatingSystem: "Web Browser",
+    offers: {
+      "@type": "Offer",
+      price: "0",
+      priceCurrency: "USD",
+    },
+  };
+
   return (
-    <div
-      className="min-h-screen bg-white pt-24 pb-12 px-4"
-      dir={isRTL ? "rtl" : "ltr"}
-    >
+    <>
+      <SEO
+        title={t("calculator.title") || (isRTL ? "حاسبة حجم الصفقة" : "Position Size Calculator")}
+        description={
+          isRTL
+            ? "حاسبة حجم الصفقة للتداول - احسب حجم الصفقة المثالي بناءً على رأس المال ونسبة المخاطرة ووقف الخسارة"
+            : "Trading position size calculator - Calculate optimal position size based on your capital, risk percentage, and stop loss"
+        }
+        structuredData={structuredData}
+      />
+      <div
+        className="min-h-screen bg-white pt-24 pb-12 px-4"
+        dir={isRTL ? "rtl" : "ltr"}
+      >
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="text-center mb-16">
@@ -372,6 +399,7 @@ export const Calculator = () => {
           </Card>
         </div>
       </div>
-    </div>
+      </div>
+    </>
   );
 };

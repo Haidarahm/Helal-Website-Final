@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "../../context/LanguageContext";
 import { useVideosStore } from "../../store";
+import SEO from "../../components/SEO";
 
 function getYouTubeEmbedUrl(input) {
   if (!input) return null;
@@ -84,12 +85,24 @@ export const VideoContainer = () => {
     : null;
 
   return (
-    <div
-      className="min-h-screen bg-white pt-20 pb-8 md:pt-24 md:pb-12 lg:py-20 px-4 md:px-8 lg:px-20"
-      dir={isRTL ? "rtl" : "ltr"}
-    >
-      <div className="max-w-7xl mx-auto">
-        {/* Back to My Courses */}
+    <>
+      <SEO
+        title={currentVideo?.title || (isRTL ? "مشاهدة الفيديو" : "Watch Video")}
+        description={
+          currentVideo?.description ||
+          (isRTL
+            ? "شاهد فيديو تدريبي في التداول والاستثمار"
+            : "Watch a training video in trading and investment")
+        }
+        image={currentVideo?.cover}
+        type="video.other"
+      />
+      <div
+        className="min-h-screen bg-white pt-20 pb-8 md:pt-24 md:pb-12 lg:py-20 px-4 md:px-8 lg:px-20"
+        dir={isRTL ? "rtl" : "ltr"}
+      >
+        <div className="max-w-7xl mx-auto">
+          {/* Back to My Courses */}
         <div className="mb-4 md:mb-6 flex justify-start">
           <button
             type="button"
@@ -181,8 +194,9 @@ export const VideoContainer = () => {
             <p className="text-gray-500 text-lg">Video not found</p>
           </div>
         )}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
