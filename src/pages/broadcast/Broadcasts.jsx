@@ -101,7 +101,7 @@ const Broadcasts = () => {
                   data-aos={isEven ? "fade-right" : "fade-left"}
                 >
                   {/* Image Section - Wider */}
-                  <div className="w-full md:w-[70%] group">
+                  <div className="w-full md:w-[60%] group">
                     <div className="relative aspect-video md:aspect-16/10 overflow-hidden rounded-3xl shadow-xl shadow-black/5 ring-1 ring-black/5 transition-all duration-700 hover:shadow-2xl hover:shadow-primary/10">
                       <img
                         alt={item.title}
@@ -116,7 +116,7 @@ const Broadcasts = () => {
                   </div>
 
                   {/* Text Section - Narrower */}
-                  <div className="w-full md:w-[30%] flex flex-col items-start text-start">
+                  <div className="w-full md:w-[40%] flex flex-col items-start text-start">
                     <div className="flex items-center gap-3 mb-4">
                       <span className="h-0.5 w-8 bg-primary/60 rounded-full"></span>
                       <span className="text-primary font-bold text-sm tracking-widest uppercase">
@@ -129,7 +129,9 @@ const Broadcasts = () => {
                     </h2>
                     
                     <p className="text-text-secondary text-base md:text-lg leading-relaxed mb-8 max-w-xl">
-                      {item.description}
+                      {item.description && item.description.length > 200
+                        ? `${item.description.substring(0, 200)}...`
+                        : item.description}
                     </p>
                     
                     <Link 
