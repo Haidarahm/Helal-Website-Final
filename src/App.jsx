@@ -58,6 +58,7 @@ const VideoContainer = lazy(() => import("./pages/videos/VideoContainer.jsx"));
 const Meet = lazy(() => import("./pages/Meet.jsx"));
 const Broadcasts = lazy(() => import("./pages/broadcast/Broadcasts.jsx"));
 const BroadcastVideo = lazy(() => import("./pages/broadcast/BroadcastVideo.jsx"));
+const NotFound = lazy(() => import("./pages/NotFound.jsx"));
 
 // Simple Loader Component
 function Loader() {
@@ -131,6 +132,8 @@ function App() {
           />
           <Route path="/consultation" element={<Consultation />} />
           <Route path="/meet/:url" element={<Meet />} />
+          {/* 404 Catch-all route - must be last */}
+          <Route path="*" element={<NotFound />} />
         </Route>
         {/* Course Success */}
         <Route path="/course-success" element={<CourseSuccess />} />
