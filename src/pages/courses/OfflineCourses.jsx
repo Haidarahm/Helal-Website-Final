@@ -50,8 +50,38 @@ const OfflineCourses = () => {
         cancelUrl
       );
 
-      if (response?.redirect_url) {
-        window.location.href = response.redirect_url;
+      // Debug: Log response to help identify structure
+      console.log("Enrollment response:", response);
+
+      // Check for redirect_url in multiple possible locations
+      const redirectUrl =
+        response?.redirect_url ??
+        response?.data?.redirect_url ??
+        response?.redirectUrl;
+
+      // Check if the API response indicates success (check multiple possible success indicators)
+      const isSuccess =
+        response?.status === true ||
+        response?.status === "success" ||
+        response?.success === true ||
+        response?.data?.status === true ||
+        response?.data?.status === "success" ||
+        response?.data?.success === true ||
+        redirectUrl;
+
+      if (redirectUrl) {
+        window.location.href = redirectUrl;
+      } else if (isSuccess) {
+        // Enrollment successful but no redirect (e.g., free course or already enrolled)
+        toast.success(
+          isRTL
+            ? "تم التسجيل في الدورة بنجاح"
+            : "Successfully enrolled in the course"
+        );
+        // Optionally navigate to success page or refresh courses
+        setTimeout(() => {
+          navigate("/course-success");
+        }, 1500);
       } else {
         toast.error("Failed to process enrollment. Please try again.");
       }
@@ -89,18 +119,26 @@ const OfflineCourses = () => {
 
   const renderCurrencyPopover = (course) => {
     const { hasAED, hasUSD } = getAvailableCurrencies(course);
+    const isEnrolling = enrollingCourseId === course.id;
+    const disableCurrencyButtons = isEnrolling || isPaginating;
 
     if (!hasAED && !hasUSD) {
       return (
-        <div className="p-2 text-sm text-gray-600">
-          {isRTL ? "لا تتوفر أسعار لهذه الدورة" : "No pricing available"}
+        <div className="p-2">
+          <Button
+            type="primary"
+            block
+            onClick={() => handleEnrollClick(course, "usd")}
+            disabled={disableCurrencyButtons}
+            loading={isEnrolling}
+          >
+            {isRTL ? "المتابعة" : "Continue"}
+          </Button>
         </div>
       );
     }
 
     if (hasAED && hasUSD) {
-      const isEnrolling = enrollingCourseId === course.id;
-      const disableCurrencyButtons = isEnrolling || isPaginating;
       return (
         <div className="p-2">
           <div className="mb-3 text-sm font-semibold text-gray-700">
@@ -137,8 +175,6 @@ const OfflineCourses = () => {
     const currencyLabel = hasAED
       ? t("courses.currency.aed")
       : t("courses.currency.usd");
-    const isEnrolling = enrollingCourseId === course.id;
-    const disableCurrencyButtons = isEnrolling || isPaginating;
 
     return (
       <div className="p-2">
@@ -288,14 +324,6 @@ const OfflineCourses = () => {
                         onClick={() => {
                           const { hasAED, hasUSD } =
                             getAvailableCurrencies(course);
-                          if (!hasAED && !hasUSD) {
-                            toast.error(
-                              isRTL
-                                ? "لا تتوفر أسعار لهذه الدورة"
-                                : "No pricing available for this course"
-                            );
-                            return;
-                          }
                           if (hasAED && hasUSD) {
                             setOpenPopoverId(course.id);
                           } else {
