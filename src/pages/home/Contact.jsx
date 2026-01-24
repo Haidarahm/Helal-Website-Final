@@ -129,7 +129,7 @@ export const Contact = () => {
         <div className="mt-16 max-w-2xl mx-auto">
           <Card
             className="contact-form-card rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden"
-            bordered
+            variant="outlined"
           >
             <div className="p-0 md:p-8">
               <div className="flex items-center mb-6">

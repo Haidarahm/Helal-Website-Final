@@ -1,88 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:xhtml="http://www.w3.org/1999/xhtml">
-  
-  <!-- Homepage -->
-  <url>
-    <loc>https://he779.com/</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://he779.com/"/>
-    <xhtml:link rel="alternate" hreflang="ar" href="https://he779.com/?lang=ar"/>
-    <changefreq>daily</changefreq>
-    <priority>1.0</priority>
-  </url>
-  
-  <!-- Programs -->
-  <url>
-    <loc>https://he779.com/programs</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  
-  <!-- Courses -->
-  <url>
-    <loc>https://he779.com/courses</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  
-  <url>
-    <loc>https://he779.com/courses/online-courses</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  
-  <url>
-    <loc>https://he779.com/courses/offline-courses</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  
-  <url>
-    <loc>https://he779.com/courses/private-courses</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  
-  <!-- Consultation -->
-  <url>
-    <loc>https://he779.com/consultation</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  
-  <!-- Calculator -->
-  <url>
-    <loc>https://he779.com/calculator</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  
-  <!-- News -->
-  <url>
-    <loc>https://he779.com/news</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  
-  <!-- Broadcasts -->
-  <url>
-    <loc>https://he779.com/broadcasts</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  
-  <!-- Contact -->
-  <url>
-    <loc>https://he779.com/contact</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <!-- Auth -->
-  <url>
-    <loc>https://he779.com/auth</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+<url><loc>https://he779.com/</loc><lastmod>2026-01-24</lastmod><xhtml:link rel="alternate" hreflang="en" href="https://he779.com/"/><xhtml:link rel="alternate" hreflang="ar" href="https://he779.com/?lang=ar"/><changefreq>daily</changefreq><priority>1.0</priority></url>
+<url><loc>https://he779.com/programs</loc><lastmod>2026-01-24</lastmod><xhtml:link rel="alternate" hreflang="en" href="https://he779.com/programs"/><xhtml:link rel="alternate" hreflang="ar" href="https://he779.com/programs?lang=ar"/><changefreq>weekly</changefreq><priority>0.9</priority></url>
+<url><loc>https://he779.com/courses</loc><lastmod>2026-01-24</lastmod><xhtml:link rel="alternate" hreflang="en" href="https://he779.com/courses"/><xhtml:link rel="alternate" hreflang="ar" href="https://he779.com/courses?lang=ar"/><changefreq>weekly</changefreq><priority>0.9</priority></url>
+<url><loc>https://he779.com/courses/online-courses</loc><lastmod>2026-01-24</lastmod><xhtml:link rel="alternate" hreflang="en" href="https://he779.com/courses/online-courses"/><xhtml:link rel="alternate" hreflang="ar" href="https://he779.com/courses/online-courses?lang=ar"/><changefreq>weekly</changefreq><priority>0.8</priority></url>
+<url><loc>https://he779.com/courses/offline-courses</loc><lastmod>2026-01-24</lastmod><xhtml:link rel="alternate" hreflang="en" href="https://he779.com/courses/offline-courses"/><xhtml:link rel="alternate" hreflang="ar" href="https://he779.com/courses/offline-courses?lang=ar"/><changefreq>weekly</changefreq><priority>0.8</priority></url>
+<url><loc>https://he779.com/courses/private-courses</loc><lastmod>2026-01-24</lastmod><xhtml:link rel="alternate" hreflang="en" href="https://he779.com/courses/private-courses"/><xhtml:link rel="alternate" hreflang="ar" href="https://he779.com/courses/private-courses?lang=ar"/><changefreq>weekly</changefreq><priority>0.8</priority></url>
+<url><loc>https://he779.com/consultation</loc><lastmod>2026-01-24</lastmod><xhtml:link rel="alternate" hreflang="en" href="https://he779.com/consultation"/><xhtml:link rel="alternate" hreflang="ar" href="https://he779.com/consultation?lang=ar"/><changefreq>weekly</changefreq><priority>0.9</priority></url>
+<url><loc>https://he779.com/calculator</loc><lastmod>2026-01-24</lastmod><xhtml:link rel="alternate" hreflang="en" href="https://he779.com/calculator"/><xhtml:link rel="alternate" hreflang="ar" href="https://he779.com/calculator?lang=ar"/><changefreq>monthly</changefreq><priority>0.7</priority></url>
+<url><loc>https://he779.com/news</loc><lastmod>2026-01-24</lastmod><xhtml:link rel="alternate" hreflang="en" href="https://he779.com/news"/><xhtml:link rel="alternate" hreflang="ar" href="https://he779.com/news?lang=ar"/><changefreq>daily</changefreq><priority>0.8</priority></url>
+<url><loc>https://he779.com/broadcasts</loc><lastmod>2026-01-24</lastmod><xhtml:link rel="alternate" hreflang="en" href="https://he779.com/broadcasts"/><xhtml:link rel="alternate" hreflang="ar" href="https://he779.com/broadcasts?lang=ar"/><changefreq>weekly</changefreq><priority>0.7</priority></url>
+<url><loc>https://he779.com/contact</loc><lastmod>2026-01-24</lastmod><xhtml:link rel="alternate" hreflang="en" href="https://he779.com/contact"/><xhtml:link rel="alternate" hreflang="ar" href="https://he779.com/contact?lang=ar"/><changefreq>monthly</changefreq><priority>0.6</priority></url>
+<url><loc>https://he779.com/auth</loc><lastmod>2026-01-24</lastmod><xhtml:link rel="alternate" hreflang="en" href="https://he779.com/auth"/><xhtml:link rel="alternate" hreflang="ar" href="https://he779.com/auth?lang=ar"/><changefreq>monthly</changefreq><priority>0.5</priority></url>
 </urlset>

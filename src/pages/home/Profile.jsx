@@ -102,7 +102,7 @@ const Profile = () => {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Left: Profile Picture & Quick Actions */}
             <div className="lg:col-span-1">
-              <Card className="text-center pb-6 profile-avatar-card" bordered>
+              <Card className="text-center pb-6 profile-avatar-card" variant="outlined">
                 {/* Avatar */}
                 <div className="relative inline-block mb-6">
                   {avatarUrl ? (
@@ -159,7 +159,7 @@ const Profile = () => {
             {/* Right: Information & Settings */}
             <div className="lg:col-span-2 space-y-6">
               {/* Personal Information */}
-              <Card className="profile-info-card" bordered>
+              <Card className="profile-info-card" variant="outlined">
                 <div
                   className={`flex items-center gap-3 mb-6 ${
                     isRTL ? "flex-row-reverse" : ""
@@ -216,7 +216,7 @@ const Profile = () => {
               </Card>
 
               {/* Change Password */}
-              <Card className="profile-password-card" bordered>
+              <Card className="profile-password-card" variant="outlined">
                 <div
                   className={`flex items-center gap-3 mb-6 ${
                     isRTL ? "flex-row-reverse" : ""

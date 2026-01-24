@@ -17,6 +17,3 @@ Allow: /
 
 # Sitemap location
 Sitemap: https://he779.com/sitemap.xml
-
-# Crawl-delay (optional, for politeness)
-Crawl-delay: 1
