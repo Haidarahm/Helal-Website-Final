@@ -2,7 +2,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from "../../../context/LanguageContext";
-import broadcastImage from "../../../assets/images/1.webp"; // Using a placeholder from existing assets
+import broadcastImage from "../../../assets/broadcastHilal.png"; // Using a placeholder from existing assets
 
 const Broadcast = () => {
   const { t } = useTranslation();

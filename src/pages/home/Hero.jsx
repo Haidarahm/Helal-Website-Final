@@ -3,9 +3,7 @@ import background from "../../assets/back.png";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "../../context/LanguageContext";
-import certPdf from "../../assets/pdf/الخبرات.pdf";
 import { useNavigate } from "react-router-dom";
-import cert from "../../assets/certificates/1.jpg";
 export default function Hero() {
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -74,7 +72,7 @@ export default function Hero() {
             <span className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.25),rgba(255,255,255,0))]"></span>
           </button>
           <a
-            href={certPdf}
+            href="/الخبرات.pdf"
             download
             className="px-4  py-3 md:px-8 md:py-4 rounded-xl border-2 border-primary text-primary font-semibold transition-all duration-300 hover:bg-primary hover:text-secondary"
           >
