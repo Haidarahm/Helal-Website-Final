@@ -104,6 +104,7 @@ const ConsultationTypeStep = ({
             onChange={onPageChange}
             showSizeChanger={false}
             disabled={isTypesLoading}
+            locale={{ prev_page: "Previous page", next_page: "Next page" }}
           />
         </div>
       )}

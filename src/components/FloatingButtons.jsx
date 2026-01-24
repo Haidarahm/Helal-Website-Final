@@ -30,11 +30,16 @@ export default function FloatingButtons() {
       open={open}
       onOpenChange={handleOpenChange}
       icon={
-        open ? (
-          <FiChevronUp style={{ fontSize: "20px" }} />
-        ) : (
-          <FiChevronDown style={{ fontSize: "20px" }} />
-        )
+        <>
+          <FiChevronDown style={{ fontSize: "20px" }} aria-hidden />
+          <span className="sr-only">Open quick actions</span>
+        </>
+      }
+      closeIcon={
+        <>
+          <FiChevronUp style={{ fontSize: "20px" }} aria-hidden />
+          <span className="sr-only">Close quick actions</span>
+        </>
       }
       trigger="click"
       style={{
@@ -44,26 +49,45 @@ export default function FloatingButtons() {
       type="primary"
       shape="circle"
       className="custom-float-btn-group"
+      aria-label="Quick actions menu"
     >
       <Tooltip title="Calculator" placement="left">
         <FloatButton
-          icon={<FaCalculator style={{ fontSize: "20px" }} />}
+          icon={
+            <>
+              <span className="sr-only">Open Calculator</span>
+              <FaCalculator style={{ fontSize: "20px" }} aria-hidden />
+            </>
+          }
           onClick={handleCalculator}
           data-calculator="true"
+          aria-label="Open Calculator"
         />
       </Tooltip>
       <Tooltip title="WhatsApp" placement="left">
         <FloatButton
-          icon={<FaWhatsapp style={{ fontSize: "20px" }} />}
+          icon={
+            <>
+              <span className="sr-only">Contact on WhatsApp</span>
+              <FaWhatsapp style={{ fontSize: "20px" }} aria-hidden />
+            </>
+          }
           onClick={handleWhatsApp}
           data-whatsapp="true"
+          aria-label="Contact on WhatsApp"
         />
       </Tooltip>
       <Tooltip title="Private Consultation" placement="left">
         <FloatButton
-          icon={<FaCommentDots style={{ fontSize: "20px" }} />}
+          icon={
+            <>
+              <span className="sr-only">Book private consultation</span>
+              <FaCommentDots style={{ fontSize: "20px" }} aria-hidden />
+            </>
+          }
           onClick={handlePrivateConsultation}
           data-consultation="true"
+          aria-label="Book private consultation"
         />
       </Tooltip>
     </FloatButton.Group>

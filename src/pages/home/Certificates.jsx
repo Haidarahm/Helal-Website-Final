@@ -61,6 +61,14 @@ export const Certificates = () => {
               pauseOnMouseEnter: true,
             }}
             pagination={{ clickable: true }}
+            a11y={{
+              enabled: true,
+              prevSlideMessage: "Previous certificate",
+              nextSlideMessage: "Next certificate",
+              firstSlideMessage: "This is the first certificate",
+              lastSlideMessage: "This is the last certificate",
+              paginationBulletMessage: "Go to certificate {{index}}",
+            }}
             className="!px-2"
           >
             {[

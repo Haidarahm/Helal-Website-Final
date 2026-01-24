@@ -168,6 +168,12 @@ export default function PricingModal({ isOpen, onClose }) {
         width="90%"
         style={{ maxWidth: "1200px" }}
         className="pricing-modal"
+        closeIcon={
+          <>
+            <span aria-hidden>×</span>
+            <span className="sr-only">{t("common.close", "Close")}</span>
+          </>
+        }
         styles={{
           body: {
             backgroundColor: "var(--color-secondary)",

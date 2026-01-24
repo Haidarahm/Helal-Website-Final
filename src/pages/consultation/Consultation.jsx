@@ -297,9 +297,9 @@ export default function Consultation() {
       <Modal
         title={
           <div className="text-center py-4">
-            <h2 className="text-3xl font-bold text-primary">
+            <h3 className="text-3xl font-bold text-primary">
               {t("consultation.form.title")}
-            </h2>
+            </h3>
           </div>
         }
         open={isModalOpen}
@@ -308,6 +308,12 @@ export default function Consultation() {
         width="90%"
         style={{ maxWidth: "800px" }}
         className="consultation-modal"
+        closeIcon={
+          <>
+            <span aria-hidden>×</span>
+            <span className="sr-only">{t("common.close", "Close")}</span>
+          </>
+        }
         styles={{
           body: {
             backgroundColor: "white",
@@ -324,9 +330,9 @@ export default function Consultation() {
         <div className="min-h-[300px]">
           {currentStep === 0 && (
             <>
-              <h3 className="text-xl font-semibold text-gray-800 mb-8 text-center">
+              <h4 className="text-xl font-semibold text-gray-800 mb-8 text-center">
                 {t("consultation.step_content.select_consultation_type")}
-              </h3>
+              </h4>
               <ConsultationTypeStep
                 consultationTypes={consultationTypes}
                 selectedConsultation={selectedConsultation}
@@ -341,12 +347,12 @@ export default function Consultation() {
 
           {currentStep === 1 && (
             <>
-              <h3
+              <h4
                 className="text-xl font-semibold text-primary mb-6"
                 dir={isRTL ? "rtl" : "ltr"}
               >
                 {t("consultation.step_content.your_personal_info")}
-              </h3>
+              </h4>
               <ConsultationPersonalInfoStep
                 formData={formData}
                 onChange={handleInputChange}
@@ -358,12 +364,12 @@ export default function Consultation() {
 
           {currentStep === 2 && (
             <>
-              <h3
+              <h4
                 className="text-xl font-semibold text-primary mb-6"
                 dir={isRTL ? "rtl" : "ltr"}
               >
                 {t("consultation.step_content.select_date_time")}
-              </h3>
+              </h4>
               <ConsultationScheduleStep
                 selectedDate={selectedDate}
                 onDateChange={setSelectedDate}
@@ -376,12 +382,12 @@ export default function Consultation() {
 
           {currentStep === 3 && (
             <>
-              <h3
+              <h4
                 className="text-xl font-semibold text-primary mb-6"
                 dir={isRTL ? "rtl" : "ltr"}
               >
                 {t("consultation.step_content.select_payment")}
-              </h3>
+              </h4>
               <ConsultationPaymentStep
                 selectedConsultation={selectedConsultation}
                 selectedDate={selectedDate}

@@ -416,6 +416,7 @@ const OnlineCourses = () => {
             showTotal={(total, range) =>
               `${range[0]}-${range[1]} ${isRTL ? "من" : "of"} ${total}`
             }
+            locale={{ prev_page: "Previous page", next_page: "Next page" }}
           />
         </div>
       )}

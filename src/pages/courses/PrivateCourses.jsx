@@ -199,6 +199,7 @@ const PrivateCourses = () => {
             onChange={(p) => setPage(p)}
             showSizeChanger={false}
             disabled={isLoading}
+            locale={{ prev_page: "Previous page", next_page: "Next page" }}
           />
         </div>
       )}
@@ -212,6 +213,12 @@ const PrivateCourses = () => {
         destroyOnClose
         centered
         className="private-lesson-modal"
+        closeIcon={
+          <>
+            <span aria-hidden>×</span>
+            <span className="sr-only">{t("common.close", "Close")}</span>
+          </>
+        }
       >
         <div className="mb-8" dir={isRTL ? "rtl" : "ltr"}>
           <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">

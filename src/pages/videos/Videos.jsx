@@ -239,6 +239,8 @@ export const Videos = () => {
             {videos.map((video) => (
               <div
                 key={video.id}
+                role="button"
+                tabIndex={0}
                 className="group bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 cursor-pointer"
                 onClick={() =>
                   navigate(
@@ -247,6 +249,13 @@ export const Videos = () => {
                       : `/videos/${video.id}`
                   )
                 }
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    navigate(courseId ? `/my-courses/${courseId}/videos/${video.id}` : `/videos/${video.id}`);
+                  }
+                }}
+                aria-label={t("videos.play", "Play") + ": " + (video.title || "")}
               >
                 {/* Image Container with Play Button */}
                 <div className="relative aspect-video overflow-hidden">
@@ -268,9 +277,9 @@ export const Videos = () => {
 
                 {/* Content */}
                 <div className={`p-4 ${isRTL ? "text-right" : "text-left"}`}>
-                  <h3 className="text-lg font-bold text-gray-900 mb-1.5 line-clamp-2 group-hover:text-primary transition-colors duration-200">
+                  <h2 className="text-lg font-bold text-gray-900 mb-1.5 line-clamp-2 group-hover:text-primary transition-colors duration-200">
                     {video.title}
-                  </h3>
+                  </h2>
                   {video.subTitle && (
                     <p className="text-primary text-xs font-medium mb-2 line-clamp-1">
                       {video.subTitle}
@@ -304,6 +313,7 @@ export const Videos = () => {
               showTotal={(total, range) =>
                 `${range[0]}-${range[1]} ${t("videos.of", "of")} ${total}`
               }
+              locale={{ prev_page: "Previous page", next_page: "Next page" }}
               style={{
                 direction: isRTL ? "rtl" : "ltr",
               }}

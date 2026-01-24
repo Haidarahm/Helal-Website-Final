@@ -126,8 +126,10 @@ const Profile = () => {
                     }}
                   >
                     <button
+                      type="button"
                       className="absolute bottom-0 right-0 w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white shadow-lg hover:bg-primary-dark transition-colors border-2 border-white"
                       disabled={uploading}
+                      aria-label={t("profile.upload_photo", "Change profile photo")}
                     >
                       <FiCamera size={18} />
                     </button>

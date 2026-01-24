@@ -369,6 +369,7 @@ const OfflineCourses = () => {
             onChange={handlePageChange}
             showSizeChanger={false}
             disabled={isPaginating}
+            locale={{ prev_page: "Previous page", next_page: "Next page" }}
           />
         </div>
       )}

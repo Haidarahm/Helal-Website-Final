@@ -35,11 +35,16 @@
     "placeholder_email": "أدخل بريدك الإلكتروني",
     "placeholder_phone": "أدخل رقم هاتفك",
     "placeholder_password": "أدخل كلمة المرور",
-    "placeholder_confirm_password": "أكد كلمة المرور"
+    "placeholder_confirm_password": "أكد كلمة المرور",
+    "show_password": "إظهار كلمة المرور",
+    "hide_password": "إخفاء كلمة المرور"
   },
   "language": {
     "toggle": "تبديل اللغة",
     "switch_to": "English"
+  },
+  "common": {
+    "close": "إغلاق"
   },
   "hero": {
     "title": " هلال الجابري – رائد التدريب والاستثمار",
@@ -290,6 +295,7 @@
   },
   "videos": {
     "title": "الفيديوهات",
+    "play": "تشغيل",
     "loading": "جاري تحميل الفيديوهات...",
     "no_videos": "لا توجد فيديوهات متاحة حالياً.",
     "of": "من"
@@ -388,6 +394,7 @@
     "description": "إدارة معلومات حسابك وتفضيلاتك",
     "loading": "جاري تحميل الملف الشخصي...",
     "active_member": "عضو نشط",
+    "upload_photo": "تغيير صورة الملف الشخصي",
     "my_courses": "دوراتي",
     "personal_information": "المعلومات الشخصية",
     "email_address": "عنوان البريد الإلكتروني",

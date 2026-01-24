@@ -35,11 +35,16 @@
     "placeholder_email": "Enter your email",
     "placeholder_phone": "Enter your phone number",
     "placeholder_password": "Enter your password",
-    "placeholder_confirm_password": "Confirm your password"
+    "placeholder_confirm_password": "Confirm your password",
+    "show_password": "Show password",
+    "hide_password": "Hide password"
   },
   "language": {
     "toggle": "Toggle Language",
     "switch_to": "العربية"
+  },
+  "common": {
+    "close": "Close"
   },
   "hero": {
     "title": "Helal Al Jabri – Trainer & Investment Expert",
@@ -290,6 +295,7 @@
   },
   "videos": {
     "title": "Videos",
+    "play": "Play",
     "loading": "Loading videos...",
     "no_videos": "No videos available at the moment.",
     "of": "of"
@@ -388,6 +394,7 @@
     "description": "Manage your account information and preferences",
     "loading": "Loading profile...",
     "active_member": "Active Member",
+    "upload_photo": "Change profile photo",
     "my_courses": "My Courses",
     "personal_information": "Personal Information",
     "email_address": "Email Address",

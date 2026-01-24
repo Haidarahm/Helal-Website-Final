@@ -91,13 +91,14 @@ export default function Navbar() {
               <button
                 type="button"
                 className="flex items-center  gap-3 ml-1 px-2 py-1 rounded-md hover:bg-secondary-light transition-colors"
+                aria-label={`${t("nav.menu.profile", "Account")} menu`}
               >
                 <div className="h-9 w-9 rounded-full bg-primary/90 text-white flex items-center justify-center overflow-hidden">
                   {user?.avatar ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img
                       src={user.avatar}
-                      alt="avatar"
+                      alt=""
                       className="h-full w-full object-cover"
                     />
                   ) : user?.name || user?.email ? (
@@ -105,7 +106,7 @@ export default function Navbar() {
                       {getInitials(user?.name || user?.email)}
                     </span>
                   ) : (
-                    <UserIcon size={18} />
+                    <UserIcon size={18} aria-hidden />
                   )}
                 </div>
                 <span className="text-sm font-medium text-accent max-w-[180px] truncate">
@@ -115,16 +116,20 @@ export default function Navbar() {
             </Dropdown>
           ) : (
             <div className="flex items-center gap-2 ml-1">
-              <NavLink to="/auth" state={{ initialForm: "signin" }}>
-                <button className="px-4 py-2 text-sm font-medium text-accent hover:text-primary rounded-md hover:bg-secondary-light transition-all duration-200">
-                  {t("auth.sign_in")}
-                </button>
+              <NavLink
+                to="/auth"
+                state={{ initialForm: "signin" }}
+                className="px-4 py-2 text-sm font-medium text-accent hover:text-primary rounded-md hover:bg-secondary-light transition-all duration-200"
+              >
+                {t("auth.sign_in")}
               </NavLink>
-              <NavLink to="/auth" state={{ initialForm: "signup" }}>
-                <button className="relative px-5 py-2 text-sm font-semibold bg-linear-to-r from-primary to-primary-dark text-white rounded-lg hover:shadow-lg hover:shadow-primary/30 transition-all duration-300 hover:scale-105">
-                  {t("auth.sign_up")}
-                  <span className="absolute inset-0 rounded-lg bg-white/20 opacity-0 hover:opacity-100 transition-opacity duration-300"></span>
-                </button>
+              <NavLink
+                to="/auth"
+                state={{ initialForm: "signup" }}
+                className="relative inline-block px-5 py-2 text-sm font-semibold bg-linear-to-r from-primary to-primary-dark text-white rounded-lg hover:shadow-lg hover:shadow-primary/30 transition-all duration-300 hover:scale-105"
+              >
+                {t("auth.sign_up")}
+                <span className="absolute inset-0 rounded-lg bg-white/20 opacity-0 hover:opacity-100 transition-opacity duration-300" aria-hidden />
               </NavLink>
             </div>
           )}
@@ -198,13 +203,14 @@ export default function Navbar() {
               <button
                 type="button"
                 className="flex items-center gap-3 py-1 px-2 rounded-md hover:bg-secondary-light transition-colors"
+                aria-label={`${t("nav.menu.profile", "Account")} menu`}
               >
                 <div className="h-10 w-10 rounded-full bg-primary/90 text-white flex items-center justify-center overflow-hidden">
                   {user?.avatar ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img
                       src={user.avatar}
-                      alt="avatar"
+                      alt=""
                       className="h-full w-full object-cover"
                     />
                   ) : user?.name || user?.email ? (
@@ -212,7 +218,7 @@ export default function Navbar() {
                       {getInitials(user?.name || user?.email)}
                     </span>
                   ) : (
-                    <UserIcon size={18} />
+                    <UserIcon size={18} aria-hidden />
                   )}
                 </div>
                 <div className="min-w-0">
@@ -228,19 +234,17 @@ export default function Navbar() {
                 to="/auth"
                 state={{ initialForm: "signin" }}
                 onClick={close}
+                className="w-full px-4 py-2.5 text-base font-medium text-accent rounded-lg hover:bg-secondary-light border border-secondary-light hover:border-primary/30 transition-all duration-200 text-center"
               >
-                <button className="w-full px-4 py-2.5 text-base font-medium text-accent rounded-lg hover:bg-secondary-light border border-secondary-light hover:border-primary/30 transition-all duration-200">
-                  {t("auth.sign_in")}
-                </button>
+                {t("auth.sign_in")}
               </NavLink>
               <NavLink
                 to="/auth"
                 state={{ initialForm: "signup" }}
                 onClick={close}
+                className="w-full px-4 py-2.5 text-base font-semibold bg-linear-to-r from-primary to-primary-dark text-white rounded-lg hover:shadow-lg hover:shadow-primary/30 transition-all duration-300 hover:scale-[1.02] text-center"
               >
-                <button className="w-full px-4 py-2.5 text-base font-semibold bg-linear-to-r from-primary to-primary-dark text-white rounded-lg hover:shadow-lg hover:shadow-primary/30 transition-all duration-300 hover:scale-[1.02]">
-                  {t("auth.sign_up")}
-                </button>
+                {t("auth.sign_up")}
               </NavLink>
             </div>
           )}

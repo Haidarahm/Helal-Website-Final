@@ -203,6 +203,7 @@ export const News = () => {
                   ? `${total} ${t("news.of") || "من"} ${range[0]} - ${range[1]}`
                   : `${range[0]}-${range[1]} ${t("news.of") || "of"} ${total}`
               }
+              locale={{ prev_page: "Previous page", next_page: "Next page" }}
             />
           </div>
         )}

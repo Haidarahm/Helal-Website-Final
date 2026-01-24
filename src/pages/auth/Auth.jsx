@@ -253,6 +253,7 @@ export const Auth = () => {
                       className={`absolute top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 ${
                         isRTL ? "left-3" : "right-3"
                       }`}
+                      aria-label={showPassword ? (t("auth.hide_password", "Hide password")) : (t("auth.show_password", "Show password"))}
                     >
                       {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                     </button>
@@ -291,6 +292,7 @@ export const Auth = () => {
                       className={`absolute top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 ${
                         isRTL ? "left-3" : "right-3"
                       }`}
+                      aria-label={showConfirmPassword ? (t("auth.hide_password", "Hide confirm password")) : (t("auth.show_password", "Show confirm password"))}
                     >
                       {showConfirmPassword ? (
                         <EyeOff size={20} />
@@ -378,6 +380,7 @@ export const Auth = () => {
                       className={`absolute top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 ${
                         isRTL ? "left-3" : "right-3"
                       }`}
+                      aria-label={showPassword ? (t("auth.hide_password", "Hide password")) : (t("auth.show_password", "Show password"))}
                     >
                       {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                     </button>

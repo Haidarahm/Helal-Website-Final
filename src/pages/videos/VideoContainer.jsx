@@ -158,14 +158,14 @@ export const VideoContainer = () => {
             <div className="bg-white border border-gray-200 rounded-lg md:rounded-xl shadow-lg w-full lg:w-80 xl:w-96 order-1 lg:order-2">
               <div className="p-4 md:p-6">
                 {/* Header */}
-                <h3 className="text-base md:text-lg font-bold text-gray-900 mb-3 md:mb-4">
+                <h2 className="text-base md:text-lg font-bold text-gray-900 mb-3 md:mb-4">
                   {isRTL ? "تفاصيل الفيديو" : "Video Details"}
-                </h3>
+                </h2>
 
                 {/* Title */}
-                <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-2 md:mb-3">
+                <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-2 md:mb-3">
                   {currentVideo.title}
-                </h2>
+                </h3>
 
                 {/* Subtitle */}
                 {currentVideo.subTitle && (
