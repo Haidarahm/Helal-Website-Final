@@ -7,7 +7,7 @@ export default function ContactCard() {
           <h2 className="text-3xl font-bold text-[color:var(--color-primary-light)]">
             Contact Us
           </h2>
-          <p className="mt-3 text-[color:var(--color-accent-muted)]">
+          <p className="mt-3 text-accent-muted">
             We’d love to hear from you. Send a message and we’ll reply as soon
             as possible.
           </p>

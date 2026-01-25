@@ -12,6 +12,8 @@ import {
   changePassword as changePasswordApi,
 } from "../apis/auth.js";
 
+let _authStoreRef;
+
 const useAuthStore = create(
   persist(
     (set, get) => ({
@@ -226,6 +228,25 @@ const useAuthStore = create(
           throw error;
         }
       },
+
+      // Restore auth from raw localStorage token when auth-storage is missing/corrupt
+      rehydrateFromToken: async () => {
+        const storedToken = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+        if (!storedToken || get().token) return;
+        try {
+          set({ token: storedToken });
+          const data = await getUserApi();
+          const user = data?.user || data?.data || data || null;
+          if (user) {
+            get().setAuth(user, storedToken);
+          } else {
+            set({ token: storedToken, isAuthenticated: true });
+          }
+        } catch {
+          localStorage.removeItem("token");
+          get().clearAuth();
+        }
+      },
     }),
     {
       name: "auth-storage",
@@ -234,8 +255,17 @@ const useAuthStore = create(
         token: state.token,
         isAuthenticated: state.isAuthenticated,
       }),
+      onRehydrateStorage: () => (state, err) => {
+        if (err) return;
+        const storedToken = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+        if (storedToken && !state?.token) {
+          _authStoreRef.getState().rehydrateFromToken();
+        }
+      },
     }
   )
 );
+
+_authStoreRef = useAuthStore;
 
 export default useAuthStore;

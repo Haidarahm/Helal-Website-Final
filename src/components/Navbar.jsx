@@ -1,5 +1,5 @@
 import { NavLink, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Menu,
   X,
@@ -13,12 +13,28 @@ import { useLanguage } from "../context/LanguageContext";
 import { useAuthStore } from "../store";
 import { Dropdown } from "antd";
 
+function useAuthHydrated() {
+  const [hydrated, setHydrated] = useState(() =>
+    Boolean(useAuthStore.persist?.hasHydrated?.())
+  );
+  useEffect(() => {
+    if (hydrated) return;
+    const unsub = useAuthStore.persist?.onFinishHydration?.(() =>
+      setHydrated(true)
+    );
+    if (useAuthStore.persist?.hasHydrated?.()) setHydrated(true);
+    return () => unsub?.();
+  }, [hydrated]);
+  return hydrated;
+}
+
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const { t } = useTranslation();
   const { currentLanguage, toggleLanguage, isRTL } = useLanguage();
   const navigate = useNavigate();
   const { user, token, logout } = useAuthStore();
+  const hydrated = useAuthHydrated();
   const isLoggedIn = Boolean(token);
   const toggle = () => setOpen((v) => !v);
   const close = () => setOpen(false);
@@ -81,8 +97,10 @@ export default function Navbar() {
           {/* Divider */}
           <div className="h-6 w-px bg-secondary-light mx-2"></div>
 
-          {/* Auth/User Group */}
-          {isLoggedIn ? (
+          {/* Auth/User Group — wait for rehydration so stored auth is applied */}
+          {!hydrated ? (
+            <div className="flex items-center gap-2 ml-1 min-w-[180px] h-9" aria-hidden />
+          ) : isLoggedIn ? (
             <Dropdown
               menu={{ items: userMenuItems, onClick: onUserMenuClick }}
               trigger={["click"]}
@@ -190,8 +208,10 @@ export default function Navbar() {
           {/* Divider */}
           <div className="h-px bg-secondary-light my-3"></div>
 
-          {/* Mobile Auth/User */}
-          {isLoggedIn ? (
+          {/* Mobile Auth/User — wait for rehydration so stored auth is applied */}
+          {!hydrated ? (
+            <div className="h-14 min-w-[120px]" aria-hidden />
+          ) : isLoggedIn ? (
             <Dropdown
               menu={{
                 items: userMenuItems,
