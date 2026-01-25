@@ -30,16 +30,14 @@ export default function FloatingButtons() {
       open={open}
       onOpenChange={handleOpenChange}
       icon={
-        <>
+        <span role="img" aria-label="Open quick actions">
           <FiChevronDown style={{ fontSize: "20px" }} aria-hidden />
-          <span className="sr-only">Open quick actions</span>
-        </>
+        </span>
       }
       closeIcon={
-        <>
+        <span role="img" aria-label="Close quick actions">
           <FiChevronUp style={{ fontSize: "20px" }} aria-hidden />
-          <span className="sr-only">Close quick actions</span>
-        </>
+        </span>
       }
       trigger="click"
       style={{

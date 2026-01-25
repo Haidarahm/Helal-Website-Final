@@ -192,14 +192,16 @@ export const Calculator = () => {
             <div className="space-y-6">
               {/* Account Currency */}
               <div className="pb-6 border-b border-gray-200">
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                <label htmlFor="calculator-account-currency" className="block text-sm font-semibold text-gray-700 mb-2">
                   {t("calculator.account_currency")}
                 </label>
                 <Select
+                  id="calculator-account-currency"
                   value={currency}
                   onChange={setCurrency}
                   className="w-full calculator-select"
                   size="large"
+                  aria-label={t("calculator.account_currency")}
                 >
                   {accountCurrencies.map((curr) => (
                     <Option key={curr} value={curr}>
@@ -220,6 +222,7 @@ export const Calculator = () => {
                   placeholder={t("calculator.placeholder_balance")}
                   className="w-full calculator-input"
                   size="large"
+                  controls={false}
                   prefix={<FaDollarSign />}
                   min={0}
                   formatter={(value) =>
@@ -231,14 +234,16 @@ export const Calculator = () => {
 
               {/* Currency Pair */}
               <div className="pb-6 border-b border-gray-200">
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                <label htmlFor="calculator-currency-pair" className="block text-sm font-semibold text-gray-700 mb-2">
                   {t("calculator.currency_pair")}
                 </label>
                 <Select
+                  id="calculator-currency-pair"
                   value={currencyPair}
                   onChange={setCurrencyPair}
                   className="w-full calculator-select"
                   size="large"
+                  aria-label={t("calculator.currency_pair")}
                 >
                   {currencyPairs.map((pair) => (
                     <Option key={pair} value={pair}>
@@ -266,6 +271,7 @@ export const Calculator = () => {
                     placeholder={t("calculator.placeholder_risk")}
                     className="w-full calculator-input"
                     size="large"
+                    controls={false}
                     prefix={<FaPercentage />}
                     min={0}
                     max={100}
@@ -284,6 +290,7 @@ export const Calculator = () => {
                     placeholder={t("calculator.placeholder_stop_loss")}
                     className="w-full calculator-input"
                     size="large"
+                    controls={false}
                     min={0}
                     decimalSeparator="."
                   />
@@ -303,6 +310,7 @@ export const Calculator = () => {
                   }`}
                   className="w-full calculator-input"
                   size="large"
+                  controls={false}
                   min={0}
                   formatter={(value) =>
                     `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")

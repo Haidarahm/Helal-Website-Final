@@ -214,10 +214,9 @@ const PrivateCourses = () => {
         centered
         className="private-lesson-modal"
         closeIcon={
-          <>
+          <span role="img" aria-label={t("common.close", "Close")}>
             <span aria-hidden>×</span>
-            <span className="sr-only">{t("common.close", "Close")}</span>
-          </>
+          </span>
         }
       >
         <div className="mb-8" dir={isRTL ? "rtl" : "ltr"}>

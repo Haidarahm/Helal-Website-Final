@@ -142,7 +142,7 @@ export default function Navbar() {
             title={t("language.toggle")}
             aria-label={t("language.toggle")}
           >
-            <Languages size={18} />
+            <Languages size={18} aria-hidden />
             <span className="text-sm font-medium">
               {t("language.switch_to")}
             </span>
@@ -152,13 +152,16 @@ export default function Navbar() {
         <button
           className="md:hidden inline-flex items-center justify-center p-2 rounded-lg hover:bg-secondary-light focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
           onClick={toggle}
-          aria-label="Toggle Menu"
+          aria-label="Toggle menu"
+          aria-expanded={open}
+          aria-controls="mobile-menu"
         >
-          {open ? <X size={22} /> : <Menu size={22} />}
+          {open ? <X size={22} aria-hidden /> : <Menu size={22} aria-hidden />}
         </button>
       </div>
       {/* Mobile menu panel */}
       <div
+        id="mobile-menu"
         className={[
           "md:hidden transition-all  duration-300 overflow-hidden border-t border-secondary-light",
           open ? "max-h-96 opacity-100" : "max-h-0 opacity-0",
@@ -261,7 +264,7 @@ export default function Navbar() {
             className="px-3 py-2.5 rounded-lg hover:bg-secondary-light focus:outline-none focus-visible:ring-2 focus-visible:ring-primary transition-colors flex items-center gap-2"
             aria-label={t("language.toggle")}
           >
-            <Languages size={18} />
+            <Languages size={18} aria-hidden />
             <span className="text-base font-medium">
               {t("language.switch_to")}
             </span>

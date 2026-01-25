@@ -117,6 +117,7 @@ const ConsultationScheduleStep = ({
     <div className="space-y-6">
       <div>
         <label
+          htmlFor="consultation-date"
           className={`block mb-2 text-sm font-medium text-text-primary ${
             isRTL ? "text-right" : "text-left"
           }`}
@@ -124,10 +125,12 @@ const ConsultationScheduleStep = ({
           {t("consultation.step_content.date")}
         </label>
         <DatePicker
+          id="consultation-date"
           size="large"
           className="w-full"
           placeholder={t("consultation.step_content.select_date")}
           format="DD-MM-YYYY"
+          allowClear={false}
           value={selectedDate ? dayjs(selectedDate, "DD-MM-YYYY") : null}
           onChange={(date) => {
             if (date) {

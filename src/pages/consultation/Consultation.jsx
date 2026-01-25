@@ -309,10 +309,9 @@ export default function Consultation() {
         style={{ maxWidth: "800px" }}
         className="consultation-modal"
         closeIcon={
-          <>
+          <span role="img" aria-label={t("common.close", "Close")}>
             <span aria-hidden>×</span>
-            <span className="sr-only">{t("common.close", "Close")}</span>
-          </>
+          </span>
         }
         styles={{
           body: {
