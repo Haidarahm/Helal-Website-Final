@@ -51,9 +51,6 @@ const OfflineCourses = () => {
         cancelUrl
       );
 
-      // Debug: Log response to help identify structure
-      console.log("Enrollment response:", response);
-
       // Check for redirect_url in multiple possible locations
       const redirectUrl =
         response?.redirect_url ??

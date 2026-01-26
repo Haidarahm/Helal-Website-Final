@@ -134,7 +134,6 @@ export default function PricingModal({ isOpen, onClose }) {
   };
 
   const handlePaymentSuccess = (paymentData) => {
-    console.log("Payment successful:", paymentData);
     setIsPaymentModalOpen(false);
     setSelectedService(null);
 
