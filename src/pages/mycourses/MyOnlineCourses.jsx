@@ -54,8 +54,8 @@ const MyOnlineCourses = () => {
               key={course.enroll_id}
               className="group relative bg-white rounded-xl border border-gray-100 overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-md hover:-translate-y-1"
               onClick={() => {
-                if (course.meet_url) {
-                  window.open(course.meet_url, "_blank", "noopener");
+                if (course.join_url) {
+                  window.open(course.join_url, "_blank", "noopener");
                 }
               }}
             >
@@ -137,11 +137,11 @@ const MyOnlineCourses = () => {
 
                 {/* Meet URL Section */}
                 <div className="pt-3 border-t border-gray-50">
-                  {course.meet_url ? (
+                  {course.join_url ? (
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
-                        window.open(course.meet_url, "_blank", "noopener");
+                        window.open(course.join_url, "_blank", "noopener");
                       }}
                       className="w-full bg-primary hover:bg-primary-dark text-white font-medium py-2.5 px-4 rounded-lg transition-colors duration-200 text-xs flex items-center justify-center gap-2"
                     >
