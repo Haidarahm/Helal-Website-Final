@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useLanguage } from "../../context/LanguageContext";
 import { useOnlineCoursesStore } from "../../store";
@@ -9,6 +9,7 @@ import { Popover, Button, Space, Pagination } from "antd";
 const OnlineCourses = () => {
   const { t, i18n } = useTranslation();
   const { isRTL } = useLanguage();
+  const location = useLocation();
   const {
     onlineCourses,
     pagination,
@@ -114,7 +115,12 @@ const OnlineCourses = () => {
       }
     } catch (error) {
       if (error?.response?.status === 401) {
-        navigate("/auth", { state: { initialForm: "signup" } });
+        navigate("/auth", { 
+          state: { 
+            initialForm: "signup",
+            from: location.pathname + location.search
+          } 
+        });
         setEnrollingCourseId(null);
         return;
       }

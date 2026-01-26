@@ -3,13 +3,14 @@ import { useLanguage } from "../../context/LanguageContext";
 import { AiFillStar } from "react-icons/ai";
 import { useCoursesStore } from "../../store";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Popover, Button, Space, Pagination } from "antd";
 
 const OfflineCourses = () => {
   const { t, i18n } = useTranslation();
   const { isRTL } = useLanguage();
+  const location = useLocation();
   const { courses, pagination, isLoading, enrollCourse, fetchCourses } =
     useCoursesStore();
   const [enrollingCourseId, setEnrollingCourseId] = useState(null);
@@ -89,7 +90,12 @@ const OfflineCourses = () => {
       console.error("Error enrolling in course:", error);
 
       if (error?.response?.status === 401) {
-        navigate("/auth", { state: { initialForm: "signup" } });
+        navigate("/auth", { 
+          state: { 
+            initialForm: "signup",
+            from: location.pathname + location.search
+          } 
+        });
         setEnrollingCourseId(null);
         return;
       }

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Modal, Button, Card } from "antd";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "../../context/LanguageContext";
@@ -23,6 +23,7 @@ import ConsultationScheduleStep from "./components/ConsultationScheduleStep.jsx"
 import ConsultationPaymentStep from "./components/ConsultationPaymentStep.jsx";
 export default function Consultation() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { t } = useTranslation();
   const { isRTL, currentLanguage } = useLanguage();
   const {
@@ -142,7 +143,12 @@ export default function Consultation() {
 
   const handleOpenModal = () => {
     if (!token) {
-      navigate("/auth", { state: { initialForm: "signup" } });
+      navigate("/auth", { 
+        state: { 
+          initialForm: "signup",
+          from: location.pathname + location.search
+        } 
+      });
       return;
     }
     setCurrentPage(1);

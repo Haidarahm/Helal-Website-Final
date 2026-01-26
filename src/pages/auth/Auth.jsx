@@ -11,6 +11,7 @@ export const Auth = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const initialForm = location.state?.initialForm || "signup";
+  const returnPath = location.state?.from || "/courses";
   const { t } = useTranslation();
   const { isRTL } = useLanguage();
 
@@ -108,7 +109,7 @@ export const Auth = () => {
         <div className="w-full max-w-md">
           {/* Back Button */}
         <button
-          onClick={() => navigate(-1)}
+          onClick={() => navigate(returnPath)}
           className="auth-back-btn mb-6 px-4 py-2 transition-colors flex items-center gap-2"
         >
           <ArrowLeft size={20} className={isRTL ? "rotate-180" : ""} />
