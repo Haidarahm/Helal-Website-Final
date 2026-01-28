@@ -15,6 +15,7 @@
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
     "@tailwindcss/vite": "^4.1.14",
+    "agora-rtc-react": "^2.5.1",
     "antd": "^5.27.6",
     "aos": "^2.3.4",
     "axios": "^1.12.2",
