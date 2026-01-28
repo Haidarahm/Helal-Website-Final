@@ -28,10 +28,35 @@ const MyOnlineCourses = () => {
 
   const formatTime = (value) => {
     if (!value) return "--";
-    return new Date(`1970-01-01T${value}Z`).toLocaleTimeString(i18n.language, {
-      hour: "2-digit",
-      minute: "2-digit",
-    });
+    
+    try {
+      // Handle time format "HH:mm:ss" or "HH:mm" from API
+      const timeString = String(value).trim();
+      
+      // Extract hours and minutes (ignore seconds if present)
+      const timeMatch = timeString.match(/^(\d{1,2}):(\d{2})(?::(\d{2}))?$/);
+      if (!timeMatch) return "--";
+      
+      const hours = parseInt(timeMatch[1], 10);
+      const minutes = parseInt(timeMatch[2], 10);
+      
+      // Validate time components
+      if (isNaN(hours) || isNaN(minutes) || hours < 0 || hours > 23 || minutes < 0 || minutes > 59) {
+        return "--";
+      }
+      
+      // Create a date object with today's date and the parsed time (no timezone conversion)
+      const date = new Date();
+      date.setHours(hours, minutes, 0, 0);
+      
+      // Format using locale (respects 12/24 hour format based on language)
+      return date.toLocaleTimeString(i18n.language, {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+    } catch (error) {
+      return "--";
+    }
   };
 
   return (
