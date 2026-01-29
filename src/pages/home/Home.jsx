@@ -17,6 +17,7 @@ const Home = () => {
     "@context": "https://schema.org",
     "@type": "Person",
     name: "Helal Al Jabri",
+    alternateName: ["Hilal Al Jabri", "Hilal Aljabri", "Helal Aljabri"],
     jobTitle: "Trainer & Investment Expert",
     description:
       t("about.description") ||

@@ -104,6 +104,7 @@
     "email": "Email Address",
     "phone": "Phone Number",
     "location": "Office Location",
+    "location_value": "UAE - Marasi Drive, Dubai",
     "form": {
       "title": "Send us a Message",
       "full_name": "Full Name",

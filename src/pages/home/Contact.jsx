@@ -67,7 +67,7 @@ export const Contact = () => {
     {
       icon: MapPin,
       title: t("contact.location"),
-      value: "Muscat, Oman",
+      value: t("contact_page.location_value") || "UAE - Marasi Drive, Dubai",
       description: "Visit our office location",
     },
   ];
@@ -110,7 +110,13 @@ export const Contact = () => {
                   </h3>
 
                   <p className="text-[color:var(--color-text-primary)] font-semibold text-center mb-2 text-lg">
-                    {item.value}
+                    {item.icon === Phone ? (
+                      <span dir="ltr" className="inline-block">
+                        {item.value}
+                      </span>
+                    ) : (
+                      item.value
+                    )}
                   </p>
 
                   <p className="text-[color:var(--color-text-secondary)] text-center text-sm">

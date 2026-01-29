@@ -90,8 +90,9 @@ export default function Contact() {
       telephone: "+971 503 338 444",
       address: {
         "@type": "PostalAddress",
-        addressLocality: "Muscat",
-        addressCountry: "Oman",
+        streetAddress: "Marasi Drive",
+        addressLocality: "Dubai",
+        addressCountry: "UAE",
       },
     },
   };
@@ -184,7 +185,9 @@ export default function Contact() {
                       {t("contact_page.phone")}
                     </p>
                     <p className="text-text-primary font-semibold">
-                      +971 509 590 444
+                      <span dir="ltr" className="inline-block">
+                        +971 509 590 444
+                      </span>
                     </p>
                   </div>
                 </div>
@@ -202,7 +205,8 @@ export default function Contact() {
                       {t("contact_page.location")}
                     </p>
                     <p className="text-text-primary font-semibold">
-                      Muscat, Oman
+                      {t("contact_page.location_value") ||
+                        "UAE - Marasi Drive, Dubai"}
                     </p>
                   </div>
                 </div>
