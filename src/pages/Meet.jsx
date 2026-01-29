@@ -64,6 +64,7 @@ function MeetControlBar({
   cameraOn,
   screenSharing,
   micLevel,
+  isLeaving,
   onMicToggle,
   onCameraToggle,
   onScreenShareToggle,
@@ -75,7 +76,8 @@ function MeetControlBar({
       <button
         type="button"
         onClick={onMicToggle}
-        className="meet-control-btn flex flex-col items-center gap-1.5 p-2 rounded-xl hover:bg-white/5 min-w-[64px]"
+        disabled={isLeaving}
+        className="meet-control-btn flex flex-col items-center gap-1.5 p-2 rounded-xl hover:bg-white/5 min-w-[64px] disabled:opacity-50 disabled:pointer-events-none"
         title={micOn ? (isRTL ? "كتم الصوت" : "Mute") : (isRTL ? "تشغيل الصوت" : "Unmute")}
       >
         <span
@@ -103,7 +105,8 @@ function MeetControlBar({
       <button
         type="button"
         onClick={onCameraToggle}
-        className="meet-control-btn flex flex-col items-center gap-1.5 p-2 rounded-xl hover:bg-white/5 min-w-[64px]"
+        disabled={isLeaving}
+        className="meet-control-btn flex flex-col items-center gap-1.5 p-2 rounded-xl hover:bg-white/5 min-w-[64px] disabled:opacity-50 disabled:pointer-events-none"
         title={
           cameraOn
             ? (isRTL ? "إيقاف الكاميرا" : "Turn off camera")
@@ -127,7 +130,8 @@ function MeetControlBar({
       <button
         type="button"
         onClick={onScreenShareToggle}
-        className="meet-control-btn flex flex-col items-center gap-1.5 p-2 rounded-xl hover:bg-white/5 min-w-[64px]"
+        disabled={isLeaving}
+        className="meet-control-btn flex flex-col items-center gap-1.5 p-2 rounded-xl hover:bg-white/5 min-w-[64px] disabled:opacity-50 disabled:pointer-events-none"
         title={
           screenSharing
             ? (isRTL ? "إيقاف المشاركة" : "Stop sharing")
@@ -151,14 +155,19 @@ function MeetControlBar({
       <button
         type="button"
         onClick={onLeave}
-        className="meet-control-btn flex flex-col items-center gap-1.5 p-2 rounded-xl hover:bg-red-500/20 min-w-[64px]"
+        disabled={isLeaving}
+        className="meet-control-btn flex flex-col items-center gap-1.5 p-2 rounded-xl hover:bg-red-500/20 min-w-[64px] disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:bg-transparent"
         title={isRTL ? "إنهاء المكالمة" : "Leave call"}
       >
         <span className="flex items-center justify-center w-11 h-11 rounded-full bg-red-500 text-white hover:bg-red-600">
-          <PhoneOff size={22} />
+          {isLeaving ? (
+            <span className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+          ) : (
+            <PhoneOff size={22} />
+          )}
         </span>
         <span className="text-[11px] text-accent/70 hidden sm:block">
-          {isRTL ? "إنهاء" : "Leave"}
+          {isLeaving ? (isRTL ? "جاري الخروج…" : "Leaving…") : (isRTL ? "إنهاء" : "Leave")}
         </span>
       </button>
     </div>
@@ -237,6 +246,7 @@ function AgoraMeetView({ sessionName, isRTL }) {
   const [micOn, setMicOn] = useState(true);
   const [cameraOn, setCameraOn] = useState(true);
   const [screenSharing, setScreenSharing] = useState(false);
+  const [isLeaving, setIsLeaving] = useState(false);
 
   const { error: joinError, isConnected, isLoading } = useJoin(
     async () => {
@@ -300,10 +310,24 @@ function AgoraMeetView({ sessionName, isRTL }) {
   const handleMicToggle = useCallback(() => setMicOn((v) => !v), []);
   const handleCameraToggle = useCallback(() => setCameraOn((v) => !v), []);
   const handleScreenShareToggle = useCallback(() => setScreenSharing((v) => !v), []);
-  const handleLeave = useCallback(() => {
-    clearSession();
-    navigate(-1);
-  }, [clearSession, navigate]);
+
+  const handleLeave = useCallback(async () => {
+    if (isLeaving) return;
+    setIsLeaving(true);
+    try {
+      if (isConnected) {
+        if (client.localTracks.length > 0) {
+          await client.unpublish(client.localTracks);
+        }
+        await client.leave();
+      }
+    } catch (err) {
+      console.warn("[Meet] Leave error (ignored):", err);
+    } finally {
+      clearSession();
+      navigate(-1);
+    }
+  }, [client, isConnected, isLeaving, clearSession, navigate]);
 
   if (joinError) {
     return (
@@ -413,6 +437,7 @@ function AgoraMeetView({ sessionName, isRTL }) {
           cameraOn={cameraOn}
           screenSharing={screenSharing}
           micLevel={micLevel}
+          isLeaving={isLeaving}
           onMicToggle={handleMicToggle}
           onCameraToggle={handleCameraToggle}
           onScreenShareToggle={handleScreenShareToggle}
