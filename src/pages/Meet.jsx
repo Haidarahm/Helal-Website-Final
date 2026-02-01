@@ -311,21 +311,19 @@ function AgoraMeetView({ sessionName, isRTL }) {
   const handleCameraToggle = useCallback(() => setCameraOn((v) => !v), []);
   const handleScreenShareToggle = useCallback(() => setScreenSharing((v) => !v), []);
 
-  const handleLeave = useCallback(async () => {
+  const handleLeave = useCallback(() => {
     if (isLeaving) return;
     setIsLeaving(true);
-    try {
-      if (isConnected) {
-        if (client.localTracks.length > 0) {
-          await client.unpublish(client.localTracks);
+    clearSession();
+    navigate(-1);
+    // Fire-and-forget: attempt leave in background (don't block - Agora calls can hang)
+    if (isConnected) {
+      try {
+        if (client.localTracks?.length > 0) {
+          client.unpublish(client.localTracks).catch(() => {});
         }
-        await client.leave();
-      }
-    } catch (err) {
-      console.warn("[Meet] Leave error (ignored):", err);
-    } finally {
-      clearSession();
-      navigate(-1);
+        client.leave().catch(() => {});
+      } catch (_) {}
     }
   }, [client, isConnected, isLeaving, clearSession, navigate]);
 
