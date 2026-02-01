@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useEffect, useMemo, useState, useCallback } from "react";
+import { useEffect, useMemo, useState, useCallback, useRef } from "react";
 import {
   Video,
   Mic,
@@ -242,27 +242,41 @@ function AgoraMeetView({ sessionName, isRTL }) {
   const client = useRTCClient();
   const joinSession = useMeetStore((s) => s.joinSession);
   const clearSession = useMeetStore((s) => s.clearSession);
+  const session = useMeetStore((s) => s.session);
 
   const [micOn, setMicOn] = useState(true);
   const [cameraOn, setCameraOn] = useState(true);
   const [screenSharing, setScreenSharing] = useState(false);
   const [isLeaving, setIsLeaving] = useState(false);
 
+  const joinSessionRef = useRef(joinSession);
+  joinSessionRef.current = joinSession;
+
+  const fetchJoinArgs = useCallback(async () => {
+    const s = await joinSessionRef.current(sessionName);
+    if (!s) throw new Error("Failed to join session");
+    return {
+      appid: s.appId,
+      channel: s.channelName,
+      token: s.token,
+      uid: s.uid,
+    };
+  }, [sessionName]);
+
   const { error: joinError, isConnected, isLoading } = useJoin(
-    async () => {
-      const s = await joinSession(sessionName);
-      if (!s) throw new Error("Failed to join session");
-      return {
-        appid: s.appId,
-        channel: s.channelName,
-        token: s.token,
-        uid: s.uid,
-      };
-    },
+    fetchJoinArgs,
     !!sessionName
   );
 
   const connectionState = useConnectionState(client);
+
+  // Fallback: use connectionState if isConnected lags; timeout to escape stuck loading
+  const [loadTimeout, setLoadTimeout] = useState(false);
+  useEffect(() => {
+    if (!sessionName) return;
+    const t = setTimeout(() => setLoadTimeout(true), 20000);
+    return () => clearTimeout(t);
+  }, [sessionName]);
   const networkQuality = useNetworkQuality(client);
   const currentUID = useCurrentUID(client);
 
@@ -276,6 +290,22 @@ function AgoraMeetView({ sessionName, isRTL }) {
 
   const micLevel = useVolumeLevel(localMicrophoneTrack ?? undefined);
 
+  // Throttle mic level for UI to prevent rapid re-renders/glitches
+  const [displayMicLevel, setDisplayMicLevel] = useState(0);
+  const lastMicUpdateRef = useRef(0);
+  const hasInitializedRef = useRef(false);
+  useEffect(() => {
+    const raw = micLevel ?? 0;
+    const now = Date.now();
+    const shouldUpdate =
+      !hasInitializedRef.current || now - lastMicUpdateRef.current >= 120;
+    if (shouldUpdate) {
+      hasInitializedRef.current = true;
+      lastMicUpdateRef.current = now;
+      setDisplayMicLevel(raw);
+    }
+  }, [micLevel]);
+
   const videoTrack = screenSharing ? localScreenTrack : localCameraTrack;
   const tracksToPublish = useMemo(() => {
     const list = [localMicrophoneTrack];
@@ -283,15 +313,27 @@ function AgoraMeetView({ sessionName, isRTL }) {
     return list;
   }, [localMicrophoneTrack, videoTrack]);
   usePublish(tracksToPublish, isConnected);
-  const remoteUsers = useRemoteUsers(client);
+  const allRemoteUsers = useRemoteUsers(client);
 
-  const videoPlayerConfig = useMemo(
-    () => ({
-      fit: "cover",
-      mirror: !screenSharing && !!localCameraTrack,
-    }),
-    [screenSharing, localCameraTrack]
+  // participants is array: [{ uid, name, isAdmin, ... }, ...]
+  const findParticipantByUid = useCallback(
+    (uid) => {
+      const list = session?.participants;
+      if (!Array.isArray(list)) return null;
+      return list.find((p) => p.uid === uid) ?? null;
+    },
+    [session?.participants]
   );
+
+  // Only show admin users (filter out non-admin participants)
+  const remoteUsers = useMemo(() => {
+    const list = session?.participants;
+    if (!Array.isArray(list)) return [];
+    return allRemoteUsers.filter((user) => {
+      const p = findParticipantByUid(user.uid);
+      return p?.isAdmin === true;
+    });
+  }, [allRemoteUsers, findParticipantByUid, session?.participants]);
 
   useEffect(() => {
     return () => clearSession();
@@ -347,7 +389,39 @@ function AgoraMeetView({ sessionName, isRTL }) {
     );
   }
 
-  if (isLoading || !isConnected) {
+  // Use connectionState as source of truth (more reliable than isConnected)
+  const isReady = connectionState === "CONNECTED";
+
+  if (loadTimeout && !isReady) {
+    return (
+      <div className="meet-container w-full h-full flex flex-col items-center justify-center rounded-2xl p-6">
+        <div className="flex flex-col items-center gap-4 text-center max-w-sm">
+          <div className="flex items-center justify-center w-16 h-16 rounded-full bg-amber-500/20 text-amber-400">
+            <AlertCircle size={32} />
+          </div>
+          <div>
+            <h2 className="text-lg font-semibold text-accent mb-1">
+              {isRTL ? "استغرق الاتصال وقتاً طويلاً" : "Connection is taking too long"}
+            </h2>
+            <p className="text-sm text-accent/70">
+              {isRTL
+                ? "تحقق من اتصالك بالإنترنت وحاول مرة أخرى."
+                : "Check your internet connection and try again."}
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={() => window.location.reload()}
+            className="mt-2 px-4 py-2 rounded-lg bg-primary text-secondary font-medium hover:opacity-90"
+          >
+            {isRTL ? "إعادة المحاولة" : "Retry"}
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (!isReady) {
     return (
       <div className="meet-container w-full h-full flex flex-col items-center justify-center rounded-2xl p-6">
         <div className="flex flex-col items-center gap-5">
@@ -384,7 +458,6 @@ function AgoraMeetView({ sessionName, isRTL }) {
                 playAudio
                 playVideo={cameraOn || screenSharing}
                 cover={COVER_PLACEHOLDER}
-                videoPlayerConfig={videoPlayerConfig}
                 className="absolute inset-0 w-full h-full [&_video]:object-cover"
               />
             </div>
@@ -399,33 +472,42 @@ function AgoraMeetView({ sessionName, isRTL }) {
             </div>
           </div>
 
-          {remoteUsers.map((user) => (
-            <div
-              key={user.uid}
-              className="meet-tile rounded-xl overflow-hidden relative flex flex-col"
-            >
-              <div className="flex-1 min-h-0 relative">
-                <RemoteUser
-                  user={user}
-                  playAudio
-                  playVideo
-                  cover={() => (
-                    <div className="meet-cover-avatar">
-                      <User size={48} />
-                    </div>
-                  )}
-                  videoPlayerConfig={{ fit: "cover" }}
-                  className="absolute inset-0 w-full h-full [&_video]:object-cover"
-                />
+          {remoteUsers.map((user) => {
+            const participant = findParticipantByUid(user.uid);
+            const displayName = participant?.name ?? (isRTL ? "المضيف" : "Host");
+            return (
+              <div
+                key={user.uid}
+                className="meet-tile rounded-xl overflow-hidden relative flex flex-col"
+              >
+                <div className="flex-1 min-h-0 relative">
+                  <RemoteUser
+                    user={user}
+                    playAudio
+                    playVideo
+                    cover={() => (
+                      <div className="meet-cover-avatar">
+                        <User size={48} />
+                      </div>
+                    )}
+                    videoPlayerConfig={{ fit: "cover" }}
+                    className="absolute inset-0 w-full h-full [&_video]:object-cover"
+                  />
+                </div>
+                <div className="meet-tile-label absolute bottom-0 left-0 right-0 px-3 py-2 flex items-center gap-2">
+                  <User size={14} className="text-primary shrink-0" />
+                  <span className="text-sm font-medium text-accent truncate">
+                    {displayName}
+                    {participant?.isAdmin && (
+                      <span className="text-primary/80 font-normal ml-1">
+                        ({isRTL ? "مضيف" : "Host"})
+                      </span>
+                    )}
+                  </span>
+                </div>
               </div>
-              <div className="meet-tile-label absolute bottom-0 left-0 right-0 px-3 py-2 flex items-center gap-2">
-                <User size={14} className="text-primary shrink-0" />
-                <span className="text-sm font-medium text-accent truncate">
-                  {isRTL ? "مشارك" : "Participant"} {user.uid}
-                </span>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 
@@ -434,7 +516,7 @@ function AgoraMeetView({ sessionName, isRTL }) {
           micOn={micOn}
           cameraOn={cameraOn}
           screenSharing={screenSharing}
-          micLevel={micLevel}
+          micLevel={displayMicLevel}
           isLeaving={isLeaving}
           onMicToggle={handleMicToggle}
           onCameraToggle={handleCameraToggle}

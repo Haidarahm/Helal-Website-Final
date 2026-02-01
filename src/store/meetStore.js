@@ -21,13 +21,15 @@ const useMeetStore = create((set, get) => ({
   /**
    * Join an Agora session by name.
    * @param {string} sessionName
-   * @returns {Promise<{ status: boolean; appId: string; token: string; channelName: string; uid: number; isAdmin: boolean; participants: object; serverTime: string } | null>}
+   * @returns {Promise<{ status: boolean; appId: string; token: string; channelName: string; uid: number; isAdmin: boolean; participants: Array } | null>}
    */
   joinSession: async (sessionName) => {
     try {
       set({ isLoading: true, error: null });
       const data = await joinSessionApi(sessionName);
       if (data?.status && data?.appId && data?.token != null && data?.channelName) {
+        const raw = data.participants ?? [];
+        const participants = Array.isArray(raw) ? raw : Object.values(raw);
         set({
           session: {
             appId: data.appId,
@@ -35,7 +37,7 @@ const useMeetStore = create((set, get) => ({
             channelName: data.channelName,
             uid: data.uid,
             isAdmin: data.isAdmin ?? false,
-            participants: data.participants ?? {},
+            participants,
             serverTime: data.serverTime,
           },
           isLoading: false,
