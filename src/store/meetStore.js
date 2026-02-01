@@ -24,6 +24,10 @@ const useMeetStore = create((set, get) => ({
    * @returns {Promise<{ status: boolean; appId: string; token: string; channelName: string; uid: number; isAdmin: boolean; participants: Array } | null>}
    */
   joinSession: async (sessionName) => {
+    const existing = get().session;
+    if (existing?.channelName && existing?.token && existing?.appId) {
+      return existing;
+    }
     try {
       set({ isLoading: true, error: null });
       const data = await joinSessionApi(sessionName);

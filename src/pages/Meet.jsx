@@ -40,6 +40,14 @@ const COVER_PLACEHOLDER =
     '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="%231f2937"/><circle cx="50" cy="40" r="14" fill="%234b5563"/><ellipse cx="50" cy="78" rx="22" ry="16" fill="%234b5563"/></svg>'
   );
 
+const RemoteUserCover = () => (
+  <div className="meet-cover-avatar">
+    <User size={48} />
+  </div>
+);
+
+const REMOTE_VIDEO_CONFIG = { fit: "cover" };
+
 function networkQualityLabel(up, down) {
   const avg = (up + down) / 2;
   if (avg >= 5) return { text: "Excellent", cls: "excellent" };
@@ -316,24 +324,24 @@ function AgoraMeetView({ sessionName, isRTL }) {
   const allRemoteUsers = useRemoteUsers(client);
 
   // participants is array: [{ uid, name, isAdmin, ... }, ...]
-  const findParticipantByUid = useCallback(
-    (uid) => {
-      const list = session?.participants;
-      if (!Array.isArray(list)) return null;
-      return list.find((p) => p.uid === uid) ?? null;
-    },
+  const participantsArray = useMemo(
+    () => (Array.isArray(session?.participants) ? session.participants : []),
     [session?.participants]
+  );
+
+  const findParticipantByUid = useCallback(
+    (uid) => participantsArray.find((p) => p.uid === uid) ?? null,
+    [participantsArray]
   );
 
   // Only show admin users (filter out non-admin participants)
   const remoteUsers = useMemo(() => {
-    const list = session?.participants;
-    if (!Array.isArray(list)) return [];
+    if (participantsArray.length === 0) return [];
     return allRemoteUsers.filter((user) => {
       const p = findParticipantByUid(user.uid);
       return p?.isAdmin === true;
     });
-  }, [allRemoteUsers, findParticipantByUid, session?.participants]);
+  }, [allRemoteUsers, findParticipantByUid, participantsArray]);
 
   useEffect(() => {
     return () => clearSession();
@@ -485,12 +493,8 @@ function AgoraMeetView({ sessionName, isRTL }) {
                     user={user}
                     playAudio
                     playVideo
-                    cover={() => (
-                      <div className="meet-cover-avatar">
-                        <User size={48} />
-                      </div>
-                    )}
-                    videoPlayerConfig={{ fit: "cover" }}
+                  cover={RemoteUserCover}
+                    videoPlayerConfig={REMOTE_VIDEO_CONFIG}
                     className="absolute inset-0 w-full h-full [&_video]:object-cover"
                   />
                 </div>
