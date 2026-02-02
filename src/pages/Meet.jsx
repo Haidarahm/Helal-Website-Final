@@ -4,41 +4,31 @@ import {
   Video,
   Mic,
   MicOff,
-  VideoOff,
-  Monitor,
-  MonitorOff,
   PhoneOff,
   User,
   Wifi,
   Users,
   AlertCircle,
+  Hand,
 } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext";
 import SEO from "../components/SEO";
 import { useMeetStore } from "../store";
+import { useHandRaise } from "../hooks/useHandRaise";
 import AgoraRTC, {
   AgoraRTCProvider,
   useJoin,
   useLocalCameraTrack,
   useLocalMicrophoneTrack,
-  useLocalScreenTrack,
   usePublish,
   useRemoteUsers,
   useVolumeLevel,
   useNetworkQuality,
   useConnectionState,
-  useCurrentUID,
   useRTCClient,
-  LocalUser,
   RemoteUser,
 } from "agora-rtc-react";
 import "./meet.css";
-
-const COVER_PLACEHOLDER =
-  "data:image/svg+xml," +
-  encodeURIComponent(
-    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="%231f2937"/><circle cx="50" cy="40" r="14" fill="%234b5563"/><ellipse cx="50" cy="78" rx="22" ry="16" fill="%234b5563"/></svg>'
-  );
 
 const RemoteUserCover = () => (
   <div className="meet-cover-avatar">
@@ -69,18 +59,37 @@ function connectionStateLabel(state, isRTL) {
 
 function MeetControlBar({
   micOn,
-  cameraOn,
-  screenSharing,
   micLevel,
+  handRaised,
   isLeaving,
   onMicToggle,
-  onCameraToggle,
-  onScreenShareToggle,
+  onHandToggle,
   onLeave,
   isRTL,
 }) {
   return (
-    <div className="flex items-center justify-center gap-3 sm:gap-5 py-4 px-4 bg-secondary-light/90 backdrop-blur border-t border-white/5 rounded-b-2xl">
+    <div className="flex items-center justify-center gap-3 sm:gap-5 py-4 px-4 bg-secondary-light/90 backdrop-blur border-t border-white/5">
+      <button
+        type="button"
+        onClick={onHandToggle}
+        disabled={isLeaving}
+        className={`meet-control-btn flex flex-col items-center gap-1.5 p-2 rounded-xl hover:bg-white/5 min-w-[64px] disabled:opacity-50 disabled:pointer-events-none ${
+          handRaised ? "ring-2 ring-primary/60" : ""
+        }`}
+        title={handRaised ? (isRTL ? "خفض اليد" : "Lower hand") : (isRTL ? "رفع اليد" : "Raise hand")}
+      >
+        <span
+          className={`flex items-center justify-center w-11 h-11 rounded-full transition-all ${
+            handRaised ? "bg-primary/30 text-primary" : "bg-white/10 text-accent hover:bg-white/15"
+          }`}
+        >
+          <Hand size={22} />
+        </span>
+        <span className="text-[11px] text-accent/70 hidden sm:block">
+          {handRaised ? (isRTL ? "اليد مرفوعة" : "Hand up") : (isRTL ? "رفع اليد" : "Raise hand")}
+        </span>
+      </button>
+
       <button
         type="button"
         onClick={onMicToggle}
@@ -107,56 +116,6 @@ function MeetControlBar({
         )}
         <span className="text-[11px] text-accent/70 hidden sm:block">
           {micOn ? (isRTL ? "ميكروفون" : "Mic") : (isRTL ? "مكتوم" : "Muted")}
-        </span>
-      </button>
-
-      <button
-        type="button"
-        onClick={onCameraToggle}
-        disabled={isLeaving}
-        className="meet-control-btn flex flex-col items-center gap-1.5 p-2 rounded-xl hover:bg-white/5 min-w-[64px] disabled:opacity-50 disabled:pointer-events-none"
-        title={
-          cameraOn
-            ? (isRTL ? "إيقاف الكاميرا" : "Turn off camera")
-            : (isRTL ? "تشغيل الكاميرا" : "Turn on camera")
-        }
-      >
-        <span
-          className={`flex items-center justify-center w-11 h-11 rounded-full transition-all ${
-            cameraOn
-              ? "bg-white/10 text-accent hover:bg-white/15"
-              : "bg-red-500/80 text-white"
-          }`}
-        >
-          {cameraOn ? <Video size={22} /> : <VideoOff size={22} />}
-        </span>
-        <span className="text-[11px] text-accent/70 hidden sm:block">
-          {cameraOn ? (isRTL ? "كاميرا" : "Camera") : (isRTL ? "مطفأة" : "Off")}
-        </span>
-      </button>
-
-      <button
-        type="button"
-        onClick={onScreenShareToggle}
-        disabled={isLeaving}
-        className="meet-control-btn flex flex-col items-center gap-1.5 p-2 rounded-xl hover:bg-white/5 min-w-[64px] disabled:opacity-50 disabled:pointer-events-none"
-        title={
-          screenSharing
-            ? (isRTL ? "إيقاف المشاركة" : "Stop sharing")
-            : (isRTL ? "مشاركة الشاشة" : "Share screen")
-        }
-      >
-        <span
-          className={`flex items-center justify-center w-11 h-11 rounded-full transition-all ${
-            screenSharing
-              ? "bg-primary text-secondary"
-              : "bg-white/10 text-accent hover:bg-white/15"
-          }`}
-        >
-          {screenSharing ? <MonitorOff size={22} /> : <Monitor size={22} />}
-        </span>
-        <span className="text-[11px] text-accent/70 hidden sm:block">
-          {screenSharing ? (isRTL ? "إيقاف" : "Stop") : (isRTL ? "شاشة" : "Share")}
         </span>
       </button>
 
@@ -252,10 +211,19 @@ function AgoraMeetView({ sessionName, isRTL }) {
   const clearSession = useMeetStore((s) => s.clearSession);
   const session = useMeetStore((s) => s.session);
 
-  const [micOn, setMicOn] = useState(true);
-  const [cameraOn, setCameraOn] = useState(true);
-  const [screenSharing, setScreenSharing] = useState(false);
+  const [micOn, setMicOn] = useState(false);
   const [isLeaving, setIsLeaving] = useState(false);
+
+  const { handRaised, toggleHandRaise } = useHandRaise(
+    session?.appId && session?.channelName != null && session?.uid != null
+      ? {
+          appId: session.appId,
+          channelName: session.channelName,
+          uid: session.uid,
+          token: session.token,
+        }
+      : {}
+  );
 
   const joinSessionRef = useRef(joinSession);
   joinSessionRef.current = joinSession;
@@ -286,15 +254,9 @@ function AgoraMeetView({ sessionName, isRTL }) {
     return () => clearTimeout(t);
   }, [sessionName]);
   const networkQuality = useNetworkQuality(client);
-  const currentUID = useCurrentUID(client);
 
-  const { localCameraTrack } = useLocalCameraTrack(isConnected && !screenSharing);
+  const { localCameraTrack } = useLocalCameraTrack(isConnected);
   const { localMicrophoneTrack } = useLocalMicrophoneTrack(isConnected);
-  const { screenTrack: localScreenTrack } = useLocalScreenTrack(
-    isConnected && screenSharing,
-    {},
-    "disable"
-  );
 
   const micLevel = useVolumeLevel(localMicrophoneTrack ?? undefined);
 
@@ -314,12 +276,11 @@ function AgoraMeetView({ sessionName, isRTL }) {
     }
   }, [micLevel]);
 
-  const videoTrack = screenSharing ? localScreenTrack : localCameraTrack;
   const tracksToPublish = useMemo(() => {
     const list = [localMicrophoneTrack];
-    if (videoTrack) list.push(videoTrack);
+    if (localCameraTrack) list.push(localCameraTrack);
     return list;
-  }, [localMicrophoneTrack, videoTrack]);
+  }, [localMicrophoneTrack, localCameraTrack]);
   usePublish(tracksToPublish, isConnected);
   const allRemoteUsers = useRemoteUsers(client);
 
@@ -354,12 +315,10 @@ function AgoraMeetView({ sessionName, isRTL }) {
 
   useEffect(() => {
     if (!isConnected) return;
-    localCameraTrack?.setEnabled(cameraOn);
-  }, [isConnected, cameraOn, localCameraTrack]);
+    localCameraTrack?.setEnabled(true);
+  }, [isConnected, localCameraTrack]);
 
   const handleMicToggle = useCallback(() => setMicOn((v) => !v), []);
-  const handleCameraToggle = useCallback(() => setCameraOn((v) => !v), []);
-  const handleScreenShareToggle = useCallback(() => setScreenSharing((v) => !v), []);
 
   const handleLeave = useCallback(() => {
     if (isLeaving) return;
@@ -444,8 +403,10 @@ function AgoraMeetView({ sessionName, isRTL }) {
     );
   }
 
+  const hasAdminVisible = remoteUsers.length > 0;
+
   return (
-    <div className="meet-container w-full h-full rounded-2xl overflow-hidden flex flex-col border border-white/5">
+    <div className="meet-container w-full h-full flex flex-col overflow-hidden flex-1 min-h-0">
       <MeetHeader
         sessionName={sessionName}
         connectionState={connectionState}
@@ -454,53 +415,25 @@ function AgoraMeetView({ sessionName, isRTL }) {
         isRTL={isRTL}
       />
 
-      <div className="flex-1 min-h-0 overflow-auto p-3">
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3 h-full">
-          <div className="meet-tile rounded-xl overflow-hidden relative flex flex-col">
-            <div className="flex-1 min-h-0 relative">
-              <LocalUser
-                audioTrack={localMicrophoneTrack}
-                videoTrack={videoTrack}
-                cameraOn={cameraOn || screenSharing}
-                micOn={micOn}
-                playAudio
-                playVideo={cameraOn || screenSharing}
-                cover={COVER_PLACEHOLDER}
-                className="absolute inset-0 w-full h-full [&_video]:object-cover"
-              />
-            </div>
-            <div className="meet-tile-label absolute bottom-0 left-0 right-0 px-3 py-2 flex items-center gap-2">
-              <User size={14} className="text-primary shrink-0" />
-              <span className="text-sm font-medium text-accent truncate">
-                {isRTL ? "أنت" : "You"}
-                {currentUID != null && (
-                  <span className="text-accent/50 font-normal ml-1">({currentUID})</span>
-                )}
-              </span>
-            </div>
-          </div>
-
-          {remoteUsers.map((user) => {
+      <div className="flex-1 min-h-0 relative w-full">
+        {hasAdminVisible ? (
+          (() => {
+            const user = remoteUsers[0];
             const participant = findParticipantByUid(user.uid);
             const displayName = participant?.name ?? (isRTL ? "المضيف" : "Host");
             return (
-              <div
-                key={user.uid}
-                className="meet-tile rounded-xl overflow-hidden relative flex flex-col"
-              >
-                <div className="flex-1 min-h-0 relative">
-                  <RemoteUser
-                    user={user}
-                    playAudio
-                    playVideo
+              <div key={user.uid} className="absolute inset-0 w-full h-full">
+                <RemoteUser
+                  user={user}
+                  playAudio
+                  playVideo
                   cover={RemoteUserCover}
-                    videoPlayerConfig={REMOTE_VIDEO_CONFIG}
-                    className="absolute inset-0 w-full h-full [&_video]:object-cover"
-                  />
-                </div>
-                <div className="meet-tile-label absolute bottom-0 left-0 right-0 px-3 py-2 flex items-center gap-2">
-                  <User size={14} className="text-primary shrink-0" />
-                  <span className="text-sm font-medium text-accent truncate">
+                  videoPlayerConfig={REMOTE_VIDEO_CONFIG}
+                  className="absolute inset-0 w-full h-full [&_video]:object-cover"
+                />
+                <div className="meet-tile-label absolute bottom-0 left-0 right-0 px-4 py-3 flex items-center gap-2">
+                  <User size={16} className="text-primary shrink-0" />
+                  <span className="text-base font-medium text-accent truncate">
                     {displayName}
                     {participant?.isAdmin && (
                       <span className="text-primary/80 font-normal ml-1">
@@ -511,20 +444,43 @@ function AgoraMeetView({ sessionName, isRTL }) {
                 </div>
               </div>
             );
-          })}
-        </div>
+          })()
+        ) : (
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-secondary/50">
+            <div className="flex flex-col items-center gap-4">
+              <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center relative">
+                <User size={32} className="text-primary" />
+                {handRaised && (
+                  <span className="absolute -top-1 -right-1 w-8 h-8 rounded-full bg-primary/80 flex items-center justify-center animate-pulse">
+                    <Hand size={16} className="text-white" />
+                  </span>
+                )}
+              </div>
+              <p className="text-lg font-medium text-accent">
+                {isRTL ? "في انتظار المضيف…" : "Waiting admin…"}
+              </p>
+              <p className="text-sm text-accent/60">
+                {isRTL ? "سيظهر بث المضيف هنا عند الاتصال" : "Admin stream will appear here when connected"}
+              </p>
+              {handRaised && (
+                <p className="text-sm text-primary font-medium flex items-center gap-1.5">
+                  <Hand size={16} />
+                  {isRTL ? "اليد مرفوعة - في انتظار الاستجابة" : "Hand raised - waiting for response"}
+                </p>
+              )}
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="shrink-0">
         <MeetControlBar
           micOn={micOn}
-          cameraOn={cameraOn}
-          screenSharing={screenSharing}
           micLevel={displayMicLevel}
+          handRaised={handRaised}
           isLeaving={isLeaving}
           onMicToggle={handleMicToggle}
-          onCameraToggle={handleCameraToggle}
-          onScreenShareToggle={handleScreenShareToggle}
+          onHandToggle={toggleHandRaise}
           onLeave={handleLeave}
           isRTL={isRTL}
         />
@@ -594,8 +550,8 @@ export default function Meet() {
             : "Join a video meeting with Helal Al Jabri"
         }
       />
-      <div className="w-full px-4 md:px-6 lg:px-8 py-6 md:py-8 flex flex-col items-center">
-        <div className="w-full max-w-6xl mt-8 md:mt-12 rounded-2xl min-h-[420px] md:min-h-[520px] 2xl:min-h-[620px] overflow-hidden">
+      <div className="w-full max-w-6xl mx-auto px-4 mt-18 md:mt-24 flex flex-col min-h-[calc(100vh-5rem)]">
+        <div className="flex-1 min-h-0 flex flex-col rounded-2xl overflow-hidden border border-white/5">
           <AgoraRTCProvider client={client}>
             <AgoraMeetView sessionName={sessionName} isRTL={isRTL} />
           </AgoraRTCProvider>
