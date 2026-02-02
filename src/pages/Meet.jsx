@@ -10,6 +10,8 @@ import {
   Users,
   AlertCircle,
   Hand,
+  Monitor,
+  MonitorOff,
 } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext";
 import SEO from "../components/SEO";
@@ -20,6 +22,7 @@ import AgoraRTC, {
   useJoin,
   useLocalCameraTrack,
   useLocalMicrophoneTrack,
+  useLocalScreenTrack,
   usePublish,
   useRemoteUsers,
   useVolumeLevel,
@@ -61,9 +64,11 @@ function MeetControlBar({
   micOn,
   micLevel,
   handRaised,
+  screenSharing,
   isLeaving,
   onMicToggle,
   onHandToggle,
+  onScreenShareToggle,
   onLeave,
   isRTL,
 }) {
@@ -116,6 +121,31 @@ function MeetControlBar({
         )}
         <span className="text-[11px] text-accent/70 hidden sm:block">
           {micOn ? (isRTL ? "ميكروفون" : "Mic") : (isRTL ? "مكتوم" : "Muted")}
+        </span>
+      </button>
+
+      <button
+        type="button"
+        onClick={onScreenShareToggle}
+        disabled={isLeaving}
+        className={`meet-control-btn flex flex-col items-center gap-1.5 p-2 rounded-xl hover:bg-white/5 min-w-[64px] disabled:opacity-50 disabled:pointer-events-none ${
+          screenSharing ? "ring-2 ring-primary/60" : ""
+        }`}
+        title={
+          screenSharing
+            ? (isRTL ? "إيقاف مشاركة الشاشة" : "Stop sharing screen")
+            : (isRTL ? "مشاركة الشاشة" : "Share screen")
+        }
+      >
+        <span
+          className={`flex items-center justify-center w-11 h-11 rounded-full transition-all ${
+            screenSharing ? "bg-primary/30 text-primary" : "bg-white/10 text-accent hover:bg-white/15"
+          }`}
+        >
+          {screenSharing ? <MonitorOff size={22} /> : <Monitor size={22} />}
+        </span>
+        <span className="text-[11px] text-accent/70 hidden sm:block">
+          {screenSharing ? (isRTL ? "إيقاف" : "Stop") : (isRTL ? "شاشة" : "Share")}
         </span>
       </button>
 
@@ -212,6 +242,7 @@ function AgoraMeetView({ sessionName, isRTL }) {
   const session = useMeetStore((s) => s.session);
 
   const [micOn, setMicOn] = useState(false);
+  const [screenSharing, setScreenSharing] = useState(false);
   const [isLeaving, setIsLeaving] = useState(false);
 
   const { handRaised, toggleHandRaise } = useHandRaise(
@@ -255,8 +286,15 @@ function AgoraMeetView({ sessionName, isRTL }) {
   }, [sessionName]);
   const networkQuality = useNetworkQuality(client);
 
-  const { localCameraTrack } = useLocalCameraTrack(isConnected);
+  const { localCameraTrack } = useLocalCameraTrack(isConnected && !screenSharing);
   const { localMicrophoneTrack } = useLocalMicrophoneTrack(isConnected);
+  const { screenTrack: localScreenTrack } = useLocalScreenTrack(
+    isConnected && screenSharing,
+    {},
+    "disable"
+  );
+
+  const videoTrack = screenSharing ? localScreenTrack : localCameraTrack;
 
   const micLevel = useVolumeLevel(localMicrophoneTrack ?? undefined);
 
@@ -278,9 +316,9 @@ function AgoraMeetView({ sessionName, isRTL }) {
 
   const tracksToPublish = useMemo(() => {
     const list = [localMicrophoneTrack];
-    if (localCameraTrack) list.push(localCameraTrack);
+    if (videoTrack) list.push(videoTrack);
     return list;
-  }, [localMicrophoneTrack, localCameraTrack]);
+  }, [localMicrophoneTrack, videoTrack]);
   usePublish(tracksToPublish, isConnected);
   const allRemoteUsers = useRemoteUsers(client);
 
@@ -319,6 +357,7 @@ function AgoraMeetView({ sessionName, isRTL }) {
   }, [isConnected, localCameraTrack]);
 
   const handleMicToggle = useCallback(() => setMicOn((v) => !v), []);
+  const handleScreenShareToggle = useCallback(() => setScreenSharing((v) => !v), []);
 
   const handleLeave = useCallback(() => {
     if (isLeaving) return;
@@ -478,9 +517,11 @@ function AgoraMeetView({ sessionName, isRTL }) {
           micOn={micOn}
           micLevel={displayMicLevel}
           handRaised={handRaised}
+          screenSharing={screenSharing}
           isLeaving={isLeaving}
           onMicToggle={handleMicToggle}
           onHandToggle={toggleHandRaise}
+          onScreenShareToggle={handleScreenShareToggle}
           onLeave={handleLeave}
           isRTL={isRTL}
         />
