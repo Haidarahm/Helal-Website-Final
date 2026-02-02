@@ -2,6 +2,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useMemo, useState, useCallback, useRef } from "react";
 import {
   Video,
+  VideoOff,
   Mic,
   MicOff,
   PhoneOff,
@@ -10,8 +11,6 @@ import {
   Users,
   AlertCircle,
   Hand,
-  Monitor,
-  MonitorOff,
 } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext";
 import SEO from "../components/SEO";
@@ -22,7 +21,6 @@ import AgoraRTC, {
   useJoin,
   useLocalCameraTrack,
   useLocalMicrophoneTrack,
-  useLocalScreenTrack,
   usePublish,
   useRemoteUsers,
   useVolumeLevel,
@@ -64,11 +62,11 @@ function MeetControlBar({
   micOn,
   micLevel,
   handRaised,
-  screenSharing,
+  cameraOn,
   isLeaving,
   onMicToggle,
   onHandToggle,
-  onScreenShareToggle,
+  onCameraToggle,
   onLeave,
   isRTL,
 }) {
@@ -126,26 +124,26 @@ function MeetControlBar({
 
       <button
         type="button"
-        onClick={onScreenShareToggle}
+        onClick={onCameraToggle}
         disabled={isLeaving}
         className={`meet-control-btn flex flex-col items-center gap-1.5 p-2 rounded-xl hover:bg-white/5 min-w-[64px] disabled:opacity-50 disabled:pointer-events-none ${
-          screenSharing ? "ring-2 ring-primary/60" : ""
+          cameraOn ? "ring-2 ring-primary/60" : ""
         }`}
         title={
-          screenSharing
-            ? (isRTL ? "إيقاف مشاركة الشاشة" : "Stop sharing screen")
-            : (isRTL ? "مشاركة الشاشة" : "Share screen")
+          cameraOn
+            ? (isRTL ? "إيقاف الكاميرا" : "Turn off camera")
+            : (isRTL ? "تشغيل الكاميرا" : "Turn on camera")
         }
       >
         <span
           className={`flex items-center justify-center w-11 h-11 rounded-full transition-all ${
-            screenSharing ? "bg-primary/30 text-primary" : "bg-white/10 text-accent hover:bg-white/15"
+            cameraOn ? "bg-primary/30 text-primary" : "bg-white/10 text-accent hover:bg-white/15"
           }`}
         >
-          {screenSharing ? <MonitorOff size={22} /> : <Monitor size={22} />}
+          {cameraOn ? <Video size={22} /> : <VideoOff size={22} />}
         </span>
         <span className="text-[11px] text-accent/70 hidden sm:block">
-          {screenSharing ? (isRTL ? "إيقاف" : "Stop") : (isRTL ? "شاشة" : "Share")}
+          {cameraOn ? (isRTL ? "كاميرا" : "Camera") : (isRTL ? "مشاركة" : "Share")}
         </span>
       </button>
 
@@ -242,7 +240,7 @@ function AgoraMeetView({ sessionName, isRTL }) {
   const session = useMeetStore((s) => s.session);
 
   const [micOn, setMicOn] = useState(false);
-  const [screenSharing, setScreenSharing] = useState(false);
+  const [cameraOn, setCameraOn] = useState(false);
   const [isLeaving, setIsLeaving] = useState(false);
 
   const { handRaised, toggleHandRaise } = useHandRaise(
@@ -286,15 +284,8 @@ function AgoraMeetView({ sessionName, isRTL }) {
   }, [sessionName]);
   const networkQuality = useNetworkQuality(client);
 
-  const { localCameraTrack } = useLocalCameraTrack(isConnected && !screenSharing);
+  const { localCameraTrack } = useLocalCameraTrack(isConnected && cameraOn);
   const { localMicrophoneTrack } = useLocalMicrophoneTrack(isConnected);
-  const { screenTrack: localScreenTrack } = useLocalScreenTrack(
-    isConnected && screenSharing,
-    {},
-    "disable"
-  );
-
-  const videoTrack = screenSharing ? localScreenTrack : localCameraTrack;
 
   const micLevel = useVolumeLevel(localMicrophoneTrack ?? undefined);
 
@@ -316,9 +307,9 @@ function AgoraMeetView({ sessionName, isRTL }) {
 
   const tracksToPublish = useMemo(() => {
     const list = [localMicrophoneTrack];
-    if (videoTrack) list.push(videoTrack);
+    if (cameraOn && localCameraTrack) list.push(localCameraTrack);
     return list;
-  }, [localMicrophoneTrack, videoTrack]);
+  }, [localMicrophoneTrack, cameraOn, localCameraTrack]);
   usePublish(tracksToPublish, isConnected);
   const allRemoteUsers = useRemoteUsers(client);
 
@@ -353,11 +344,11 @@ function AgoraMeetView({ sessionName, isRTL }) {
 
   useEffect(() => {
     if (!isConnected) return;
-    localCameraTrack?.setEnabled(true);
-  }, [isConnected, localCameraTrack]);
+    localCameraTrack?.setEnabled(cameraOn);
+  }, [isConnected, cameraOn, localCameraTrack]);
 
   const handleMicToggle = useCallback(() => setMicOn((v) => !v), []);
-  const handleScreenShareToggle = useCallback(() => setScreenSharing((v) => !v), []);
+  const handleCameraToggle = useCallback(() => setCameraOn((v) => !v), []);
 
   const handleLeave = useCallback(() => {
     if (isLeaving) return;
@@ -517,11 +508,11 @@ function AgoraMeetView({ sessionName, isRTL }) {
           micOn={micOn}
           micLevel={displayMicLevel}
           handRaised={handRaised}
-          screenSharing={screenSharing}
+          cameraOn={cameraOn}
           isLeaving={isLeaving}
           onMicToggle={handleMicToggle}
           onHandToggle={toggleHandRaise}
-          onScreenShareToggle={handleScreenShareToggle}
+          onCameraToggle={handleCameraToggle}
           onLeave={handleLeave}
           isRTL={isRTL}
         />
