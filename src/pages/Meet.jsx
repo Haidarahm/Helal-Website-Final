@@ -270,7 +270,8 @@ function AgoraMeetView({ sessionName, isRTL }) {
   }, [micLevel]);
 
   const tracksToPublish = useMemo(() => {
-    const list = [localMicrophoneTrack];
+    const list = [];
+    if (localMicrophoneTrack) list.push(localMicrophoneTrack);
     if (cameraOn && localCameraTrack) list.push(localCameraTrack);
     return list;
   }, [localMicrophoneTrack, cameraOn, localCameraTrack]);
