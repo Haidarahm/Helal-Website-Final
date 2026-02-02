@@ -10,13 +10,3 @@ export const joinSession = async (sessionName) => {
   const { data } = await api.get(`/agora/join/${encodeURIComponent(sessionName)}`);
   return data;
 };
-
-/**
- * Update hand raise state via backend (if supported).
- * POST /agora/raise-hand { sessionName, raised }
- * @param {string} sessionName
- * @param {boolean} raised
- */
-export const raiseHand = async (sessionName, raised) => {
-  await api.post("/agora/raise-hand", { sessionName, raised });
-};

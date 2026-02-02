@@ -10,12 +10,10 @@ import {
   Wifi,
   Users,
   AlertCircle,
-  Hand,
 } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext";
 import SEO from "../components/SEO";
 import { useMeetStore } from "../store";
-import { useHandRaise } from "../hooks/useHandRaise";
 import AgoraRTC, {
   AgoraRTCProvider,
   useJoin,
@@ -61,38 +59,15 @@ function connectionStateLabel(state, isRTL) {
 function MeetControlBar({
   micOn,
   micLevel,
-  handRaised,
   cameraOn,
   isLeaving,
   onMicToggle,
-  onHandToggle,
   onCameraToggle,
   onLeave,
   isRTL,
 }) {
   return (
     <div className="flex items-center justify-center gap-3 sm:gap-5 py-4 px-4 bg-secondary-light/90 backdrop-blur border-t border-white/5">
-      <button
-        type="button"
-        onClick={onHandToggle}
-        disabled={isLeaving}
-        className={`meet-control-btn flex flex-col items-center gap-1.5 p-2 rounded-xl hover:bg-white/5 min-w-[64px] disabled:opacity-50 disabled:pointer-events-none ${
-          handRaised ? "ring-2 ring-primary/60" : ""
-        }`}
-        title={handRaised ? (isRTL ? "خفض اليد" : "Lower hand") : (isRTL ? "رفع اليد" : "Raise hand")}
-      >
-        <span
-          className={`flex items-center justify-center w-11 h-11 rounded-full transition-all ${
-            handRaised ? "bg-primary/30 text-primary" : "bg-white/10 text-accent hover:bg-white/15"
-          }`}
-        >
-          <Hand size={22} />
-        </span>
-        <span className="text-[11px] text-accent/70 hidden sm:block">
-          {handRaised ? (isRTL ? "اليد مرفوعة" : "Hand up") : (isRTL ? "رفع اليد" : "Raise hand")}
-        </span>
-      </button>
-
       <button
         type="button"
         onClick={onMicToggle}
@@ -242,17 +217,6 @@ function AgoraMeetView({ sessionName, isRTL }) {
   const [micOn, setMicOn] = useState(false);
   const [cameraOn, setCameraOn] = useState(false);
   const [isLeaving, setIsLeaving] = useState(false);
-
-  const { handRaised, toggleHandRaise } = useHandRaise(
-    session?.appId && session?.channelName != null && session?.uid != null
-      ? {
-          appId: session.appId,
-          channelName: session.channelName,
-          uid: session.uid,
-          token: session.token,
-        }
-      : {}
-  );
 
   const joinSessionRef = useRef(joinSession);
   joinSessionRef.current = joinSession;
@@ -478,13 +442,8 @@ function AgoraMeetView({ sessionName, isRTL }) {
         ) : (
           <div className="absolute inset-0 flex flex-col items-center justify-center bg-secondary/50">
             <div className="flex flex-col items-center gap-4">
-              <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center relative">
+              <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center">
                 <User size={32} className="text-primary" />
-                {handRaised && (
-                  <span className="absolute -top-1 -right-1 w-8 h-8 rounded-full bg-primary/80 flex items-center justify-center animate-pulse">
-                    <Hand size={16} className="text-white" />
-                  </span>
-                )}
               </div>
               <p className="text-lg font-medium text-accent">
                 {isRTL ? "في انتظار المضيف…" : "Waiting admin…"}
@@ -492,12 +451,6 @@ function AgoraMeetView({ sessionName, isRTL }) {
               <p className="text-sm text-accent/60">
                 {isRTL ? "سيظهر بث المضيف هنا عند الاتصال" : "Admin stream will appear here when connected"}
               </p>
-              {handRaised && (
-                <p className="text-sm text-primary font-medium flex items-center gap-1.5">
-                  <Hand size={16} />
-                  {isRTL ? "اليد مرفوعة - في انتظار الاستجابة" : "Hand raised - waiting for response"}
-                </p>
-              )}
             </div>
           </div>
         )}
@@ -507,11 +460,9 @@ function AgoraMeetView({ sessionName, isRTL }) {
         <MeetControlBar
           micOn={micOn}
           micLevel={displayMicLevel}
-          handRaised={handRaised}
           cameraOn={cameraOn}
           isLeaving={isLeaving}
           onMicToggle={handleMicToggle}
-          onHandToggle={toggleHandRaise}
           onCameraToggle={handleCameraToggle}
           onLeave={handleLeave}
           isRTL={isRTL}
