@@ -10,6 +10,8 @@ import {
   Wifi,
   Users,
   AlertCircle,
+  Volume2,
+  X,
 } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext";
 import SEO from "../components/SEO";
@@ -37,6 +39,98 @@ const RemoteUserCover = () => (
 
 const REMOTE_VIDEO_CONFIG = { fit: "cover" };
 
+function MicTestModal({ isOpen, onClose, isRTL }) {
+  const [testLevel, setTestLevel] = useState(0);
+  const [error, setError] = useState(null);
+  const trackRef = useRef(null);
+  const intervalRef = useRef(null);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    setError(null);
+    setTestLevel(0);
+
+    let cancelled = false;
+    const run = async () => {
+      try {
+        const track = await AgoraRTC.createMicrophoneAudioTrack();
+        if (cancelled) {
+          track.close();
+          return;
+        }
+        trackRef.current = track;
+        await track.play();
+        intervalRef.current = setInterval(() => {
+          if (trackRef.current) {
+            const level = trackRef.current.getVolumeLevel?.() ?? 0;
+            setTestLevel(level);
+          }
+        }, 100);
+      } catch (err) {
+        if (!cancelled) setError(err?.message ?? (isRTL ? "فشل الوصول للميكروفون" : "Failed to access microphone"));
+      }
+    };
+    run();
+
+    return () => {
+      cancelled = true;
+      if (intervalRef.current) clearInterval(intervalRef.current);
+      intervalRef.current = null;
+      if (trackRef.current) {
+        trackRef.current.close();
+        trackRef.current = null;
+      }
+    };
+  }, [isOpen]);
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
+      <div className="bg-secondary rounded-2xl shadow-xl max-w-sm w-full p-6 border border-white/10">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-lg font-semibold text-accent flex items-center gap-2">
+            <Volume2 size={20} className="text-primary" />
+            {isRTL ? "اختبار الميكروفون" : "Mic Test"}
+          </h3>
+          <button
+            type="button"
+            onClick={onClose}
+            className="p-1 rounded-lg hover:bg-white/10 text-accent"
+            aria-label={isRTL ? "إغلاق" : "Close"}
+          >
+            <X size={20} />
+          </button>
+        </div>
+        {error ? (
+          <p className="text-red-400 text-sm">{error}</p>
+        ) : (
+          <>
+            <p className="text-sm text-accent/70 mb-3">
+              {isRTL ? "تحدث لمعاينة مستوى الصوت" : "Speak to see the level"}
+            </p>
+            <div className="h-3 bg-white/10 rounded-full overflow-hidden">
+              <div
+                className="h-full bg-primary transition-all duration-100"
+                style={{ width: `${Math.min(100, testLevel * 200 + 5)}%` }}
+              />
+            </div>
+            <p className="text-xs text-accent/50 mt-2">
+              {testLevel > 0.05
+                ? isRTL
+                  ? "الميكروفون يعمل بشكل صحيح"
+                  : "Microphone is working"
+                : isRTL
+                  ? "لم يتم اكتشاف صوت"
+                  : "No sound detected"}
+            </p>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
+
 function networkQualityLabel(up, down) {
   const avg = (up + down) / 2;
   if (avg >= 5) return { text: "Excellent", cls: "excellent" };
@@ -63,11 +157,27 @@ function MeetControlBar({
   isLeaving,
   onMicToggle,
   onCameraToggle,
+  onMicTest,
   onLeave,
   isRTL,
 }) {
   return (
     <div className="flex items-center justify-center gap-3 sm:gap-5 py-4 px-4 bg-secondary-light/90 backdrop-blur border-t border-white/5">
+      <button
+        type="button"
+        onClick={onMicTest}
+        disabled={isLeaving}
+        className="meet-control-btn flex flex-col items-center gap-1.5 p-2 rounded-xl hover:bg-white/5 min-w-[64px] disabled:opacity-50 disabled:pointer-events-none"
+        title={isRTL ? "اختبار الميكروفون" : "Test mic"}
+      >
+        <span className="flex items-center justify-center w-11 h-11 rounded-full bg-white/10 text-accent hover:bg-white/15">
+          <Volume2 size={22} />
+        </span>
+        <span className="text-[11px] text-accent/70 hidden sm:block">
+          {isRTL ? "اختبار" : "Test"}
+        </span>
+      </button>
+
       <button
         type="button"
         onClick={onMicToggle}
@@ -217,6 +327,7 @@ function AgoraMeetView({ sessionName, isRTL }) {
   const [micOn, setMicOn] = useState(false);
   const [cameraOn, setCameraOn] = useState(false);
   const [isLeaving, setIsLeaving] = useState(false);
+  const [micTestOpen, setMicTestOpen] = useState(false);
 
   const joinSessionRef = useRef(joinSession);
   joinSessionRef.current = joinSession;
@@ -297,6 +408,15 @@ function AgoraMeetView({ sessionName, isRTL }) {
       return p?.isAdmin === true;
     });
   }, [allRemoteUsers, findParticipantByUid, participantsArray]);
+
+  // When we're admin, play audio for participants (non-admin) so we can hear them
+  const participantsToHear = useMemo(() => {
+    if (!session?.isAdmin || participantsArray.length === 0) return [];
+    return allRemoteUsers.filter((user) => {
+      const p = findParticipantByUid(user.uid);
+      return p?.isAdmin === false;
+    });
+  }, [session?.isAdmin, allRemoteUsers, findParticipantByUid, participantsArray]);
 
   useEffect(() => {
     return () => clearSession();
@@ -410,6 +530,24 @@ function AgoraMeetView({ sessionName, isRTL }) {
         isRTL={isRTL}
       />
 
+      {/* Hidden: play participant audio so admin can hear them */}
+      {participantsToHear.length > 0 && (
+        <div
+          className="absolute -left-[9999px] w-px h-px overflow-hidden"
+          aria-hidden
+        >
+          {participantsToHear.map((user) => (
+            <RemoteUser
+              key={user.uid}
+              user={user}
+              playAudio
+              playVideo
+              className="w-full h-full"
+            />
+          ))}
+        </div>
+      )}
+
       <div className="flex-1 min-h-0 relative w-full">
         {hasAdminVisible ? (
           (() => {
@@ -465,10 +603,17 @@ function AgoraMeetView({ sessionName, isRTL }) {
           isLeaving={isLeaving}
           onMicToggle={handleMicToggle}
           onCameraToggle={handleCameraToggle}
+          onMicTest={() => setMicTestOpen(true)}
           onLeave={handleLeave}
           isRTL={isRTL}
         />
       </div>
+
+      <MicTestModal
+        isOpen={micTestOpen}
+        onClose={() => setMicTestOpen(false)}
+        isRTL={isRTL}
+      />
     </div>
   );
 }
