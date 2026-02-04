@@ -22,6 +22,7 @@ export const login = async (data) => {
     const response = await api.post("/login", {
       email: data.email,
       password: data.password,
+      fcmToken: data.fcmToken,
     });
     return response.data;
   } catch (error) {

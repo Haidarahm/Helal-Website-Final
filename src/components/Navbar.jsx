@@ -14,17 +14,43 @@ import { useAuthStore } from "../store";
 import { Dropdown } from "antd";
 
 function useAuthHydrated() {
-  const [hydrated, setHydrated] = useState(() =>
-    Boolean(useAuthStore.persist?.hasHydrated?.())
-  );
+  const [hydrated, setHydrated] = useState(false);
+
   useEffect(() => {
-    if (hydrated) return;
-    const unsub = useAuthStore.persist?.onFinishHydration?.(() =>
-      setHydrated(true)
-    );
-    if (useAuthStore.persist?.hasHydrated?.()) setHydrated(true);
-    return () => unsub?.();
-  }, [hydrated]);
+    const persist = useAuthStore.persist;
+    if (!persist) {
+      setHydrated(true);
+      return;
+    }
+
+    // hasHydrated can be a function or a boolean property
+    const check = () => {
+      const done = typeof persist.hasHydrated === "function"
+        ? persist.hasHydrated()
+        : Boolean(persist.hasHydrated);
+      if (done) setHydrated(true);
+      return done;
+    };
+
+    if (check()) return;
+
+    // onFinishHydration may not fire on initial load, so also poll
+    const unsub = persist.onFinishHydration?.(() => setHydrated(true));
+    const interval = setInterval(() => {
+      if (check()) {
+        clearInterval(interval);
+      }
+    }, 50);
+
+    const fallback = setTimeout(() => setHydrated(true), 500);
+
+    return () => {
+      unsub?.();
+      clearInterval(interval);
+      clearTimeout(fallback);
+    };
+  }, []);
+
   return hydrated;
 }
 

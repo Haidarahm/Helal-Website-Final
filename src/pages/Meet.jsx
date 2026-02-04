@@ -16,6 +16,8 @@ import {
 import { useLanguage } from "../context/LanguageContext";
 import SEO from "../components/SEO";
 import { useMeetStore } from "../store";
+import { db } from "../config/firebase";
+import { doc, onSnapshot } from "firebase/firestore";
 import AgoraRTC, {
   AgoraRTCProvider,
   useJoin,
@@ -30,6 +32,9 @@ import AgoraRTC, {
   RemoteUser,
 } from "agora-rtc-react";
 import "./meet.css";
+
+// Disable Agora SDK console logs
+AgoraRTC.setLogLevel(4);
 
 const RemoteUserCover = () => (
   <div className="meet-cover-avatar">
@@ -431,6 +436,36 @@ function AgoraMeetView({ sessionName, isRTL }) {
     if (!isConnected) return;
     localCameraTrack?.setEnabled(cameraOn);
   }, [isConnected, cameraOn, localCameraTrack]);
+
+  // Firebase listener for real-time session updates
+  useEffect(() => {
+    if (!sessionName) return;
+
+    console.log("🔥 Firebase: Starting listener for session:", sessionName);
+
+    // Listen to the session document in Firestore
+    const sessionDocRef = doc(db, "sessions", sessionName);
+    const unsubscribe = onSnapshot(
+      sessionDocRef,
+      (docSnapshot) => {
+        console.log("🔥 Firebase snapshot received");
+        if (docSnapshot.exists()) {
+          const data = docSnapshot.data();
+          console.log("🔥 Firebase session update:", data);
+        } else {
+          console.log("🔥 Firebase: Session document does not exist at path: sessions/" + sessionName);
+        }
+      },
+      (error) => {
+        console.error("🔥 Firebase listener error:", error);
+      }
+    );
+
+    return () => {
+      console.log("🔥 Firebase: Stopping listener");
+      unsubscribe();
+    };
+  }, [sessionName]);
 
   const handleMicToggle = useCallback(() => setMicOn((v) => !v), []);
   const handleCameraToggle = useCallback(() => setCameraOn((v) => !v), []);

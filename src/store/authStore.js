@@ -11,6 +11,7 @@ import {
   updateProfileImage as updateProfileImageApi,
   changePassword as changePasswordApi,
 } from "../apis/auth.js";
+import { getFcmToken, clearFcmToken } from "../config/firebase.js";
 
 let _authStoreRef;
 
@@ -82,7 +83,21 @@ const useAuthStore = create(
       login: async (data) => {
         try {
           set({ isLoading: true, error: null });
-          const response = await loginApi(data);
+
+          // Get FCM token - required for login
+          const fcmToken = await getFcmToken();
+          
+          if (!fcmToken) {
+            const errorMessage = "Please enable notifications to login";
+            set({ error: errorMessage, isLoading: false });
+            toast.error(errorMessage);
+            throw new Error(errorMessage);
+          }
+
+          const response = await loginApi({
+            ...data,
+            fcmToken,
+          });
 
           // Handle both 'access_token' and 'token' for compatibility
           const token = response.access_token || response.token;
@@ -107,6 +122,7 @@ const useAuthStore = create(
       // Logout
       logout: () => {
         localStorage.removeItem("token");
+        clearFcmToken();
         get().clearAuth();
         toast.info("Logged out successfully");
       },
