@@ -47,19 +47,27 @@ const registerServiceWorker = async () => {
     // Wait for the service worker to be ready/active
     if (registration.installing) {
       console.log("🔥 Service Worker installing...");
-      await new Promise((resolve) => {
+      await new Promise((resolve, reject) => {
+        const t = setTimeout(() => resolve(), 8000);
         registration.installing.addEventListener("statechange", (e) => {
           if (e.target.state === "activated") {
+            clearTimeout(t);
             console.log("🔥 Service Worker activated");
             resolve();
           }
         });
       });
     } else if (registration.waiting) {
-      console.log("🔥 Service Worker waiting...");
+      console.log("🔥 Service Worker waiting - calling skipWaiting()...");
+      registration.waiting.skipWaiting();
       await new Promise((resolve) => {
+        const t = setTimeout(() => {
+          console.log("🔥 Service Worker ready (timeout)");
+          resolve();
+        }, 3000);
         registration.waiting.addEventListener("statechange", (e) => {
           if (e.target.state === "activated") {
+            clearTimeout(t);
             console.log("🔥 Service Worker activated");
             resolve();
           }
@@ -69,8 +77,11 @@ const registerServiceWorker = async () => {
       console.log("🔥 Service Worker already active");
     }
 
-    // Ensure we have an active service worker
-    await navigator.serviceWorker.ready;
+    // Ensure we have an active service worker (with timeout to avoid infinite hang)
+    await Promise.race([
+      navigator.serviceWorker.ready,
+      new Promise((r) => setTimeout(r, 5000)),
+    ]);
     console.log("🔥 Service Worker ready");
 
     return registration;
