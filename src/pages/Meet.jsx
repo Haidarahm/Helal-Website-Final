@@ -16,6 +16,7 @@ import {
 import { useLanguage } from "../context/LanguageContext";
 import SEO from "../components/SEO";
 import { useMeetStore } from "../store";
+import { useFcmMessages } from "../hooks/useFcmMessages.js";
 import { db } from "../config/firebase";
 import { doc, onSnapshot } from "firebase/firestore";
 import AgoraRTC, {
@@ -160,6 +161,7 @@ function MeetControlBar({
   micLevel,
   cameraOn,
   isLeaving,
+  micHiddenByAdmin,
   onMicToggle,
   onCameraToggle,
   onMicTest,
@@ -183,34 +185,36 @@ function MeetControlBar({
         </span>
       </button>
 
-      <button
-        type="button"
-        onClick={onMicToggle}
-        disabled={isLeaving}
-        className="meet-control-btn flex flex-col items-center gap-1.5 p-2 rounded-xl hover:bg-white/5 min-w-[64px] disabled:opacity-50 disabled:pointer-events-none"
-        title={micOn ? (isRTL ? "كتم الصوت" : "Mute") : (isRTL ? "تشغيل الصوت" : "Unmute")}
-      >
-        <span
-          className={`flex items-center justify-center w-11 h-11 rounded-full transition-all ${
-            micOn
-              ? "bg-white/10 text-accent hover:bg-white/15"
-              : "bg-red-500/80 text-white"
-          }`}
+      {!micHiddenByAdmin && (
+        <button
+          type="button"
+          onClick={onMicToggle}
+          disabled={isLeaving}
+          className="meet-control-btn flex flex-col items-center gap-1.5 p-2 rounded-xl hover:bg-white/5 min-w-[64px] disabled:opacity-50 disabled:pointer-events-none"
+          title={micOn ? (isRTL ? "كتم الصوت" : "Mute") : (isRTL ? "تشغيل الصوت" : "Unmute")}
         >
-          {micOn ? <Mic size={22} /> : <MicOff size={22} />}
-        </span>
-        {micOn && (
-          <div className="meet-mic-level w-10">
-            <div
-              className="meet-mic-level-bar"
-              style={{ width: `${Math.min(100, (micLevel || 0) * 2 + 10)}%` }}
-            />
-          </div>
-        )}
-        <span className="text-[11px] text-accent/70 hidden sm:block">
-          {micOn ? (isRTL ? "ميكروفون" : "Mic") : (isRTL ? "مكتوم" : "Muted")}
-        </span>
-      </button>
+          <span
+            className={`flex items-center justify-center w-11 h-11 rounded-full transition-all ${
+              micOn
+                ? "bg-white/10 text-accent hover:bg-white/15"
+                : "bg-red-500/80 text-white"
+            }`}
+          >
+            {micOn ? <Mic size={22} /> : <MicOff size={22} />}
+          </span>
+          {micOn && (
+            <div className="meet-mic-level w-10">
+              <div
+                className="meet-mic-level-bar"
+                style={{ width: `${Math.min(100, (micLevel || 0) * 2 + 10)}%` }}
+              />
+            </div>
+          )}
+          <span className="text-[11px] text-accent/70 hidden sm:block">
+            {micOn ? (isRTL ? "ميكروفون" : "Mic") : (isRTL ? "مكتوم" : "Muted")}
+          </span>
+        </button>
+      )}
 
       <button
         type="button"
@@ -333,6 +337,7 @@ function AgoraMeetView({ sessionName, isRTL }) {
   const [cameraOn, setCameraOn] = useState(false);
   const [isLeaving, setIsLeaving] = useState(false);
   const [micTestOpen, setMicTestOpen] = useState(false);
+  const [micHiddenByAdmin, setMicHiddenByAdmin] = useState(false);
 
   const joinSessionRef = useRef(joinSession);
   joinSessionRef.current = joinSession;
@@ -474,6 +479,21 @@ function AgoraMeetView({ sessionName, isRTL }) {
       unsubscribe();
     };
   }, [sessionName]);
+
+  // FCM: handle mute_all and unmute_all from admin
+  useFcmMessages({
+    channelName: sessionName,
+    actions: {
+      mute_all: () => {
+        setMicOn(false);
+        setMicHiddenByAdmin(true);
+      },
+      unmute_all: () => {
+        setMicOn(true);
+        setMicHiddenByAdmin(false);
+      },
+    },
+  });
 
   const handleMicToggle = useCallback(() => setMicOn((v) => !v), []);
   const handleCameraToggle = useCallback(() => setCameraOn((v) => !v), []);
@@ -644,6 +664,7 @@ function AgoraMeetView({ sessionName, isRTL }) {
           micLevel={displayMicLevel}
           cameraOn={cameraOn}
           isLeaving={isLeaving}
+          micHiddenByAdmin={micHiddenByAdmin}
           onMicToggle={handleMicToggle}
           onCameraToggle={handleCameraToggle}
           onMicTest={() => setMicTestOpen(true)}

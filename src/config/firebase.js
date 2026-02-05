@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
-import { getMessaging, getToken } from "firebase/messaging";
+import { getMessaging, getToken, onMessage } from "firebase/messaging";
 
 // Firebase configuration
 const firebaseConfig = {
@@ -153,6 +153,43 @@ export const getStoredFcmToken = () => {
 export const clearFcmToken = () => {
   localStorage.removeItem(FCM_TOKEN_KEY);
 };
+
+// Global FCM message router - never unsubscribes to avoid missing first message
+// (React Strict Mode / lazy load can cause listener to register late)
+let fcmRouteInitialized = false;
+let currentChannel = null;
+let currentActions = null;
+
+function initFcmMessageRouter() {
+  if (!messaging || fcmRouteInitialized) return;
+  fcmRouteInitialized = true;
+  onMessage(messaging, (payload) => {
+    const data = payload?.data ?? {};
+    const action = data?.action;
+    const msgChannelName = data?.channelName;
+    if (!currentChannel || msgChannelName !== currentChannel) return;
+    const handler = typeof currentActions === "function"
+      ? currentActions(action)
+      : currentActions?.[action];
+    if (typeof handler === "function") handler(data);
+  });
+}
+
+export function setFcmChannelHandlers(channelName, actionsOrGetter) {
+  initFcmMessageRouter(); // Ensure listener is registered first
+  currentChannel = channelName;
+  currentActions = actionsOrGetter;
+}
+
+export function clearFcmChannelHandlers() {
+  currentChannel = null;
+  currentActions = null;
+}
+
+// Eagerly init router when firebase loads (e.g. at login) so listener is ready before Meet
+if (typeof window !== "undefined") {
+  initFcmMessageRouter();
+}
 
 export { messaging };
 export default app;
