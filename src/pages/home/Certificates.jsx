@@ -4,15 +4,15 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/effect-coverflow";
 
-import cert1 from "../../assets/certificates/1.jpg";
-import cert2 from "../../assets/certificates/2.jpg";
-import cert3 from "../../assets/certificates/3.jpg";
-import cert4 from "../../assets/certificates/4.jpg";
-import cert5 from "../../assets/certificates/5.jpg";
-import cert6 from "../../assets/certificates/6.png";
-import cert7 from "../../assets/certificates/7.png";
-import cert8 from "../../assets/certificates/8.png";
-import cert9 from "../../assets/certificates/9.png";
+import cert1 from "../../assets/certificates/1.webp";
+import cert2 from "../../assets/certificates/2.webp";
+import cert3 from "../../assets/certificates/3.webp";
+import cert4 from "../../assets/certificates/4.webp";
+import cert5 from "../../assets/certificates/5.webp";
+import cert6 from "../../assets/certificates/6.webp";
+import cert7 from "../../assets/certificates/7.webp";
+import cert8 from "../../assets/certificates/8.webp";
+import cert9 from "../../assets/certificates/9.webp";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "../../context/LanguageContext";
 

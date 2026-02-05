@@ -21,7 +21,7 @@ const useMeetStore = create((set, get) => ({
   /**
    * Join an Agora session by name.
    * @param {string} sessionName
-   * @returns {Promise<{ status: boolean; appId: string; token: string; channelName: string; uid: number; isAdmin: boolean; participants: Array } | null>}
+   * @returns {Promise<{ appId: string; token: string; channelName: string; uid: number; isAdmin: boolean; participants: Array } | null>}
    */
   joinSession: async (sessionName) => {
     const existing = get().session;
@@ -30,25 +30,31 @@ const useMeetStore = create((set, get) => ({
     }
     try {
       set({ isLoading: true, error: null });
-      const data = await joinSessionApi(sessionName);
-      if (data?.status && data?.appId && data?.token != null && data?.channelName) {
-        const raw = data.participants ?? [];
+      const response = await joinSessionApi(sessionName);
+      const payload = response?.data ?? response;
+      if (
+        response?.status &&
+        payload?.appId &&
+        payload?.token != null &&
+        payload?.uid != null
+      ) {
+        const raw = payload.participants ?? [];
         const participants = Array.isArray(raw) ? raw : Object.values(raw);
         set({
           session: {
-            appId: data.appId,
-            token: data.token,
-            channelName: data.channelName,
-            uid: data.uid,
-            isAdmin: data.isAdmin ?? false,
+            appId: payload.appId,
+            token: payload.token,
+            channelName: sessionName,
+            uid: payload.uid,
+            isAdmin: payload.isAdmin ?? false,
             participants,
-            serverTime: data.serverTime,
+            serverTime: payload.serverTime,
           },
           isLoading: false,
         });
         return get().session;
       }
-      throw new Error("Invalid join response");
+      throw new Error(response?.message ?? "Invalid token response");
     } catch (err) {
       const msg =
         err?.response?.data?.message ?? err?.message ?? "Failed to join session";

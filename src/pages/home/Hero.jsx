@@ -1,5 +1,5 @@
 import helal from "../../assets/image2.webp";
-import background from "../../assets/back.png";
+import background from "../../assets/back.webp";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "../../context/LanguageContext";
