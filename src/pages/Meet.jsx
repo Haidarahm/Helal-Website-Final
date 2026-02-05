@@ -519,6 +519,11 @@ function AgoraMeetView({ sessionName, isRTL }) {
     [user?.id, user?.userId, session?.uid]
   );
 
+  const runKickRef = useRef(runKick);
+  const shouldAcceptKickRef = useRef(shouldAcceptKick);
+  runKickRef.current = runKick;
+  shouldAcceptKickRef.current = shouldAcceptKick;
+
   // FCM: handle mute_all, unmute_all, kick_participant from admin (foreground)
   useFcmMessages({
     channelName: sessionName,
@@ -548,8 +553,8 @@ function AgoraMeetView({ sessionName, isRTL }) {
       } else if (action === "unmute_all") {
         setMicOn(true);
         setMicHiddenByAdmin(false);
-      } else if (action === "kick_participant" && shouldAcceptKick(d?.userId)) {
-        runKick();
+      } else if (action === "kick_participant" && shouldAcceptKickRef.current(d?.userId)) {
+        runKickRef.current();
       }
     };
     const handler = (event) => {
@@ -571,7 +576,7 @@ function AgoraMeetView({ sessionName, isRTL }) {
       bc?.removeEventListener?.("message", handler);
       bc?.close?.();
     };
-  }, [sessionName, runKick, shouldAcceptKick]);
+  }, [sessionName]);
 
   if (joinError) {
     return (
