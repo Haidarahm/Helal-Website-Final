@@ -537,25 +537,38 @@ function AgoraMeetView({ sessionName, isRTL }) {
     },
   });
 
-  // Listen for kick from service worker (BroadcastChannel + postMessage for background)
+  // Listen for FCM actions from service worker (BroadcastChannel + postMessage for background)
   useEffect(() => {
-    const handleKick = (d) => {
-      if (d?.type !== "FCM_KICK" || d?.channelName !== sessionName) return;
-      if (shouldAcceptKick(d?.userId)) runKick();
+    const handleFcmAction = (d) => {
+      if (d?.channelName !== sessionName) return;
+      const action = d?.action;
+      if (action === "mute_all") {
+        setMicOn(false);
+        setMicHiddenByAdmin(true);
+      } else if (action === "unmute_all") {
+        setMicOn(true);
+        setMicHiddenByAdmin(false);
+      } else if (action === "kick_participant" && shouldAcceptKick(d?.userId)) {
+        runKick();
+      }
     };
-    const swHandler = (event) => handleKick(event?.data);
+    const handler = (event) => {
+      const d = event?.data;
+      if (d?.type === "FCM_ACTION" || d?.type === "FCM_KICK") {
+        handleFcmAction(d?.type === "FCM_KICK" ? { ...d, action: "kick_participant" } : d);
+      }
+    };
     const bc =
       typeof BroadcastChannel !== "undefined"
         ? new BroadcastChannel("fcm_meet")
         : null;
-    const bcHandler = (event) => handleKick(event?.data);
 
-    navigator.serviceWorker?.addEventListener?.("message", swHandler);
-    bc?.addEventListener?.("message", bcHandler);
+    navigator.serviceWorker?.addEventListener?.("message", handler);
+    bc?.addEventListener?.("message", handler);
 
     return () => {
-      navigator.serviceWorker?.removeEventListener?.("message", swHandler);
-      bc?.removeEventListener?.("message", bcHandler);
+      navigator.serviceWorker?.removeEventListener?.("message", handler);
+      bc?.removeEventListener?.("message", handler);
       bc?.close?.();
     };
   }, [sessionName, runKick, shouldAcceptKick]);

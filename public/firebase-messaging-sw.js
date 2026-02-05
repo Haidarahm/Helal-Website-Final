@@ -19,19 +19,19 @@ messaging.onBackgroundMessage((payload) => {
   
   const data = payload.data || {};
   
-  // Forward kick_participant to open tabs via BroadcastChannel + postMessage
+  // Forward FCM actions to open tabs (mute_all, unmute_all, kick_participant)
   const channelName = data.channelName || data.channel_name;
-  const userId = data.userId;
-  if (data.action === 'kick_participant' && channelName) {
-    const payload = { type: 'FCM_KICK', channelName, userId };
+  const action = data.action;
+  if (action && channelName && ['mute_all', 'unmute_all', 'kick_participant'].includes(action)) {
+    const msg = { type: 'FCM_ACTION', action, channelName, userId: data.userId };
     if (typeof BroadcastChannel !== 'undefined') {
       try {
-        new BroadcastChannel('fcm_meet').postMessage(payload);
+        new BroadcastChannel('fcm_meet').postMessage(msg);
       } catch (e) {}
     }
     self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clients) => {
       clients.forEach((client) => {
-        client.postMessage(payload);
+        client.postMessage(msg);
       });
     });
   }
