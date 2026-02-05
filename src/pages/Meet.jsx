@@ -329,7 +329,7 @@ function AgoraMeetView({ sessionName, isRTL }) {
   const clearSession = useMeetStore((s) => s.clearSession);
   const session = useMeetStore((s) => s.session);
 
-  const [micOn, setMicOn] = useState(false);
+  const [micOn, setMicOn] = useState(true);
   const [cameraOn, setCameraOn] = useState(false);
   const [isLeaving, setIsLeaving] = useState(false);
   const [micTestOpen, setMicTestOpen] = useState(false);
@@ -387,10 +387,11 @@ function AgoraMeetView({ sessionName, isRTL }) {
 
   const tracksToPublish = useMemo(() => {
     const list = [];
-    if (localMicrophoneTrack) list.push(localMicrophoneTrack);
+    // Only publish mic when enabled - Agora cannot publish a disabled track
+    if (micOn && localMicrophoneTrack) list.push(localMicrophoneTrack);
     if (cameraOn && localCameraTrack) list.push(localCameraTrack);
     return list;
-  }, [localMicrophoneTrack, cameraOn, localCameraTrack]);
+  }, [micOn, localMicrophoneTrack, cameraOn, localCameraTrack]);
   usePublish(tracksToPublish, isConnected);
   const allRemoteUsers = useRemoteUsers(client);
 
@@ -405,23 +406,30 @@ function AgoraMeetView({ sessionName, isRTL }) {
     [participantsArray]
   );
 
-  // Only show admin users (filter out non-admin participants)
+  // Only include users with published streams to avoid "no such stream id" errors
+  const usersWithStreams = useMemo(
+    () => allRemoteUsers.filter((u) => u.hasAudio || u.hasVideo),
+    [allRemoteUsers]
+  );
+
+  // Show admin users when we have participant metadata; otherwise show all remote users
   const remoteUsers = useMemo(() => {
-    if (participantsArray.length === 0) return [];
-    return allRemoteUsers.filter((user) => {
+    if (participantsArray.length === 0) return usersWithStreams;
+    return usersWithStreams.filter((user) => {
       const p = findParticipantByUid(user.uid);
       return p?.isAdmin === true;
     });
-  }, [allRemoteUsers, findParticipantByUid, participantsArray]);
+  }, [usersWithStreams, findParticipantByUid, participantsArray]);
 
   // When we're admin, play audio for participants (non-admin) so we can hear them
   const participantsToHear = useMemo(() => {
-    if (!session?.isAdmin || participantsArray.length === 0) return [];
-    return allRemoteUsers.filter((user) => {
+    if (!session?.isAdmin) return [];
+    if (participantsArray.length === 0) return usersWithStreams;
+    return usersWithStreams.filter((user) => {
       const p = findParticipantByUid(user.uid);
       return p?.isAdmin === false;
     });
-  }, [session?.isAdmin, allRemoteUsers, findParticipantByUid, participantsArray]);
+  }, [session?.isAdmin, usersWithStreams, findParticipantByUid, participantsArray]);
 
   useEffect(() => {
     return () => clearSession();
