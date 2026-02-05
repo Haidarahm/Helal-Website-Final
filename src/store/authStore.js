@@ -55,7 +55,21 @@ const useAuthStore = create(
       register: async (data) => {
         try {
           set({ isLoading: true, error: null });
-          const response = await registerApi(data);
+
+          // Get FCM token - required for registration
+          const fcmToken = await getFcmToken();
+
+          if (!fcmToken) {
+            const errorMessage = "Please enable notifications to register";
+            set({ error: errorMessage, isLoading: false });
+            toast.error(errorMessage);
+            throw new Error(errorMessage);
+          }
+
+          const response = await registerApi({
+            ...data,
+            fcmToken,
+          });
 
           // Handle both 'access_token' and 'token' for compatibility
           const token = response.access_token || response.token;

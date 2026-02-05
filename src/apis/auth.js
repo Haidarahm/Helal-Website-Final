@@ -9,6 +9,7 @@ export const register = async (data) => {
       phone_number: data.phone,
       password: data.password,
       password_confirmation: data.password_confirmation,
+      fcmToken: data.fcmToken,
     });
     return response.data;
   } catch (error) {
