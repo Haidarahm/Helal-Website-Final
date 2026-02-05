@@ -17,6 +17,25 @@ const messaging = firebase.messaging();
 messaging.onBackgroundMessage((payload) => {
   console.log('Received background message:', payload);
   
+  const data = payload.data || {};
+  
+  // Forward kick_participant to open tabs via BroadcastChannel + postMessage
+  const channelName = data.channelName || data.channel_name;
+  const userId = data.userId;
+  if (data.action === 'kick_participant' && channelName) {
+    const payload = { type: 'FCM_KICK', channelName, userId };
+    if (typeof BroadcastChannel !== 'undefined') {
+      try {
+        new BroadcastChannel('fcm_meet').postMessage(payload);
+      } catch (e) {}
+    }
+    self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clients) => {
+      clients.forEach((client) => {
+        client.postMessage(payload);
+      });
+    });
+  }
+  
   const notificationTitle = payload.notification?.title || 'New Notification';
   const notificationOptions = {
     body: payload.notification?.body || '',

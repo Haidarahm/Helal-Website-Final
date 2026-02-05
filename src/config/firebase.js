@@ -177,7 +177,7 @@ function initFcmMessageRouter() {
   onMessage(messaging, (payload) => {
     const data = payload?.data ?? {};
     const action = data?.action;
-    const msgChannelName = data?.channelName;
+    const msgChannelName = data?.channelName ?? data?.channel_name;
     if (!currentChannel || msgChannelName !== currentChannel) return;
     const handler = typeof currentActions === "function"
       ? currentActions(action)

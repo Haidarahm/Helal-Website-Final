@@ -16,6 +16,7 @@ import {
 import { useLanguage } from "../context/LanguageContext";
 import SEO from "../components/SEO";
 import { useMeetStore } from "../store";
+import useAuthStore from "../store/authStore.js";
 import { useFcmMessages } from "../hooks/useFcmMessages.js";
 import { db } from "../config/firebase";
 import { doc, onSnapshot } from "firebase/firestore";
@@ -331,7 +332,9 @@ function AgoraMeetView({ sessionName, isRTL }) {
   const client = useRTCClient();
   const joinSession = useMeetStore((s) => s.joinSession);
   const clearSession = useMeetStore((s) => s.clearSession);
+  const markKicked = useMeetStore((s) => s.markKicked);
   const session = useMeetStore((s) => s.session);
+  const user = useAuthStore((s) => s.user);
 
   const [micOn, setMicOn] = useState(true);
   const [cameraOn, setCameraOn] = useState(false);
@@ -480,24 +483,6 @@ function AgoraMeetView({ sessionName, isRTL }) {
     };
   }, [sessionName]);
 
-  // FCM: handle mute_all and unmute_all from admin
-  useFcmMessages({
-    channelName: sessionName,
-    actions: {
-      mute_all: () => {
-        setMicOn(false);
-        setMicHiddenByAdmin(true);
-      },
-      unmute_all: () => {
-        setMicOn(true);
-        setMicHiddenByAdmin(false);
-      },
-    },
-  });
-
-  const handleMicToggle = useCallback(() => setMicOn((v) => !v), []);
-  const handleCameraToggle = useCallback(() => setCameraOn((v) => !v), []);
-
   const handleLeave = useCallback(() => {
     if (isLeaving) return;
     setIsLeaving(true);
@@ -513,6 +498,67 @@ function AgoraMeetView({ sessionName, isRTL }) {
       } catch (_) {}
     }
   }, [client, isConnected, isLeaving, clearSession, navigate]);
+
+  const leaveRef = useRef(handleLeave);
+  leaveRef.current = handleLeave;
+
+  const handleMicToggle = useCallback(() => setMicOn((v) => !v), []);
+  const handleCameraToggle = useCallback(() => setCameraOn((v) => !v), []);
+
+  const runKick = useCallback(() => {
+    markKicked(sessionName);
+    leaveRef.current?.();
+  }, [sessionName, markKicked]);
+
+  const shouldAcceptKick = useCallback(
+    (payloadUserId) => {
+      if (!payloadUserId) return true;
+      const myId = user?.id ?? user?.userId ?? session?.uid;
+      return myId == null || String(myId) === String(payloadUserId);
+    },
+    [user?.id, user?.userId, session?.uid]
+  );
+
+  // FCM: handle mute_all, unmute_all, kick_participant from admin (foreground)
+  useFcmMessages({
+    channelName: sessionName,
+    actions: {
+      mute_all: () => {
+        setMicOn(false);
+        setMicHiddenByAdmin(true);
+      },
+      unmute_all: () => {
+        setMicOn(true);
+        setMicHiddenByAdmin(false);
+      },
+      kick_participant: (data) => {
+        if (shouldAcceptKick(data?.userId)) runKick();
+      },
+    },
+  });
+
+  // Listen for kick from service worker (BroadcastChannel + postMessage for background)
+  useEffect(() => {
+    const handleKick = (d) => {
+      if (d?.type !== "FCM_KICK" || d?.channelName !== sessionName) return;
+      if (shouldAcceptKick(d?.userId)) runKick();
+    };
+    const swHandler = (event) => handleKick(event?.data);
+    const bc =
+      typeof BroadcastChannel !== "undefined"
+        ? new BroadcastChannel("fcm_meet")
+        : null;
+    const bcHandler = (event) => handleKick(event?.data);
+
+    navigator.serviceWorker?.addEventListener?.("message", swHandler);
+    bc?.addEventListener?.("message", bcHandler);
+
+    return () => {
+      navigator.serviceWorker?.removeEventListener?.("message", swHandler);
+      bc?.removeEventListener?.("message", bcHandler);
+      bc?.close?.();
+    };
+  }, [sessionName, runKick, shouldAcceptKick]);
 
   if (joinError) {
     return (

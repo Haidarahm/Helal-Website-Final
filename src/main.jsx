@@ -12,7 +12,7 @@ import "./assets/locales/i18n";
 import { LanguageProvider } from "./context/LanguageContext";
 
 createRoot(document.getElementById("root")).render(
-  <StrictMode>
+
     <LanguageProvider>
       <ConfigProvider
         theme={{
@@ -58,7 +58,6 @@ createRoot(document.getElementById("root")).render(
         </BrowserRouter>
       </ConfigProvider>
     </LanguageProvider>
-  </StrictMode>
 );
 
 // Initialize AOS globally once
