@@ -22,8 +22,9 @@ messaging.onBackgroundMessage((payload) => {
   // Forward FCM actions to open tabs (mute_all, unmute_all, kick_participant)
   const channelName = data.channelName || data.channel_name;
   const action = data.action;
-  if (action && channelName && ['mute_all', 'unmute_all', 'kick_participant'].includes(action)) {
-    const msg = { type: 'FCM_ACTION', action, channelName, userId: data.userId };
+  const forwardActions = ['mute_all', 'unmute_all', 'mute_participant', 'unmute_participant', 'kick_participant'];
+  if (action && channelName && forwardActions.includes(action)) {
+    const msg = { type: 'FCM_ACTION', action, channelName, uid: data.uid, userId: data.userId };
     if (typeof BroadcastChannel !== 'undefined') {
       try {
         new BroadcastChannel('fcm_meet').postMessage(msg);

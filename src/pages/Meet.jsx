@@ -510,34 +510,66 @@ function AgoraMeetView({ sessionName, isRTL }) {
     leaveRef.current?.();
   }, [sessionName, markKicked]);
 
-  const shouldAcceptKick = useCallback(
-    (payloadUserId) => {
-      if (!payloadUserId) return true;
-      const myId = user?.id ?? user?.userId ?? session?.uid;
-      return myId == null || String(myId) === String(payloadUserId);
+  // Check if current user is the target (compare Agora UID)
+  const isTargetUser = useCallback(
+    (payloadUid, payloadUserId, data) => {
+      const payloadId = payloadUid ?? payloadUserId;
+      const myAgoraUid = session?.uid;
+      const match = payloadId != null
+        && myAgoraUid != null
+        && String(myAgoraUid) === String(payloadId);
+      console.log("🔊 FCM isTargetUser:", {
+        action: data?.action,
+        payloadUid,
+        payloadUserId,
+        myAgoraUid,
+        sessionName,
+        match,
+      });
+      return match;
     },
-    [user?.id, user?.userId, session?.uid]
+    [session?.uid]
   );
 
   const runKickRef = useRef(runKick);
-  const shouldAcceptKickRef = useRef(shouldAcceptKick);
+  const isTargetUserRef = useRef(isTargetUser);
   runKickRef.current = runKick;
-  shouldAcceptKickRef.current = shouldAcceptKick;
+  isTargetUserRef.current = isTargetUser;
 
-  // FCM: handle mute_all, unmute_all, kick_participant from admin (foreground)
+  // FCM: handle mute_all, unmute_all, mute_participant, unmute_participant, kick_participant (foreground)
   useFcmMessages({
     channelName: sessionName,
     actions: {
       mute_all: () => {
+        console.log("🔊 FCM mute_all (foreground)");
         setMicOn(false);
         setMicHiddenByAdmin(true);
       },
       unmute_all: () => {
+        console.log("🔊 FCM unmute_all (foreground)");
         setMicOn(true);
         setMicHiddenByAdmin(false);
       },
+      mute_participant: (data) => {
+        const ok = isTargetUser(data?.uid, data?.userId, data);
+        console.log("🔊 FCM mute_participant (foreground):", { ok, data });
+        if (ok) {
+          setMicOn(false);
+          setMicHiddenByAdmin(true);
+        }
+      },
+      unmute_participant: (data) => {
+        const ok = isTargetUser(data?.uid, data?.userId, data);
+        console.log("🔊 FCM unmute_participant (foreground):", { ok, data });
+        if (ok) {
+          setMicOn(true);
+          setMicHiddenByAdmin(false);
+        }
+      },
       kick_participant: (data) => {
-        if (shouldAcceptKick(data?.userId)) runKick();
+        const ok = isTargetUser(data?.uid, data?.userId, data);
+        console.log("🔊 FCM kick_participant (foreground):", { ok, data });
+        if (ok) runKick();
       },
     },
   });
@@ -545,22 +577,42 @@ function AgoraMeetView({ sessionName, isRTL }) {
   // Listen for FCM actions from service worker (BroadcastChannel + postMessage for background)
   useEffect(() => {
     const handleFcmAction = (d) => {
-      if (d?.channelName !== sessionName) return;
+      if (d?.channelName !== sessionName) {
+        console.log("🔊 FCM handleFcmAction channel mismatch:", {
+          payloadChannel: d?.channelName,
+          sessionName,
+        });
+        return;
+      }
       const action = d?.action;
+      console.log("🔊 FCM handleFcmAction (background):", { action, d });
       if (action === "mute_all") {
         setMicOn(false);
         setMicHiddenByAdmin(true);
       } else if (action === "unmute_all") {
         setMicOn(true);
         setMicHiddenByAdmin(false);
-      } else if (action === "kick_participant" && shouldAcceptKickRef.current(d?.userId)) {
-        runKickRef.current();
+      } else if (action === "mute_participant") {
+        const ok = isTargetUserRef.current(d?.uid, d?.userId, d);
+        if (ok) {
+          setMicOn(false);
+          setMicHiddenByAdmin(true);
+        }
+      } else if (action === "unmute_participant") {
+        const ok = isTargetUserRef.current(d?.uid, d?.userId, d);
+        if (ok) {
+          setMicOn(true);
+          setMicHiddenByAdmin(false);
+        }
+      } else if (action === "kick_participant") {
+        const ok = isTargetUserRef.current(d?.uid, d?.userId, d);
+        if (ok) runKickRef.current();
       }
     };
     const handler = (event) => {
       const d = event?.data;
       if (d?.type === "FCM_ACTION" || d?.type === "FCM_KICK") {
-        handleFcmAction(d?.type === "FCM_KICK" ? { ...d, action: "kick_participant" } : d);
+        handleFcmAction(d?.type === "FCM_KICK" ? { ...d, action: "kick_participant", userId: d?.userId } : d);
       }
     };
     const bc =
