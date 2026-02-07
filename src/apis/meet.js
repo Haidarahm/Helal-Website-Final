@@ -12,3 +12,16 @@ export const joinSession = async (sessionName) => {
   });
   return data;
 };
+
+/**
+ * Raise hand in Agora session.
+ * POST /agora/raise/hand
+ * @param {string} channelName - The session/channel name
+ * @returns {Promise<any>}
+ */
+export const raiseHand = async (channelName) => {
+  const { data } = await api.post("/agora/raise/hand", {
+    channelName,
+  });
+  return data;
+};

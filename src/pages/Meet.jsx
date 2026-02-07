@@ -12,6 +12,7 @@ import {
   AlertCircle,
   Volume2,
   X,
+  Hand,
 } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext";
 import SEO from "../components/SEO";
@@ -163,8 +164,10 @@ function MeetControlBar({
   cameraOn,
   isLeaving,
   micHiddenByAdmin,
+  handRaised,
   onMicToggle,
   onCameraToggle,
+  onRaiseHand,
   onMicTest,
   onLeave,
   isRTL,
@@ -239,6 +242,27 @@ function MeetControlBar({
         </span>
         <span className="text-[11px] text-accent/70 hidden sm:block">
           {cameraOn ? (isRTL ? "كاميرا" : "Camera") : (isRTL ? "مشاركة" : "Share")}
+        </span>
+      </button>
+
+      <button
+        type="button"
+        onClick={onRaiseHand}
+        disabled={isLeaving}
+        className={`meet-control-btn flex flex-col items-center gap-1.5 p-2 rounded-xl hover:bg-white/5 min-w-[64px] disabled:opacity-50 disabled:pointer-events-none ${
+          handRaised ? "ring-2 ring-primary/60" : ""
+        }`}
+        title={handRaised ? (isRTL ? "خفض اليد" : "Lower hand") : (isRTL ? "رفع اليد" : "Raise hand")}
+      >
+        <span
+          className={`flex items-center justify-center w-11 h-11 rounded-full transition-all ${
+            handRaised ? "bg-primary/30 text-primary" : "bg-white/10 text-accent hover:bg-white/15"
+          }`}
+        >
+          <Hand size={22} />
+        </span>
+        <span className="text-[11px] text-accent/70 hidden sm:block">
+          {handRaised ? (isRTL ? "مرفوعة" : "Raised") : (isRTL ? "رفع" : "Hand")}
         </span>
       </button>
 
@@ -333,6 +357,7 @@ function AgoraMeetView({ sessionName, isRTL }) {
   const joinSession = useMeetStore((s) => s.joinSession);
   const clearSession = useMeetStore((s) => s.clearSession);
   const markKicked = useMeetStore((s) => s.markKicked);
+  const raiseHand = useMeetStore((s) => s.raiseHand);
   const session = useMeetStore((s) => s.session);
   const user = useAuthStore((s) => s.user);
 
@@ -341,6 +366,7 @@ function AgoraMeetView({ sessionName, isRTL }) {
   const [isLeaving, setIsLeaving] = useState(false);
   const [micTestOpen, setMicTestOpen] = useState(false);
   const [micHiddenByAdmin, setMicHiddenByAdmin] = useState(false);
+  const [handRaised, setHandRaised] = useState(false);
 
   const joinSessionRef = useRef(joinSession);
   joinSessionRef.current = joinSession;
@@ -504,6 +530,14 @@ function AgoraMeetView({ sessionName, isRTL }) {
 
   const handleMicToggle = useCallback(() => setMicOn((v) => !v), []);
   const handleCameraToggle = useCallback(() => setCameraOn((v) => !v), []);
+
+  const handleRaiseHand = useCallback(() => {
+    setHandRaised((v) => {
+      const next = !v;
+      raiseHand(sessionName).catch(() => {});
+      return next;
+    });
+  }, [sessionName, raiseHand]);
 
   const runKick = useCallback(() => {
     markKicked(sessionName);
@@ -781,8 +815,10 @@ function AgoraMeetView({ sessionName, isRTL }) {
           cameraOn={cameraOn}
           isLeaving={isLeaving}
           micHiddenByAdmin={micHiddenByAdmin}
+          handRaised={handRaised}
           onMicToggle={handleMicToggle}
           onCameraToggle={handleCameraToggle}
+          onRaiseHand={handleRaiseHand}
           onMicTest={() => setMicTestOpen(true)}
           onLeave={handleLeave}
           isRTL={isRTL}

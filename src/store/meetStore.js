@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { joinSession as joinSessionApi } from "../apis/meet.js";
+import { joinSession as joinSessionApi, raiseHand as raiseHandApi } from "../apis/meet.js";
 
 const KICKED_SESSIONS_KEY = "meet_kicked_sessions";
 
@@ -44,6 +44,15 @@ const useMeetStore = create((set, get) => ({
   },
 
   isKicked: (sessionName) => isKickedInStorage(sessionName),
+
+  raiseHand: async (channelName) => {
+    try {
+      return await raiseHandApi(channelName);
+    } catch (err) {
+      console.warn("Raise hand failed:", err);
+      return null;
+    }
+  },
 
   /**
    * Join an Agora session by name.
