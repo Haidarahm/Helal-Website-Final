@@ -35,24 +35,26 @@ api.interceptors.response.use(
   (error) => {
     // Handle common errors here
     if (error.response) {
-      // Server responded with error status
-      if (error.response.status === 401) {
-        // Unauthorized: clear stored auth and force logout
+      const status = error.response.status;
+      // 401 Unauthorized or 403 Forbidden: logout and clear storage
+      if (status === 401 || status === 403) {
         try {
+          import("../store/authStore.js").then((m) => {
+            m.default.getState().logout();
+          }).catch(() => {});
           localStorage.clear();
+          sessionStorage.clear();
         } catch (_) {
           // ignore storage errors
         }
-        // Redirect to auth/login page if available
         if (typeof window !== "undefined" && window.location) {
-          // Avoid redirect loops if already on auth routes
           const currentPath = window.location.pathname || "";
           if (!currentPath.toLowerCase().includes("auth")) {
             window.location.href = "/auth";
           }
         }
       }
-      console.error("API Error:", error.response.status, error.response.data);
+      console.error("API Error:", status, error.response.data);
     } else if (error.request) {
       // Request made but no response received
       console.error("Network Error:", error.request);

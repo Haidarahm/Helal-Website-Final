@@ -208,7 +208,7 @@ export default function Navbar() {
         id="mobile-menu"
         className={[
           "md:hidden transition-all  duration-300 overflow-hidden border-t border-secondary-light",
-          open ? "max-h-96 opacity-100" : "max-h-0 opacity-0",
+          open ? "max-h-122 opacity-100" : "max-h-0 opacity-0",
         ].join(" ")}
       >
         <div className="px-4 py-3 flex flex-col gap-1 bg-secondary/95">
