@@ -173,7 +173,7 @@ function MeetControlBar({
   isRTL,
 }) {
   return (
-    <div className="flex items-center justify-center gap-3 sm:gap-5 py-4 px-4 bg-secondary-light/90 backdrop-blur border-t border-white/5">
+    <div className="flex items-center justify-center gap-3 sm:gap-5  bg-secondary-light/90 backdrop-blur border-t border-white/5">
       <button
         type="button"
         onClick={onMicTest}
@@ -339,14 +339,7 @@ function MeetHeader({ sessionName, connectionState, networkQuality, participantC
             )}
           </p>
         </div>
-      </div>
-      <div className="flex items-center gap-2 text-accent/70">
-        <Users size={16} />
-        <span className="text-sm font-medium">{1 + (participantCount ?? 0)}</span>
-        <span className="text-xs hidden sm:inline">
-          {isRTL ? "مشارك" : "participants"}
-        </span>
-      </div>
+      </div>  
     </header>
   );
 }
@@ -899,7 +892,7 @@ export default function Meet() {
             : "Join a video meeting with Helal Al Jabri"
         }
       />
-      <div className="w-full max-w-6xl mx-auto px-4 mt-18 md:mt-24 flex flex-col min-h-[calc(100vh-5rem)]">
+      <div className="w-full max-w-6xl mx-auto px-4 mt-18 md:mt-24 flex flex-col min-h-[calc(100vh-3rem)]">
         <div className="flex-1 min-h-0 flex flex-col rounded-2xl overflow-hidden border border-white/5">
           <AgoraRTCProvider client={client}>
             <AgoraMeetView sessionName={sessionName} isRTL={isRTL} />
