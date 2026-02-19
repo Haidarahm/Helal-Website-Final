@@ -35,9 +35,9 @@ const useOnlineCoursesStore = create((set, get) => ({
 
   clearError: () => set({ error: null }),
 
-  fetchOnlineCourses: async (lang = "ar", page = 1, perPage = 5) => {
+  fetchOnlineCourses: async (lang = "ar", page = 1, perPage = 5, active = undefined) => {
     try {
-      const cacheKey = `${lang}:${page}:${perPage}`;
+      const cacheKey = `${lang}:${page}:${perPage}:${active ?? "all"}`;
       const cachedEntry = get().onlineCoursesCache?.[cacheKey];
 
       if (cachedEntry) {
@@ -51,7 +51,7 @@ const useOnlineCoursesStore = create((set, get) => ({
       }
 
       set({ isLoading: true, error: null });
-      const response = await fetchOnlineCoursesApi(lang, page, perPage);
+      const response = await fetchOnlineCoursesApi(lang, page, perPage, active);
 
       if (response?.status && Array.isArray(response?.data)) {
         const nextPagination = resolvePagination(response.pagination, {

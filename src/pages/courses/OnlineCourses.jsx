@@ -21,27 +21,36 @@ const OnlineCourses = () => {
   const [enrollingCourseId, setEnrollingCourseId] = useState(null);
   const [openPopoverId, setOpenPopoverId] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [courseFilter, setCourseFilter] = useState("available"); // "available" | "active"
   const navigate = useNavigate();
   const pageSize = pagination?.per_page || 5;
   const isInitialLoading = isLoading && onlineCourses.length === 0;
   const isPaginating = isLoading && onlineCourses.length > 0;
 
+  const activeParam = courseFilter === "active" ? 1 : 0;
+
   useEffect(() => {
     window.scrollTo(0, 0);
     setCurrentPage(1);
-    fetchOnlineCourses(i18n.language, 1, 5);
+    fetchOnlineCourses(i18n.language, 1, 5, activeParam);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [i18n.language]);
+  }, [i18n.language, courseFilter]);
 
   const handlePageChange = (page) => {
     if (page === currentPage) return;
     setCurrentPage(page);
-    fetchOnlineCourses(i18n.language, page, pageSize);
+    fetchOnlineCourses(i18n.language, page, pageSize, activeParam);
     window.scrollTo(0, 0);
   };
 
+  const handleFilterChange = (filter) => {
+    if (filter === courseFilter) return;
+    setCourseFilter(filter);
+    setCurrentPage(1);
+  };
+
   const formatDate = (value) => {
-    if (!value) return isRTL ? "غير محدد" : "Not scheduled";
+    if (!value) return t("courses.my_courses.not_scheduled");
     return new Date(value).toLocaleDateString(i18n.language, {
       year: "numeric",
       month: "short",
@@ -162,7 +171,7 @@ const OnlineCourses = () => {
             disabled={disableCurrencyButtons}
             loading={isEnrolling}
           >
-            {isRTL ? "المتابعة" : "Continue"}
+            {t("courses.continue")}
           </Button>
         </div>
       );
@@ -172,7 +181,7 @@ const OnlineCourses = () => {
       return (
         <div className="p-2">
           <div className="mb-3 text-sm font-semibold text-gray-700">
-            {isRTL ? "اختر العملة للدفع" : "Select payment currency"}
+            {t("courses.select_payment_currency")}
           </div>
           <Space direction="vertical" className="w-full" size="small">
             <Button
@@ -209,7 +218,7 @@ const OnlineCourses = () => {
     return (
       <div className="p-2">
         <div className="mb-3 text-sm text-gray-700">
-          {isRTL ? "السعر" : "Price"}: {price} {currencyLabel}
+          {t("courses.price_label")}: {price} {currencyLabel}
         </div>
         <Button
           type="primary"
@@ -236,13 +245,39 @@ const OnlineCourses = () => {
         </p>
       </div>
 
+      {/* Filter tabs: Available / Active */}
+      <div className="flex justify-center gap-2 mb-8">
+        <button
+          type="button"
+          onClick={() => handleFilterChange("available")}
+          className={`px-6 py-2.5 rounded-xl font-semibold transition-all ${
+            courseFilter === "available"
+              ? "bg-primary text-white shadow-md"
+              : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+          }`}
+        >
+          {t("courses.available_courses")}
+        </button>
+        <button
+          type="button"
+          onClick={() => handleFilterChange("active")}
+          className={`px-6 py-2.5 rounded-xl font-semibold transition-all ${
+            courseFilter === "active"
+              ? "bg-primary text-white shadow-md"
+              : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+          }`}
+        >
+          {t("courses.active_courses")}
+        </button>
+      </div>
+
       {isInitialLoading ? (
         <div className="flex items-center justify-center py-32">
           <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
         </div>
       ) : onlineCourses.length === 0 ? (
         <div className="text-center py-32 text-gray-500 text-lg">
-          {isRTL ? "لا توجد دورات متاحة حالياً" : "No online courses available"}
+          {t("courses.no_online_courses")}
         </div>
       ) : (
         <div className="relative">
@@ -250,7 +285,7 @@ const OnlineCourses = () => {
             <div className="absolute inset-0 rounded-2xl bg-white/75 z-10 flex flex-col items-center justify-center gap-3 text-center">
               <div className="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
               <p className="text-sm text-gray-600 font-medium">
-                {isRTL ? "جاري تحميل الصفحة..." : "Loading page..."}
+                {t("courses.loading_page")}
               </p>
             </div>
           )}
@@ -271,11 +306,11 @@ const OnlineCourses = () => {
                       />
                     ) : (
                       <div className="flex h-full w-full items-center justify-center text-gray-400 text-sm">
-                        {isRTL ? "لا توجد صورة" : "No cover image"}
+                        {t("courses.no_cover_image")}
                       </div>
                     )}
                     <span className="absolute top-3 left-3 rounded-full bg-black/70 px-3 py-1 text-xs font-semibold text-white">
-                      {isRTL ? "مباشر" : "Live"}
+                      {t("courses.my_courses.live")}
                     </span>
                   </div>
 
@@ -285,8 +320,7 @@ const OnlineCourses = () => {
                         {course.name}
                       </h2>
                       <p className="text-sm text-gray-600 leading-relaxed line-clamp-3">
-                        {course.description ||
-                          (isRTL ? "لا يوجد وصف" : "No description")}
+                        {course.description || t("courses.no_description")}
                       </p>
                     </div>
 
@@ -329,8 +363,19 @@ const OnlineCourses = () => {
                             rel="noreferrer"
                             className="text-sm text-primary hover:underline"
                           >
-                            {isRTL ? "رابط اللقاء" : "Meeting link"}
+                            {t("courses.meeting_link")}
                           </a>
+                        </div>
+                      )}
+
+                      {courseFilter === "active" && course.activeAt && (
+                        <div className="rounded-lg bg-primary/10 px-4 py-3 text-sm text-gray-700">
+                          <div className="flex items-center justify-between">
+                            <span className="font-semibold text-primary">
+                              {t("courses.start_at")}
+                            </span>
+                            <span>{formatDate(course.activeAt)}</span>
+                          </div>
                         </div>
                       )}
 
@@ -338,13 +383,13 @@ const OnlineCourses = () => {
                         <div className="rounded-lg bg-gray-50 px-4 py-3 text-sm text-gray-700">
                           <div className="flex items-center justify-between">
                             <span className="font-semibold">
-                              {isRTL ? "التاريخ" : "Date"}
+                              {t("courses.my_courses.date")}
                             </span>
                             <span>{formatDate(course.appointment.date)}</span>
                           </div>
                           <div className="mt-2 flex items-center justify-between">
                             <span className="font-semibold">
-                              {isRTL ? "الوقت" : "Time"}
+                              {t("courses.my_courses.time")}
                             </span>
                             <span>
                               {`${formatTime(
@@ -386,7 +431,7 @@ const OnlineCourses = () => {
                               <>
                                 <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                                 <span className="text-white">
-                                  {isRTL ? "جاري التسجيل..." : "Enrolling..."}
+                                  {t("courses.enrolling")}
                                 </span>
                               </>
                             ) : (
@@ -417,7 +462,7 @@ const OnlineCourses = () => {
             showSizeChanger={false}
             disabled={isPaginating}
             showTotal={(total, range) =>
-              `${range[0]}-${range[1]} ${isRTL ? "من" : "of"} ${total}`
+              `${range[0]}-${range[1]} ${t("courses.of")} ${total}`
             }
             locale={{ prev_page: "Previous page", next_page: "Next page" }}
           />
