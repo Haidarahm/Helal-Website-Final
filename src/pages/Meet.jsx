@@ -94,36 +94,36 @@ function MicTestModal({ isOpen, onClose, isRTL }) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
-      <div className="bg-secondary rounded-2xl shadow-xl max-w-sm w-full p-6 border border-white/10">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-accent flex items-center gap-2">
-            <Volume2 size={20} className="text-primary" />
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-3">
+      <div className="bg-secondary rounded-xl shadow-xl max-w-[260px] w-full p-4 border border-white/10">
+        <div className="flex items-center justify-between mb-2">
+          <h3 className="text-base font-semibold text-accent flex items-center gap-1.5">
+            <Volume2 size={18} className="text-primary shrink-0" />
             {isRTL ? "اختبار الميكروفون" : "Mic Test"}
           </h3>
           <button
             type="button"
             onClick={onClose}
-            className="p-1 rounded-lg hover:bg-white/10 text-accent"
+            className="p-1 rounded-md hover:bg-white/10 text-accent"
             aria-label={isRTL ? "إغلاق" : "Close"}
           >
-            <X size={20} />
+            <X size={18} />
           </button>
         </div>
         {error ? (
-          <p className="text-red-400 text-sm">{error}</p>
+          <p className="text-red-400 text-xs">{error}</p>
         ) : (
           <>
-            <p className="text-sm text-accent/70 mb-3">
+            <p className="text-xs text-accent/70 mb-2">
               {isRTL ? "تحدث لمعاينة مستوى الصوت" : "Speak to see the level"}
             </p>
-            <div className="h-3 bg-white/10 rounded-full overflow-hidden">
+            <div className="h-2 bg-white/10 rounded-full overflow-hidden">
               <div
                 className="h-full bg-primary transition-all duration-100"
                 style={{ width: `${Math.min(100, testLevel * 200 + 5)}%` }}
               />
             </div>
-            <p className="text-xs text-accent/50 mt-2">
+            <p className="text-[11px] text-accent/50 mt-1.5">
               {testLevel > 0.05
                 ? isRTL
                   ? "الميكروفون يعمل بشكل صحيح"
@@ -173,18 +173,18 @@ function MeetControlBar({
   isRTL,
 }) {
   return (
-    <div className="flex items-center justify-center gap-3 sm:gap-5  bg-secondary-light/90 backdrop-blur border-t border-white/5">
+    <div className="flex items-center justify-center gap-2 sm:gap-3  bg-secondary-light/90 backdrop-blur border-t border-white/5">
       <button
         type="button"
         onClick={onMicTest}
         disabled={isLeaving}
-        className="meet-control-btn flex flex-col items-center gap-1.5 p-2 rounded-xl hover:bg-white/5 min-w-[64px] disabled:opacity-50 disabled:pointer-events-none"
+        className="meet-control-btn flex flex-col items-center gap-1 p-1.5 rounded-lg hover:bg-white/5 min-w-[48px] disabled:opacity-50 disabled:pointer-events-none"
         title={isRTL ? "اختبار الميكروفون" : "Test mic"}
       >
-        <span className="flex items-center justify-center w-11 h-11 rounded-full bg-white/10 text-accent hover:bg-white/15">
-          <Volume2 size={22} />
+        <span className="flex items-center justify-center w-9 h-9 rounded-full bg-white/10 text-accent hover:bg-white/15">
+          <Volume2 size={18} />
         </span>
-        <span className="text-[11px] text-accent/70 hidden sm:block">
+        <span className="text-[10px] text-accent/70 hidden sm:block">
           {isRTL ? "اختبار" : "Test"}
         </span>
       </button>
@@ -194,27 +194,27 @@ function MeetControlBar({
           type="button"
           onClick={onMicToggle}
           disabled={isLeaving}
-          className="meet-control-btn flex flex-col items-center gap-1.5 p-2 rounded-xl hover:bg-white/5 min-w-[64px] disabled:opacity-50 disabled:pointer-events-none"
+          className="meet-control-btn flex flex-col items-center gap-1 p-1.5 rounded-lg hover:bg-white/5 min-w-[48px] disabled:opacity-50 disabled:pointer-events-none"
           title={micOn ? (isRTL ? "كتم الصوت" : "Mute") : (isRTL ? "تشغيل الصوت" : "Unmute")}
         >
           <span
-            className={`flex items-center justify-center w-11 h-11 rounded-full transition-all ${
+            className={`flex items-center justify-center w-9 h-9 rounded-full transition-all ${
               micOn
                 ? "bg-white/10 text-accent hover:bg-white/15"
                 : "bg-red-500/80 text-white"
             }`}
           >
-            {micOn ? <Mic size={22} /> : <MicOff size={22} />}
+            {micOn ? <Mic size={18} /> : <MicOff size={18} />}
           </span>
           {micOn && (
-            <div className="meet-mic-level w-10">
+            <div className="meet-mic-level w-8">
               <div
                 className="meet-mic-level-bar"
                 style={{ width: `${Math.min(100, (micLevel || 0) * 2 + 10)}%` }}
               />
             </div>
           )}
-          <span className="text-[11px] text-accent/70 hidden sm:block">
+          <span className="text-[10px] text-accent/70 hidden sm:block">
             {micOn ? (isRTL ? "ميكروفون" : "Mic") : (isRTL ? "مكتوم" : "Muted")}
           </span>
         </button>
@@ -224,7 +224,7 @@ function MeetControlBar({
         type="button"
         onClick={onCameraToggle}
         disabled={isLeaving}
-        className={`meet-control-btn flex flex-col items-center gap-1.5 p-2 rounded-xl hover:bg-white/5 min-w-[64px] disabled:opacity-50 disabled:pointer-events-none ${
+        className={`meet-control-btn flex flex-col items-center gap-1 p-1.5 rounded-lg hover:bg-white/5 min-w-[48px] disabled:opacity-50 disabled:pointer-events-none ${
           cameraOn ? "ring-2 ring-primary/60" : ""
         }`}
         title={
@@ -234,13 +234,13 @@ function MeetControlBar({
         }
       >
         <span
-          className={`flex items-center justify-center w-11 h-11 rounded-full transition-all ${
+          className={`flex items-center justify-center w-9 h-9 rounded-full transition-all ${
             cameraOn ? "bg-primary/30 text-primary" : "bg-white/10 text-accent hover:bg-white/15"
           }`}
         >
-          {cameraOn ? <Video size={22} /> : <VideoOff size={22} />}
+          {cameraOn ? <Video size={18} /> : <VideoOff size={18} />}
         </span>
-        <span className="text-[11px] text-accent/70 hidden sm:block">
+        <span className="text-[10px] text-accent/70 hidden sm:block">
           {cameraOn ? (isRTL ? "كاميرا" : "Camera") : (isRTL ? "مشاركة" : "Share")}
         </span>
       </button>
@@ -249,19 +249,19 @@ function MeetControlBar({
         type="button"
         onClick={onRaiseHand}
         disabled={isLeaving || handActive}
-        className={`meet-control-btn flex flex-col items-center gap-1.5 p-2 rounded-xl hover:bg-white/5 min-w-[64px] disabled:opacity-50 disabled:pointer-events-none ${
+        className={`meet-control-btn flex flex-col items-center gap-1 p-1.5 rounded-lg hover:bg-white/5 min-w-[48px] disabled:opacity-50 disabled:pointer-events-none ${
           handActive ? "ring-2 ring-primary/60" : ""
         }`}
         title={handActive ? (isRTL ? "انتظر..." : "Wait...") : (isRTL ? "رفع اليد" : "Raise hand")}
       >
         <span
-          className={`flex items-center justify-center w-11 h-11 rounded-full transition-all ${
+          className={`flex items-center justify-center w-9 h-9 rounded-full transition-all ${
             handActive ? "bg-primary/30 text-primary" : "bg-white/10 text-accent hover:bg-white/15"
           }`}
         >
-          <Hand size={22} />
+          <Hand size={18} />
         </span>
-        <span className="text-[11px] text-accent/70 hidden sm:block">
+        <span className="text-[10px] text-accent/70 hidden sm:block">
           {handActive ? (isRTL ? "مرفوعة" : "Raised") : (isRTL ? "رفع" : "Hand")}
         </span>
       </button>
@@ -270,17 +270,17 @@ function MeetControlBar({
         type="button"
         onClick={onLeave}
         disabled={isLeaving}
-        className="meet-control-btn flex flex-col items-center gap-1.5 p-2 rounded-xl hover:bg-red-500/20 min-w-[64px] disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:bg-transparent"
+        className="meet-control-btn flex flex-col items-center gap-1 p-1.5 rounded-lg hover:bg-red-500/20 min-w-[48px] disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:bg-transparent"
         title={isRTL ? "إنهاء المكالمة" : "Leave call"}
       >
-        <span className="flex items-center justify-center w-11 h-11 rounded-full bg-red-500 text-white hover:bg-red-600">
+        <span className="flex items-center justify-center w-9 h-9 rounded-full bg-red-500 text-white hover:bg-red-600">
           {isLeaving ? (
-            <span className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+            <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
           ) : (
-            <PhoneOff size={22} />
+            <PhoneOff size={18} />
           )}
         </span>
-        <span className="text-[11px] text-accent/70 hidden sm:block">
+        <span className="text-[10px] text-accent/70 hidden sm:block">
           {isLeaving ? (isRTL ? "جاري الخروج…" : "Leaving…") : (isRTL ? "إنهاء" : "Leave")}
         </span>
       </button>
@@ -892,7 +892,7 @@ export default function Meet() {
             : "Join a video meeting with Helal Al Jabri"
         }
       />
-      <div className="w-full max-w-6xl mx-auto px-4 mt-18 md:mt-24 flex flex-col min-h-[calc(100vh-3rem)]">
+      <div className="w-full max-w-6xl mx-auto px-4 mt-14 md:mt-20 flex flex-col min-h-[calc(100vh-3rem)]">
         <div className="flex-1 min-h-0 flex flex-col rounded-2xl overflow-hidden border border-white/5">
           <AgoraRTCProvider client={client}>
             <AgoraMeetView sessionName={sessionName} isRTL={isRTL} />
