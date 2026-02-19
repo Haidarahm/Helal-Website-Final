@@ -4,16 +4,10 @@
 User-agent: *
 Allow: /
 
-# Disallow admin and private areas
+# Disallow private/dynamic areas
 Disallow: /api/
 Disallow: /admin/
+Disallow: /meet/
 
-# Allow search engines to crawl all content
-User-agent: Googlebot
-Allow: /
-
-User-agent: Bingbot
-Allow: /
-
-# Sitemap location
+# Sitemap
 Sitemap: https://he779.com/sitemap.xml

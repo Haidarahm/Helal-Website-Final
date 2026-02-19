@@ -25,12 +25,20 @@ const PAGES = [
   { path: "/courses/online-courses", changefreq: "weekly", priority: "0.8" },
   { path: "/courses/offline-courses", changefreq: "weekly", priority: "0.8" },
   { path: "/courses/private-courses", changefreq: "weekly", priority: "0.8" },
+  { path: "/my-courses", changefreq: "weekly", priority: "0.7" },
   { path: "/consultation", changefreq: "weekly", priority: "0.9" },
+  { path: "/consultation-success", changefreq: "monthly", priority: "0.4" },
   { path: "/calculator", changefreq: "monthly", priority: "0.7" },
   { path: "/news", changefreq: "daily", priority: "0.8" },
   { path: "/broadcasts", changefreq: "weekly", priority: "0.7" },
   { path: "/contact", changefreq: "monthly", priority: "0.6" },
+  { path: "/profile", changefreq: "monthly", priority: "0.5" },
+  { path: "/course-success", changefreq: "monthly", priority: "0.4" },
+  { path: "/private-lesson-success", changefreq: "monthly", priority: "0.4" },
   { path: "/auth", changefreq: "monthly", priority: "0.5" },
+  { path: "/otp-email", changefreq: "monthly", priority: "0.3" },
+  { path: "/verify-otp", changefreq: "monthly", priority: "0.3" },
+  { path: "/reset-password", changefreq: "monthly", priority: "0.3" },
 ];
 
 function loc(path) {
