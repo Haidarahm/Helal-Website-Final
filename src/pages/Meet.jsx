@@ -513,8 +513,13 @@ function AgoraMeetView({ sessionName, isRTL }) {
     if (isLeaving) return;
     setIsLeaving(true);
     clearSession();
-    navigate(-1);
-    // Fire-and-forget: attempt leave in background (don't block - Agora calls can hang)
+    navigate("/my-courses");
+    // Close camera and microphone tracks to release devices
+    try {
+      localCameraTrack?.close();
+      localMicrophoneTrack?.close();
+    } catch (_) {}
+    // Fire-and-forget: unpublish and leave channel
     if (isConnected) {
       try {
         if (client.localTracks?.length > 0) {
@@ -523,7 +528,7 @@ function AgoraMeetView({ sessionName, isRTL }) {
         client.leave().catch(() => {});
       } catch (_) {}
     }
-  }, [client, isConnected, isLeaving, clearSession, navigate]);
+  }, [client, isConnected, isLeaving, clearSession, navigate, localCameraTrack, localMicrophoneTrack]);
 
   const leaveRef = useRef(handleLeave);
   leaveRef.current = handleLeave;
